@@ -1,0 +1,19 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:67e86a47858e52d763cca6d1e92eefb2:604f10307b5875b4b7f8738299f5e1ec:8baedf9749f27eb01f1d1853edd8c644$
+#
+:format=40300
+:texture=Resources.png
+:size=256x256
+:pivotpoints=disabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+expierence;0;128;128;128; 0.5;0.5; 0;0;0;0
+ico_diamond;128;128;128;128; 0.5;0.5; 0;0;0;0
+ico_gold_coin;0;0;128;128; 0.5;0.5; 0;0;0;0
+ico_green_coin;128;0;128;128; 0.5;0.5; 0;0;0;0

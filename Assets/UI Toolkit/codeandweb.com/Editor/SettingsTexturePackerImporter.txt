@@ -1,0 +1,11 @@
+version: 2
+tpsheetFileNames:
+- Assets/TextMesh Pro/Sprites/Resources.tpsheet
+- Assets/UI Toolkit/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
+textureFileNames:
+- Assets/TextMesh Pro/Sprites/Resources.png
+- Assets/UI Toolkit/codeandweb.com/Example/SpriteSheet/sprites.png
+normalmapFileNames:
+- 
+- Assets/UI Toolkit/codeandweb.com/Example/SpriteSheet/sprites_n.png
+enableDebugOutput: 0
