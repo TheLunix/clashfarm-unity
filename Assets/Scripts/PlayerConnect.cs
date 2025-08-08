@@ -22,12 +22,12 @@ public class PlayerConnect : MonoBehaviour
         if (!string.IsNullOrEmpty(NickName) && !string.IsNullOrEmpty(SerialCode))
         {
             Debug.Log($"Знайдено гравця у PlayerPrefs: {NickName}, Serial: {SerialCode}");
-            StartCoroutine(ValidateAccount());
+            //StartCoroutine(ValidateAccount());
         }
         else
         {
             Debug.LogWarning("Гравець не знайдений у PlayerPrefs");
-            // Наприклад: SceneManager.LoadScene("RegisterScene");
+            SceneManager.LoadScene("first_auth");
         }
     }
 

@@ -224,7 +224,7 @@ public class LoadAndUpdateAccount : MonoBehaviour
 		FindDataBase.AddField("PlayerName", this.NickName);
 		FindDataBase.AddField("PlayerSerialCode", this.SerialCode);
 
-		UnityWebRequest www = UnityWebRequest.Post("http://clashoffarms/loadaccount.php", FindDataBase);
+		UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/load", FindDataBase);
 		yield return www.SendWebRequest();
 		if(www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError) { Debug.Log("Ошибка: " + www.error); }
 		jsonformat = www.downloadHandler.text;
@@ -472,7 +472,7 @@ public class LoadAndUpdateAccount : MonoBehaviour
 		FindDataBase.AddField("LoadEquipment", "Yes");
 		FindDataBase.AddField("PlayerID", id);
 
-		UnityWebRequest www = UnityWebRequest.Post("http://clashoffarms/loadaccount.php", FindDataBase);
+		UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/load", FindDataBase);
 		yield return www.SendWebRequest();
 		jsonformat = www.downloadHandler.text;
 		if(jsonformat != "0")

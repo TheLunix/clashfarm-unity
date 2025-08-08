@@ -5,129 +5,63 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class AutoRegisterResponse
+{
+    public int id;
+    public string nickname;
+    public string serialCode;
+    public int playerFraction;
+}
+
 public class PlayerRegister : MonoBehaviour
 {
-    public InputField NickInput;
-    public Text MessageText;
-    public GameObject MessageBox;
+    private const string AutoRegisterUrl = "https://api.clashfarm.com/api/player/autoregister";
 
-    private string SerialCode;
-
-    private const string ServerURL = "https://api.clashfarm.com/api/player";
-
-    public void RegisterPlayer()
+    // Виклич цю функцію на кнопці "Забрати приз / Продовжити"
+    public void OnFinishTraining()
     {
-        string nick = NickInput.text;
+        StartCoroutine(AutoRegister());
+    }
 
-        if (string.IsNullOrEmpty(nick))
+    private IEnumerator AutoRegister()
+    {
+        using UnityWebRequest www = UnityWebRequest.Post(AutoRegisterUrl, new WWWForm());
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
         {
-            DisplayMessage("Придумайте нік!");
-            return;
+            Debug.LogError("AutoRegister error: " + www.error);
+            yield break;
         }
 
-        if (nick.Length <= 3)
+        var json = www.downloadHandler.text;
+        Debug.Log("AutoRegister response: " + json);
+
+        AutoRegisterResponse data = null;
+        try
         {
-            DisplayMessage("Довжина ніка має бути більше 3 символів!");
-            return;
+            data = JsonUtility.FromJson<AutoRegisterResponse>(json);
+        }
+        catch
+        {
+            Debug.LogError("Bad JSON from server: " + json);
         }
 
-        StartCoroutine(CheckNickNameInAccounts());
-    }
-
-    private void DisplayMessage(string message)
-    {
-        MessageText.text = message;
-        MessageBox.SetActive(true);
-    }
-
-    private IEnumerator CheckNickNameInAccounts()
-    {
-        WWWForm formData = new WWWForm();
-        formData.AddField("PlayerName", NickInput.text);
-
-        using (UnityWebRequest www = UnityWebRequest.Post(ServerURL + "/checkname", formData))
+        if (data == null || string.IsNullOrEmpty(data.serialCode) || string.IsNullOrEmpty(data.nickname))
         {
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log("Помилка: " + www.error);
-                yield break;
-            }
-
-            if (www.downloadHandler.text == "1")
-            {
-                DisplayMessage("Даний нік вже використовується, придумайте інший!");
-            }
-            else
-            {
-                PlayerPrefs.SetString("Name", NickInput.text);
-                PlayerPrefs.Save();
-                GenerateSerialCode();
-            }
+            Debug.Log("Помилка реєстрації. Спробуй ще раз.");
+            yield break;
         }
+
+        PlayerPrefs.SetString("Name", data.nickname);
+        PlayerPrefs.SetString("SerialCode", data.serialCode);
+        PlayerPrefs.SetInt("Fraction", data.playerFraction);
+        PlayerPrefs.SetInt("ID", data.id);
+        PlayerPrefs.Save();
+
+        // Перехід у головне меню/сцену
+        SceneManager.LoadScene("main"); // ← заміни на свою назву
     }
 
-    private void GenerateSerialCode(int stringLength = 10)
-    {
-        const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        System.Random random = new System.Random();
-        SerialCode = new string(Enumerable.Repeat(characters, stringLength)
-                                        .Select(s => s[random.Next(s.Length)]).ToArray());
-        Debug.Log("SerialCode: " + SerialCode);
-        StartCoroutine(CheckSerialCodeInAccounts());
-    }
-
-    private IEnumerator CheckSerialCodeInAccounts()
-    {
-        WWWForm formData = new WWWForm();
-        formData.AddField("PlayerSerialCode", SerialCode);
-
-        using (UnityWebRequest www = UnityWebRequest.Post(ServerURL + "/checkserial", formData))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log("Помилка: " + www.error);
-                yield break;
-            }
-
-            if (www.downloadHandler.text == "1")
-            {
-                GenerateSerialCode(); // Якщо код не унікальний — згенерувати ще раз
-            }
-            else
-            {
-                PlayerPrefs.SetString("SerialCode", SerialCode);
-                PlayerPrefs.Save();
-                StartCoroutine(RegisterAccount());
-            }
-        }
-    }
-
-    private IEnumerator RegisterAccount()
-    {
-        WWWForm formData = new WWWForm();
-        formData.AddField("PlayerName", NickInput.text);
-        formData.AddField("PlayerSerialCode", SerialCode);
-
-        using (UnityWebRequest www = UnityWebRequest.Post(ServerURL + "/register", formData))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log("Помилка: " + www.error);
-            }
-            else if (www.downloadHandler.text == "0")
-            {
-                SceneManager.LoadScene(1); // або індекс 1
-            }
-            else
-            {
-                DisplayMessage("Не вдалося зареєструватися!");
-            }
-        }
-    }
 }
