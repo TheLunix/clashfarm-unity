@@ -60,11 +60,11 @@ public class HikeSystem : MonoBehaviour
         Player.IsActiveHike = true;
         System.DateTime endTime = System.DateTime.Now.AddMinutes(minutes);
         Player.Account.timetoendhike = endTime.ToString("dd.MM.yyyy HH:mm:ss");
-        StartCoroutine(UpdateCellAccount("timetoendhike", endTime.ToString("dd.MM.yyyy HH:mm:ss"), Player.pID.ToString()));
+        StartCoroutine(UpdateCellAccount("TimeToEndHike", endTime.ToString("dd.MM.yyyy HH:mm:ss"), Player.pID.ToString()));
 
         int remainingMinutes = Player.Account.hikemin - minutes;
         Player.Account.hikemin = remainingMinutes;
-        StartCoroutine(UpdateCellAccount("hikemin", remainingMinutes.ToString(), Player.pID.ToString()));
+        StartCoroutine(UpdateCellAccount("HikeMin", remainingMinutes.ToString(), Player.pID.ToString()));
 
         int activeMinutes = minutes;
         Player.Account.hikeactivemin = activeMinutes;

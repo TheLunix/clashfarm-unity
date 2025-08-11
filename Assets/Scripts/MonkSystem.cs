@@ -19,7 +19,7 @@ public class MonkSystem : MonoBehaviour
         {
             int reward = Random.Range(Player.Account.playerlvl * 5, Player.Account.playerlvl * 50);
             int green = Player.Account.playergreen + reward;
-            yield return StartCoroutine(UpdateCellAccount("playergreen", green.ToString(), Player.Account.id.ToString()));
+            yield return StartCoroutine(UpdateCellAccount("PlayerGreen", green.ToString(), Player.Account.id.ToString()));
             yield return StartCoroutine(UpdateCellAccount("monkreward", "1", Player.Account.id.ToString()));
             MonkInfo.text = "Ви осмислили мудрість монаха і отримали: <sprite=0> " + reward + " зелені";
         }
@@ -27,7 +27,7 @@ public class MonkSystem : MonoBehaviour
         {
             int reward = Random.Range(0, Player.Account.playerlvl);
             int gold = Player.Account.playergold + reward;
-            yield return StartCoroutine(UpdateCellAccount("playergold", gold.ToString(), Player.Account.id.ToString()));
+            yield return StartCoroutine(UpdateCellAccount("PlayerGold", gold.ToString(), Player.Account.id.ToString()));
             yield return StartCoroutine(UpdateCellAccount("monkreward", "1", Player.Account.id.ToString()));
             MonkInfo.text = "Ви осмислили мудрість монаха і отримали: <sprite=1> " + reward + " золота";
         }
@@ -35,7 +35,7 @@ public class MonkSystem : MonoBehaviour
         {
             int reward = Random.Range(0, 11);
             int diamonds = Player.Account.playerdiamonds + reward;
-            yield return StartCoroutine(UpdateCellAccount("playerdiamonds", diamonds.ToString(), Player.Account.id.ToString()));
+            yield return StartCoroutine(UpdateCellAccount("PlayerDiamonds", diamonds.ToString(), Player.Account.id.ToString()));
             yield return StartCoroutine(UpdateCellAccount("monkreward", "1", Player.Account.id.ToString()));
             MonkInfo.text = "Ви осмислили мудрість монаха і отримали: <sprite=3> " + reward + " алмазів";
         }

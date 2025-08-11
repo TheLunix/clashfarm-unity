@@ -31,14 +31,14 @@ public class TraderSystem : MonoBehaviour
 
     private void UpdateInfoText()
     {
-        GreenInfo.text = GetTradeInfo("green", "<sprite=2> 1 на <sprite=0> ", Account.tradertogreen);
-        GoldInfo.text = GetTradeInfo("gold", "<sprite=2> 1 на <sprite=1> ", Account.tradertogold);
+        GreenInfo.text = GetTradeInfo("Green", "<sprite=2> 1 на <sprite=0> ", Account.TraderToGreen);
+        GoldInfo.text = GetTradeInfo("Gold", "<sprite=2> 1 на <sprite=1> ", Account.TraderToGold);
         DiamondInfo.text = GetDiamondInfo();
 
-        if (Account.nexttraderdiamond != "0")
+        if (Account.NextTraderDiamond != "0")
         {
             objDiamondInfoColdown.SetActive(true);
-            System.DateTime time = System.DateTime.Parse(Account.nexttraderdiamond);
+            System.DateTime time = System.DateTime.Parse(Account.NextTraderDiamond);
             _timeLeft = (int)(time - System.DateTime.Now).TotalSeconds;
             Timer = StartTimer();
             StartCoroutine(Timer);
@@ -50,12 +50,12 @@ public class TraderSystem : MonoBehaviour
             objDiamondButton.SetActive(true);
         }
 
-        if (Account.traderdiamonds <= 0)
+        if (Account.TraderDiamonds <= 0)
         {
             objGreenButton.SetActive(false);
             objGoldButton.SetActive(false);
-            GreenInfo.text = GetTradeInfo("green", "<sprite=2> 1 на <sprite=0> ", Account.tradertogreen, "Вы больше не можете проводить обмен");
-            GoldInfo.text = GetTradeInfo("gold", "<sprite=2> 1 на <sprite=1> ", Account.tradertogold, "Вы больше не можете проводить обмен");
+            GreenInfo.text = GetTradeInfo("Green", "<sprite=2> 1 на <sprite=0> ", Account.TraderToGreen, "Вы больше не можете проводить обмен");
+            GoldInfo.text = GetTradeInfo("Gold", "<sprite=2> 1 на <sprite=1> ", Account.TraderToGold, "Вы больше не можете проводить обмен");
         }
     }
 
@@ -67,33 +67,33 @@ public class TraderSystem : MonoBehaviour
 
     private string GetDiamondInfo()
     {
-        return $"Сегодня купец обменивает:\n<sprite=1> {Account.traderdiamond * 10} на <sprite=2> {Account.traderdiamond}";
+        return $"Сегодня купец обменивает:\n<sprite=1> {Account.TraderDiamond * 10} на <sprite=2> {Account.TraderDiamond}";
     }
 
     private void UpdateButtonStates()
     {
-        if (Account.traderdiamond == 0)
+        if (Account.TraderDiamond == 0)
         {
             int diamondAmount = UnityEngine.Random.Range(9, 21);
             if (Player.Account.playerlvl >= 10 && Player.Account.playerlvl < 15) diamondAmount += 20;
             if (Player.Account.playerlvl >= 15) diamondAmount += 40;
 
-            StartCoroutine(UpdateCellAccount("traderdiamond", diamondAmount.ToString(), Player.Account.id.ToString()));
+            StartCoroutine(UpdateCellAccount("TraderDiamond", diamondAmount.ToString(), Player.Account.id.ToString()));
             DiamondInfo.text = GetDiamondInfo();
         }
     }
 
-    public void ExchangeGreen() { StartCoroutine(_Exchange("playergreen", "GreenInput", GreenError, Account.tradertogreen)); }
-    public void ExchangeGold() { StartCoroutine(_Exchange("playergold", "GoldInput", GoldError, Account.tradertogold)); }
+    public void ExchangeGreen() { StartCoroutine(_Exchange("PlayerGreen", "GreenInput", GreenError, Account.TraderToGreen)); }
+    public void ExchangeGold() { StartCoroutine(_Exchange("PlayerGold", "GoldInput", GoldError, Account.TraderToGold)); }
     public void ExchangeDiamond() { StartCoroutine(_ExchangeDiamond()); }
 
     private IEnumerator _Exchange(string cellName, string inputName, Text errorText, int tradeRate)
     {
-        UnityEngine.UI.InputField input = cellName == "playergreen" ? GreenInput : GoldInput;
+        UnityEngine.UI.InputField input = cellName == "PlayerGreen" ? GreenInput : GoldInput;
 
         if (input.text != "")
         {
-            if (int.Parse(input.text) <= Account.traderdiamonds && int.Parse(input.text) > 0)
+            if (int.Parse(input.text) <= Account.TraderDiamonds && int.Parse(input.text) > 0)
             {
                 if (Player.Account.playerdiamonds >= int.Parse(input.text))
                 {
@@ -101,10 +101,10 @@ public class TraderSystem : MonoBehaviour
                     yield return StartCoroutine(UpdateCellAccount(cellName, updatedValue.ToString(), Player.Account.id.ToString()));
 
                     int playerDiamonds = Player.Account.playerdiamonds - int.Parse(input.text);
-                    yield return StartCoroutine(UpdateCellAccount("playerdiamonds", playerDiamonds.ToString(), Player.Account.id.ToString()));
+                    yield return StartCoroutine(UpdateCellAccount("PlayerDiamonds", playerDiamonds.ToString(), Player.Account.id.ToString()));
 
-                    int traderDiamonds = Account.traderdiamonds - int.Parse(input.text);
-                    yield return StartCoroutine(UpdateCellAccount("traderdiamonds", traderDiamonds.ToString(), Player.Account.id.ToString()));
+                    int traderDiamonds = Account.TraderDiamonds - int.Parse(input.text);
+                    yield return StartCoroutine(UpdateCellAccount("TraderDiamonds", traderDiamonds.ToString(), Player.Account.id.ToString()));
 
                     Player.ReloadInfoBar();
                     StartCoroutine(_LoadTrader());
@@ -118,7 +118,7 @@ public class TraderSystem : MonoBehaviour
             }
             else
             {
-                errorText.text = $"Введите значение от 1 до {Account.traderdiamonds}";
+                errorText.text = $"Введите значение от 1 до {Account.TraderDiamonds}";
                 _timeError = 10;
                 StartCoroutine(TimerError(errorText));
             }
@@ -133,16 +133,16 @@ public class TraderSystem : MonoBehaviour
 
     private IEnumerator _ExchangeDiamond()
     {
-        if (Player.Account.playergold >= Account.traderdiamond * 10)
+        if (Player.Account.playergold >= Account.TraderDiamond * 10)
         {
-            int updatedGold = Player.Account.playergold - (Account.traderdiamond * 10);
-            yield return StartCoroutine(UpdateCellAccount("playergold", updatedGold.ToString(), Player.Account.id.ToString()));
+            int updatedGold = Player.Account.playergold - (Account.TraderDiamond * 10);
+            yield return StartCoroutine(UpdateCellAccount("PlayerGold", updatedGold.ToString(), Player.Account.id.ToString()));
 
-            int updatedDiamonds = Player.Account.playerdiamonds + Account.traderdiamond;
-            yield return StartCoroutine(UpdateCellAccount("playerdiamonds", updatedDiamonds.ToString(), Player.Account.id.ToString()));
+            int updatedDiamonds = Player.Account.playerdiamonds + Account.TraderDiamond;
+            yield return StartCoroutine(UpdateCellAccount("PlayerDiamonds", updatedDiamonds.ToString(), Player.Account.id.ToString()));
 
             System.DateTime timeNext = System.DateTime.Now.AddDays(7);
-            yield return StartCoroutine(UpdateCellAccount("nexttraderdiamond", timeNext.ToString("dd.MM.yyyy HH:mm:ss"), Player.Account.id.ToString()));
+            yield return StartCoroutine(UpdateCellAccount("NextTraderDiamond", timeNext.ToString("dd.MM.yyyy HH:mm:ss"), Player.Account.id.ToString()));
 
             Player.ReloadInfoBar();
             StartCoroutine(_LoadTrader());
@@ -158,8 +158,6 @@ public class TraderSystem : MonoBehaviour
     private IEnumerator LoadAcc()
     {
         WWWForm FindDataBase = new WWWForm();
-        FindDataBase.AddField("OnGameRequest", "Yes");
-        FindDataBase.AddField("LoadAccount", "Yes");
         FindDataBase.AddField("PlayerName", Player.Account.nickname);
         FindDataBase.AddField("PlayerSerialCode", Player.Account.serialcode);
 
@@ -208,7 +206,7 @@ public class TraderSystem : MonoBehaviour
             objDiamondButton.SetActive(true);
         }
 
-        DisplayTime((int)(System.DateTime.Parse(Account.nexttraderdiamond) - System.DateTime.Now).TotalSeconds);
+        DisplayTime((int)(System.DateTime.Parse(Account.NextTraderDiamond) - System.DateTime.Now).TotalSeconds);
         DiamondInfoColdown.text = "В связи со скупостью купца обмен проводится 1 раз в 7 дней.\nСледующий раз ты сможешь обменять через " + TimeInfo;
     }
 
@@ -240,7 +238,7 @@ public class TraderSystem : MonoBehaviour
     [System.Serializable]
     public class PlayerInfo
     {
-        public int traderdiamonds, tradertogreen, tradertogold, traderdiamond;
-        public string nexttraderdiamond;
+        public int TraderDiamonds, TraderToGreen, TraderToGold, TraderDiamond;
+        public string NextTraderDiamond;
     }
 }
