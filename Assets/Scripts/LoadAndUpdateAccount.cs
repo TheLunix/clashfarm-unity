@@ -146,126 +146,127 @@ public class LoadAndUpdateAccount : MonoBehaviour
                 if (HourRewardText) HourRewardText.text = $"{Account.nickname}, ты опять здесь? Что-ж правильно, трудись на благо орды!";
                 if (RewardIcon) RewardIcon.SetActive(false);
             }
+            
         }
 
         // StartCoroutine(RegenHP()); // за потреби
     }
-	private IEnumerator FindCountBattle()
+    private IEnumerator FindCountBattle()
     {
-		_timeLeft = 0;
+        _timeLeft = 0;
         WWWForm FindDataBase = new WWWForm();
-		FindDataBase.AddField("PlayerName", this.NickName);
-		FindDataBase.AddField("PlayerSerialCode", this.SerialCode);
+        FindDataBase.AddField("PlayerName", this.NickName);
+        FindDataBase.AddField("PlayerSerialCode", this.SerialCode);
 
-		UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
-		yield return www.SendWebRequest();
-		result = www.downloadHandler.text;
-		www.Dispose();
-		CountBattles.text = result+"/6";
-		BattleCount = int.Parse(result);
-		SliderBattles.value = BattleCount;
-		yield return StartCoroutine(FindCountTime());
-		if(result != "6")
-		{	
-			if(momenttime >= System.DateTime.Now)
-			{
-				int differnsebattles = 6 - (BattleCount);
-				CountBattles.text = BattleCount.ToString()+"/6";
-				differencetime = (int)(momenttime - System.DateTime.Now).TotalSeconds;
-				if(differnsebattles == 0)
-				{ _timeLeft = 0; }
-				else 
-				{ 
-					CheckBattles();
-					if(differencetime <= 600) _timeLeft = differencetime;
-					else _timeLeft = differencetime - ((5- BattleCount)*600);
-					StartCoroutine(PlusCountBattle());
-					StartCoroutine(StartTimer()); 
-				}
-			}
-			else
-			{
-				CountBattles.text = BattleCount.ToString()+"/6";
-				StartCoroutine(UpdateCountBattle());
-			}	
-		}
-		else { _timeLeft = 0; }
-		
+        UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
+        yield return www.SendWebRequest();
+        result = www.downloadHandler.text;
+        www.Dispose();
+        CountBattles.text = result + "/6";
+        BattleCount = int.Parse(result);
+        SliderBattles.value = BattleCount;
+        yield return StartCoroutine(FindCountTime());
+        if (result != "6")
+        {
+            if (momenttime >= System.DateTime.Now)
+            {
+                int differnsebattles = 6 - (BattleCount);
+                CountBattles.text = BattleCount.ToString() + "/6";
+                differencetime = (int)(momenttime - System.DateTime.Now).TotalSeconds;
+                if (differnsebattles == 0)
+                { _timeLeft = 0; }
+                else
+                {
+                    CheckBattles();
+                    if (differencetime <= 600) _timeLeft = differencetime;
+                    else _timeLeft = differencetime - ((5 - BattleCount) * 600);
+                    StartCoroutine(PlusCountBattle());
+                    StartCoroutine(StartTimer());
+                }
+            }
+            else
+            {
+                CountBattles.text = BattleCount.ToString() + "/6";
+                StartCoroutine(UpdateCountBattle());
+            }
+        }
+        else { _timeLeft = 0; }
+
     }
-    
-	private void CheckBattles()
-	{
-		double fff = (double)differencetime / 600;
-		int function = Mathf.CeilToInt((float)fff);
-		if(differencetime <= 600) BattleCount = 5;
-		BattleCount = 6 - function;
-	}
-	private IEnumerator UpdateCountBattle()
-    {
-        WWWForm FindDataBase = new WWWForm();
-		FindDataBase.AddField("OnGameRequest", "Yes");
-		FindDataBase.AddField("UpdateDataBaseBattleCount", "Yes");
-		FindDataBase.AddField("PlayerName", this.NickName);
-		FindDataBase.AddField("PlayerID", this.PlayerID);
-		if(BattleCount != 6)
-		{
-			if(momenttime <= System.DateTime.Now)
-			{
-				FindDataBase.AddField("PlayerCombats", 6);
-				FindDataBase.AddField("TimeToEndCombat", "0");
-			}
-			else
-			{
-				momenttime = System.DateTime.Now;
-				momenttime = momenttime.AddSeconds((6-BattleCount)*600);
-				string timetoendbattles = momenttime.ToString();
-				FindDataBase.AddField("PlayerCombats", BattleCount);
-				FindDataBase.AddField("TimeToEndCombat", timetoendbattles);
-			}
-		}
-		else 
-		{	
-			FindDataBase.AddField("PlayerCombats", 6);
-			FindDataBase.AddField("TimeToEndCombat", "0"); 
-		}
-		FindDataBase.AddField("PlayerSerialCode", this.SerialCode);
 
-		UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
-		yield return www.SendWebRequest();
-		result = www.downloadHandler.text;
-		BattleCount = int.Parse(result);
-		SliderBattles.value = BattleCount;
-		CountBattles.text = result+"/6";
-		if(BattleCount != 6) { _timeLeft = time; StartCoroutine(StartTimer()); }
-		www.Dispose();
+    private void CheckBattles()
+    {
+        double fff = (double)differencetime / 600;
+        int function = Mathf.CeilToInt((float)fff);
+        if (differencetime <= 600) BattleCount = 5;
+        BattleCount = 6 - function;
     }
-	
-	private IEnumerator PlusCountBattle()
+    private IEnumerator UpdateCountBattle()
     {
         WWWForm FindDataBase = new WWWForm();
-		FindDataBase.AddField("PlayerName", this.NickName);
-		FindDataBase.AddField("PlayerID", this.PlayerID);
+        FindDataBase.AddField("OnGameRequest", "Yes");
+        FindDataBase.AddField("UpdateDataBaseBattleCount", "Yes");
+        FindDataBase.AddField("PlayerName", this.NickName);
+        FindDataBase.AddField("PlayerID", this.PlayerID);
+        if (BattleCount != 6)
+        {
+            if (momenttime <= System.DateTime.Now)
+            {
+                FindDataBase.AddField("PlayerCombats", 6);
+                FindDataBase.AddField("TimeToEndCombat", "0");
+            }
+            else
+            {
+                momenttime = System.DateTime.Now;
+                momenttime = momenttime.AddSeconds((6 - BattleCount) * 600);
+                string timetoendbattles = momenttime.ToString();
+                FindDataBase.AddField("PlayerCombats", BattleCount);
+                FindDataBase.AddField("TimeToEndCombat", timetoendbattles);
+            }
+        }
+        else
+        {
+            FindDataBase.AddField("PlayerCombats", 6);
+            FindDataBase.AddField("TimeToEndCombat", "0");
+        }
+        FindDataBase.AddField("PlayerSerialCode", this.SerialCode);
 
-		UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
-		yield return www.SendWebRequest();
-		result = www.downloadHandler.text;
-		BattleCount = int.Parse(result);
-		SliderBattles.value = BattleCount;
-		CountBattles.text = result+"/6";
-		www.Dispose();
+        UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
+        yield return www.SendWebRequest();
+        result = www.downloadHandler.text;
+        BattleCount = int.Parse(result);
+        SliderBattles.value = BattleCount;
+        CountBattles.text = result + "/6";
+        if (BattleCount != 6) { _timeLeft = time; StartCoroutine(StartTimer()); }
+        www.Dispose();
     }
-	private IEnumerator FindCountTime()
+
+    private IEnumerator PlusCountBattle()
     {
         WWWForm FindDataBase = new WWWForm();
-		FindDataBase.AddField("PlayerName", this.NickName);
-		FindDataBase.AddField("PlayerSerialCode", this.SerialCode);
+        FindDataBase.AddField("PlayerName", this.NickName);
+        FindDataBase.AddField("PlayerID", this.PlayerID);
 
-		UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
-		yield return www.SendWebRequest();
-		resultt = www.downloadHandler.text;
-		if(resultt != "0") { momenttime = System.DateTime.Parse(resultt); } 
-		else {  momenttime = System.DateTime.Now; momenttime = momenttime.AddSeconds(-1); }
-		www.Dispose();
+        UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
+        yield return www.SendWebRequest();
+        result = www.downloadHandler.text;
+        BattleCount = int.Parse(result);
+        SliderBattles.value = BattleCount;
+        CountBattles.text = result + "/6";
+        www.Dispose();
+    }
+    private IEnumerator FindCountTime()
+    {
+        WWWForm FindDataBase = new WWWForm();
+        FindDataBase.AddField("PlayerName", this.NickName);
+        FindDataBase.AddField("PlayerSerialCode", this.SerialCode);
+
+        UnityWebRequest www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/account", FindDataBase);
+        yield return www.SendWebRequest();
+        resultt = www.downloadHandler.text;
+        if (resultt != "0") { momenttime = System.DateTime.Parse(resultt); }
+        else { momenttime = System.DateTime.Now; momenttime = momenttime.AddSeconds(-1); }
+        www.Dispose();
     }
 
     [Serializable]
@@ -281,13 +282,17 @@ public class LoadAndUpdateAccount : MonoBehaviour
         public int playergreen;
         public int playergold;
         public int playerdiamonds;
+        public int playerfraction;
+        public int playerpower;
+        public int playerprotection;
+        public int playerdexterity;
+        public int playerskill;
+        public int playersurvivability;
 
         public int combats;
         public int pet;
         public int hourreward;
-
-        public int playersurvivability;
-
+        
         public int guardhour;
         public int guardhours;
         public int mining;
@@ -318,5 +323,62 @@ public class LoadAndUpdateAccount : MonoBehaviour
         this.SerialCode = PlayerPrefs.GetString(code);
         this.PlayerID = PlayerPrefs.GetString(id);
         StartCoroutine(LoadAcc());
+    }
+    
+    public IEnumerator SetCellAccount(string nickname, string serialcode, string cell, string value, Action<bool,string> onDone = null)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerName", nickname);
+        form.AddField("PlayerSerialCode", serialcode);
+        form.AddField("cell", cell);
+        form.AddField("value", value);
+
+        using (var www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/setcell", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                onDone?.Invoke(false, $"HTTP {www.responseCode}: {www.error}");
+                yield break;
+            }
+
+            var body = www.downloadHandler.text?.Trim();
+            // "0" — ок, "1" — не знайдено гравця, "2" — некоректне значення, "3" — заборонене поле
+            bool ok = body == "0";
+            onDone?.Invoke(ok, body);
+        }
+    }
+
+    // GetCellAccount("User3", "ZDM6ATHJSUMABZJ4", "PlayerGold", value => { ... })
+    public IEnumerator GetCellAccount(string nickname, string serialcode, string cell, Action<string> onValue)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerName", nickname);
+        form.AddField("PlayerSerialCode", serialcode);
+        form.AddField("cell", cell);
+
+        using (var www = UnityWebRequest.Post("https://api.clashfarm.com/api/player/getcell", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"HTTP {www.responseCode}: {www.error}");
+                onValue?.Invoke(null);
+                yield break;
+            }
+
+            var body = www.downloadHandler.text?.Trim();
+            // якщо сервер повернув "1"/"3" — вважай помилкою й вертай null
+            if (body == "1" || body == "3")
+            {
+                onValue?.Invoke(null);
+            }
+            else
+            {
+                onValue?.Invoke(body); // наприклад "5000"
+            }
+        }
     }
 }

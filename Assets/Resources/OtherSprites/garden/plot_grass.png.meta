@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 6ff4532ab4cff514a86ef7a3a66f1b60
+guid: 78806bf58bfe75c469ab4c9585a04bab
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 124041671824794494
-    second: Battles_0
+      213: 8688183964412217997
+    second: plot_grass_0
   - first:
-      213: -3018933209441506979
-    second: Battles_1
+      213: -7327559607603120523
+    second: plot_grass_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Battles_1
+      name: plot_grass_0
       rect:
         serializedVersion: 2
-        x: 34
-        y: 64
-        width: 429
-        height: 374
+        x: 0
+        y: 0
+        width: 357
+        height: 326
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,8 +144,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d59eb92bd389a16d0800000000000000
-      internalID: -3018933209441506979
+      spriteID: d8a090e9841a29870800000000000000
+      internalID: 8688183964412217997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: plot_grass_1
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 325
+        width: 143
+        height: 1
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 576b0562c574f4a90800000000000000
+      internalID: -7327559607603120523
       vertices: []
       indices: 
       edges: []
@@ -154,7 +176,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1d9766b2ff8759546b63aa03655ff8e1
+    spriteID: 2399fa2b5eff8d7428b5d346d9b3580a
     internalID: 0
     vertices: []
     indices: 
@@ -164,8 +186,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Battles_0: 124041671824794494
-      Battles_1: -3018933209441506979
+      plot_grass_0: 8688183964412217997
+      plot_grass_1: -7327559607603120523
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
