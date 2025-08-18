@@ -1,10 +1,25 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: a93db56308a2bdb448e81b8e2bf6810b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: -4461113356753133670
+    second: lightroot_carrot_plants_0
+  - first:
+      213: -8031306387200718263
+    second: lightroot_carrot_plants_1
+  - first:
+      213: 474439798829071269
+    second: lightroot_carrot_plants_2
+  - first:
+      213: 7073470163232428849
+    second: lightroot_carrot_plants_3
+  - first:
+      213: 5539399915018842669
+    second: lightroot_carrot_plants_4
+  - first:
+      213: -8685123399888768705
+    second: lightroot_carrot_plants_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +141,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: lightroot_carrot_plants_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 9
         width: 1024
-        height: 1024
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 1015
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: d22f68bafd6efdc40800000000000000
+      internalID: 5539399915018842669
       vertices: []
       indices: 
       edges: []
@@ -151,7 +166,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: 09cde6d9605e8e84798043b2c35f61a6
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +176,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      lightroot_carrot_plants_0: -4461113356753133670
+      lightroot_carrot_plants_1: -8031306387200718263
+      lightroot_carrot_plants_2: 474439798829071269
+      lightroot_carrot_plants_3: 7073470163232428849
+      lightroot_carrot_plants_4: 5539399915018842669
+      lightroot_carrot_plants_5: -8685123399888768705
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

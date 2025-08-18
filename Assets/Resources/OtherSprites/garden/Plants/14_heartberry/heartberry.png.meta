@@ -1,10 +1,25 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: 1582f5965cfbbad478cbaa42da4c8623
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: -8962799312905799938
+    second: heartberry_0
+  - first:
+      213: 3740483243254940486
+    second: heartberry_1
+  - first:
+      213: -8316520896131852954
+    second: heartberry_2
+  - first:
+      213: -2354521021828964427
+    second: heartberry_3
+  - first:
+      213: -1413174702420107190
+    second: heartberry_4
+  - first:
+      213: -1331776231947706077
+    second: heartberry_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +141,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: heartberry_4
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 1024
-        height: 1024
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 1536
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: a406ea07815636ce0800000000000000
+      internalID: -1413174702420107190
       vertices: []
       indices: 
       edges: []
@@ -151,7 +166,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: 63d243b1e6d5652428d0e6e71b88165c
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +176,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      heartberry_0: -8962799312905799938
+      heartberry_1: 3740483243254940486
+      heartberry_2: -8316520896131852954
+      heartberry_3: -2354521021828964427
+      heartberry_4: -1413174702420107190
+      heartberry_5: -1331776231947706077
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,28 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: ad7aa39d3bcd4714ab5501bc003a28cf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: 5690661385142373009
+    second: lightroot_carrot_seed_0
+  - first:
+      213: 1510503192888751197
+    second: lightroot_carrot_seed_1
+  - first:
+      213: -830172901534844268
+    second: lightroot_carrot_seed_2
+  - first:
+      213: 1779327720230230247
+    second: lightroot_carrot_seed_3
+  - first:
+      213: -1116028943435798336
+    second: lightroot_carrot_seed_4
+  - first:
+      213: -3476663356588431934
+    second: lightroot_carrot_seed_5
+  - first:
+      213: -2592415666620631947
+    second: lightroot_carrot_seed_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,12 +144,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: lightroot_carrot_seed_5
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
+        width: 1022
         height: 1024
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -141,8 +159,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: 2c5edeae81960cfc0800000000000000
+      internalID: -3476663356588431934
       vertices: []
       indices: 
       edges: []
@@ -151,7 +169,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: cfa61078b4a627e408a5c90b97da6ca8
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +179,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      lightroot_carrot_seed_0: 5690661385142373009
+      lightroot_carrot_seed_1: 1510503192888751197
+      lightroot_carrot_seed_2: -830172901534844268
+      lightroot_carrot_seed_3: 1779327720230230247
+      lightroot_carrot_seed_4: -1116028943435798336
+      lightroot_carrot_seed_5: -3476663356588431934
+      lightroot_carrot_seed_6: -2592415666620631947
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

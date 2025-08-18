@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: 6425853458b86a341b20a6f844076a47
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: 7650904911855564624
+    second: chameleoncumber_fullgrowth_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: chameleoncumber_fullgrowth_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 8
         width: 1024
-        height: 1024
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 1517
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: 05731792b797d2a60800000000000000
+      internalID: 7650904911855564624
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: 2c3bd57f369c30344919d8b77d66ce43
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      chameleoncumber_fullgrowth_0: 7650904911855564624
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

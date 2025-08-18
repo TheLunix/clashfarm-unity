@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: e0cc31560dbc2bb41a3e63c7dc5826eb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: 4764065760360352276
+    second: lightroot_carrot_0
+  - first:
+      213: 8579060649536632374
+    second: lightroot_carrot_1
+  - first:
+      213: -5571067162280348284
+    second: lightroot_carrot_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +132,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: lightroot_carrot_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 9
+        y: 22
+        width: 1005
+        height: 1002
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: 41a41e4619c5d1240800000000000000
+      internalID: 4764065760360352276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lightroot_carrot_1
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 478
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 636b92af432fe0770800000000000000
+      internalID: 8579060649536632374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lightroot_carrot_2
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 314
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 485bf64cee79fa2b0800000000000000
+      internalID: -5571067162280348284
       vertices: []
       indices: 
       edges: []
@@ -151,7 +201,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      lightroot_carrot_0: 4764065760360352276
+      lightroot_carrot_1: 8579060649536632374
+      lightroot_carrot_2: -5571067162280348284
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

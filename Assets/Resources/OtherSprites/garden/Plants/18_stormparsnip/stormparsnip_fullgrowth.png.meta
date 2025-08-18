@@ -1,0 +1,2119 @@
+fileFormatVersion: 2
+guid: 8cf6a70aee057534c8f0d327981a7083
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4055322554946782064
+    second: stormparsnip_fullgrowth_0
+  - first:
+      213: 7066940390846807212
+    second: stormparsnip_fullgrowth_1
+  - first:
+      213: 10736833538873189
+    second: stormparsnip_fullgrowth_2
+  - first:
+      213: 943593466364007759
+    second: stormparsnip_fullgrowth_3
+  - first:
+      213: 3290837862855923541
+    second: stormparsnip_fullgrowth_4
+  - first:
+      213: 3654790001248044881
+    second: stormparsnip_fullgrowth_5
+  - first:
+      213: -8894528229955677587
+    second: stormparsnip_fullgrowth_6
+  - first:
+      213: 4811248783710488013
+    second: stormparsnip_fullgrowth_7
+  - first:
+      213: -3571727557711955774
+    second: stormparsnip_fullgrowth_8
+  - first:
+      213: 475755713956582913
+    second: stormparsnip_fullgrowth_9
+  - first:
+      213: 6152775415322499460
+    second: stormparsnip_fullgrowth_10
+  - first:
+      213: 2914351321410038311
+    second: stormparsnip_fullgrowth_11
+  - first:
+      213: 4048072459575727467
+    second: stormparsnip_fullgrowth_12
+  - first:
+      213: 6038014702245453576
+    second: stormparsnip_fullgrowth_13
+  - first:
+      213: -4628284266954279565
+    second: stormparsnip_fullgrowth_14
+  - first:
+      213: 1699042185371238540
+    second: stormparsnip_fullgrowth_15
+  - first:
+      213: 5714938836946962639
+    second: stormparsnip_fullgrowth_16
+  - first:
+      213: -7459709355697080832
+    second: stormparsnip_fullgrowth_17
+  - first:
+      213: 1583654082886001410
+    second: stormparsnip_fullgrowth_18
+  - first:
+      213: -6750447624629315584
+    second: stormparsnip_fullgrowth_19
+  - first:
+      213: 8397444599981854174
+    second: stormparsnip_fullgrowth_20
+  - first:
+      213: -1572991394090056472
+    second: stormparsnip_fullgrowth_21
+  - first:
+      213: 491065184602734848
+    second: stormparsnip_fullgrowth_22
+  - first:
+      213: -1557768156289893753
+    second: stormparsnip_fullgrowth_23
+  - first:
+      213: 975672806724801935
+    second: stormparsnip_fullgrowth_24
+  - first:
+      213: 9059241800977990790
+    second: stormparsnip_fullgrowth_25
+  - first:
+      213: -407392961300322909
+    second: stormparsnip_fullgrowth_26
+  - first:
+      213: -5813551675650072358
+    second: stormparsnip_fullgrowth_27
+  - first:
+      213: -1464550357595091920
+    second: stormparsnip_fullgrowth_28
+  - first:
+      213: 839849706628157308
+    second: stormparsnip_fullgrowth_29
+  - first:
+      213: -4859196393530685600
+    second: stormparsnip_fullgrowth_30
+  - first:
+      213: 2026844633249181548
+    second: stormparsnip_fullgrowth_31
+  - first:
+      213: 2018200279946953496
+    second: stormparsnip_fullgrowth_32
+  - first:
+      213: -8002426136906016097
+    second: stormparsnip_fullgrowth_33
+  - first:
+      213: -7286211927010735331
+    second: stormparsnip_fullgrowth_34
+  - first:
+      213: 3204119664148773066
+    second: stormparsnip_fullgrowth_35
+  - first:
+      213: 3578146325813178686
+    second: stormparsnip_fullgrowth_36
+  - first:
+      213: 6483993756526638078
+    second: stormparsnip_fullgrowth_37
+  - first:
+      213: -6507684303558575878
+    second: stormparsnip_fullgrowth_38
+  - first:
+      213: 560166785501867751
+    second: stormparsnip_fullgrowth_39
+  - first:
+      213: -1103361885213079490
+    second: stormparsnip_fullgrowth_40
+  - first:
+      213: 2124984145621356977
+    second: stormparsnip_fullgrowth_41
+  - first:
+      213: -3966046338031307720
+    second: stormparsnip_fullgrowth_42
+  - first:
+      213: -8089421432547012511
+    second: stormparsnip_fullgrowth_43
+  - first:
+      213: 4869563861462818989
+    second: stormparsnip_fullgrowth_44
+  - first:
+      213: 59647464356649161
+    second: stormparsnip_fullgrowth_45
+  - first:
+      213: 5070426520157745688
+    second: stormparsnip_fullgrowth_46
+  - first:
+      213: 3209664718311547296
+    second: stormparsnip_fullgrowth_47
+  - first:
+      213: 8441454221561221519
+    second: stormparsnip_fullgrowth_48
+  - first:
+      213: 1148705462224957068
+    second: stormparsnip_fullgrowth_49
+  - first:
+      213: -8020847670041873417
+    second: stormparsnip_fullgrowth_50
+  - first:
+      213: 6192639770806814946
+    second: stormparsnip_fullgrowth_51
+  - first:
+      213: -4214583894841186785
+    second: stormparsnip_fullgrowth_52
+  - first:
+      213: -7493543486318221479
+    second: stormparsnip_fullgrowth_53
+  - first:
+      213: 5377010985073831638
+    second: stormparsnip_fullgrowth_54
+  - first:
+      213: -6815881678017073596
+    second: stormparsnip_fullgrowth_55
+  - first:
+      213: 3226704558845951897
+    second: stormparsnip_fullgrowth_56
+  - first:
+      213: 2303558160227196856
+    second: stormparsnip_fullgrowth_57
+  - first:
+      213: -186973253933038609
+    second: stormparsnip_fullgrowth_58
+  - first:
+      213: -8966323922796110789
+    second: stormparsnip_fullgrowth_59
+  - first:
+      213: -8633976888987333704
+    second: stormparsnip_fullgrowth_60
+  - first:
+      213: -2842494485127458390
+    second: stormparsnip_fullgrowth_61
+  - first:
+      213: 1250136921547939892
+    second: stormparsnip_fullgrowth_62
+  - first:
+      213: 2783034622735857418
+    second: stormparsnip_fullgrowth_63
+  - first:
+      213: 4524190851995763684
+    second: stormparsnip_fullgrowth_64
+  - first:
+      213: 5617605116311741486
+    second: stormparsnip_fullgrowth_65
+  - first:
+      213: 7400567571231168885
+    second: stormparsnip_fullgrowth_66
+  - first:
+      213: -1153055022693364668
+    second: stormparsnip_fullgrowth_67
+  - first:
+      213: 4919528179802398709
+    second: stormparsnip_fullgrowth_68
+  - first:
+      213: -615421137420136673
+    second: stormparsnip_fullgrowth_69
+  - first:
+      213: 4796303285281572242
+    second: stormparsnip_fullgrowth_70
+  - first:
+      213: -3708808191093684759
+    second: stormparsnip_fullgrowth_71
+  - first:
+      213: 7035699778795818977
+    second: stormparsnip_fullgrowth_72
+  - first:
+      213: -7098377030427805547
+    second: stormparsnip_fullgrowth_73
+  - first:
+      213: -879452115198244119
+    second: stormparsnip_fullgrowth_74
+  - first:
+      213: -8228532499886298002
+    second: stormparsnip_fullgrowth_75
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6
+        width: 1018
+        height: 1018
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0738b31b066674830800000000000000
+      internalID: 4055322554946782064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_1
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 142
+        width: 73
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cacb84dd7d0d21260800000000000000
+      internalID: 7066940390846807212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_2
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 139
+        width: 46
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 567d81dd715262000800000000000000
+      internalID: 10736833538873189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_3
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 167
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45910f1241581d00800000000000000
+      internalID: 943593466364007759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_4
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 46
+        width: 375
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 557dee4c9976bad20800000000000000
+      internalID: 3290837862855923541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_5
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 153
+        width: 30
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1570a09642c68b230800000000000000
+      internalID: 3654790001248044881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_6
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 183
+        width: 11
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d62dec833b9409480800000000000000
+      internalID: -8894528229955677587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_7
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 143
+        width: 70
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc50817174df4c240800000000000000
+      internalID: 4811248783710488013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_8
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 176
+        width: 9
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c8fa18c5bcae6ec0800000000000000
+      internalID: -3571727557711955774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_9
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 193
+        width: 88
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1069e3a1d493a9600800000000000000
+      internalID: 475755713956582913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_10
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 189
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 489dd0534ac036550800000000000000
+      internalID: 6152775415322499460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_11
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 192
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72ae55ff51bd17820800000000000000
+      internalID: 2914351321410038311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_12
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 219
+        width: 22
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b659d025474ad2830800000000000000
+      internalID: 4048072459575727467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_13
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 189
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80f1de381665bc350800000000000000
+      internalID: 6038014702245453576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_14
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 166
+        width: 11
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37539ac1bf705cfb0800000000000000
+      internalID: -4628284266954279565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_15
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 183
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c80c47d9dd5349710800000000000000
+      internalID: 1699042185371238540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_16
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 157
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc8ce49d79a8f4f40800000000000000
+      internalID: 5714938836946962639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_17
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 173
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 006740e3dd9c97890800000000000000
+      internalID: -7459709355697080832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_18
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 192
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20364817ff44af510800000000000000
+      internalID: 1583654082886001410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_19
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 149
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 008171b96a79152a0800000000000000
+      internalID: -6750447624629315584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_20
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 144
+        width: 86
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eddc0f24f57b98470800000000000000
+      internalID: 8397444599981854174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_21
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 208
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e4048049ac9b2ae0800000000000000
+      internalID: -1572991394090056472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_22
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 118
+        width: 78
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 001cec10f2d90d600800000000000000
+      internalID: 491065184602734848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_23
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 75
+        width: 141
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78afce18d12b16ae0800000000000000
+      internalID: -1557768156289893753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_24
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 93
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8517d59f394a8d00800000000000000
+      internalID: 975672806724801935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_25
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 51
+        width: 39
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 684c9a98b64e8bd70800000000000000
+      internalID: 9059241800977990790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_26
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 114
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a523b99246a85af0800000000000000
+      internalID: -407392961300322909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_27
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 176
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad020817d8d125fa0800000000000000
+      internalID: -5813551675650072358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_28
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 176
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03c8fd3953fdcabe0800000000000000
+      internalID: -1464550357595091920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_29
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 184
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7f8944cbdeb7ab00800000000000000
+      internalID: 839849706628157308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_30
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 168
+        width: 26
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0678ebd00aaa09cb0800000000000000
+      internalID: -4859196393530685600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_31
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 118
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6f69bb847cc02c10800000000000000
+      internalID: 2026844633249181548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_32
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 183
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81305d33676120c10800000000000000
+      internalID: 2018200279946953496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_33
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 199
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9a5a60c3dba1f090800000000000000
+      internalID: -8002426136906016097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_34
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 180
+        width: 43
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1b8f4c3bdc22ea90800000000000000
+      internalID: -7286211927010735331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_35
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 135
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac87e6fbbd1577c20800000000000000
+      internalID: 3204119664148773066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_36
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 109
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e31b670202128a130800000000000000
+      internalID: 3578146325813178686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_37
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 135
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef3fe97c7f5cbf950800000000000000
+      internalID: 6483993756526638078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_38
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 165
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af87108ea9f00b5a0800000000000000
+      internalID: -6507684303558575878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_39
+      rect:
+        serializedVersion: 2
+        x: 621
+        y: 144
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7eeafc839bc16c700800000000000000
+      internalID: 560166785501867751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_40
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 155
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e384b25163210b0f0800000000000000
+      internalID: -1103361885213079490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_41
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 131
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b1191162d57d7d10800000000000000
+      internalID: 2124984145621356977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_42
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 128
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 834b7ea5ed5c5f8c0800000000000000
+      internalID: -3966046338031307720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_43
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 192
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1609a92111a9cbf80800000000000000
+      internalID: -8089421432547012511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_44
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 96
+        width: 123
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da0229d288a249340800000000000000
+      internalID: 4869563861462818989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_45
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 125
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c81bb48d09e3d000800000000000000
+      internalID: 59647464356649161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_46
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 196
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 812f8b94e06cd5640800000000000000
+      internalID: 5070426520157745688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_47
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 224
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a160174e050b8c20800000000000000
+      internalID: 3209664718311547296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_48
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 193
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f81d0e7c3e1162570800000000000000
+      internalID: 8441454221561221519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_49
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 121
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8e2873288501ff00800000000000000
+      internalID: 1148705462224957068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_50
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 228
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f372a55a8930b090800000000000000
+      internalID: -8020847670041873417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_51
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 144
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e885e0cf0da0f550800000000000000
+      internalID: 6192639770806814946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_52
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 121
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f16a8e7074ac285c0800000000000000
+      internalID: -4214583894841186785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_53
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 219
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9576f05d6e5910890800000000000000
+      internalID: -7493543486318221479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_54
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 189
+        width: 42
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dee2b6900bfe9a40800000000000000
+      internalID: 5377010985073831638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_55
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 120
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44ee2b6d9bf1961a0800000000000000
+      internalID: -6815881678017073596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_56
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 229
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99f752153be87cc20800000000000000
+      internalID: 3226704558845951897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_57
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 121
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bf5bc321f1e7ff10800000000000000
+      internalID: 2303558160227196856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_58
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 207
+        width: 50
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe382d0f0dcb76df0800000000000000
+      internalID: -186973253933038609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_59
+      rect:
+        serializedVersion: 2
+        x: 691
+        y: 124
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3c96a8d5e7319380800000000000000
+      internalID: -8966323922796110789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_60
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 207
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bb4af4a3c3fd2880800000000000000
+      internalID: -8633976888987333704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_61
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 129
+        width: 114
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa198f1735e6d88d0800000000000000
+      internalID: -2842494485127458390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_62
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 205
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 430277918e0695110800000000000000
+      internalID: 1250136921547939892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_63
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 168
+        width: 49
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a07b8c58e335f9620800000000000000
+      internalID: 2783034622735857418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_64
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 205
+        width: 30
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e387451c9729ce30800000000000000
+      internalID: 4524190851995763684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_65
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 195
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e24ad26071eb5fd40800000000000000
+      internalID: 5617605116311741486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_66
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 200
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57952830ff814b660800000000000000
+      internalID: 7400567571231168885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_67
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 197
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44cc1e5e0968fffe0800000000000000
+      internalID: -1153055022693364668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_68
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 163
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ff55a390dca54440800000000000000
+      internalID: 4919528179802398709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_69
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 205
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1f4ec47cb59577f0800000000000000
+      internalID: -615421137420136673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_70
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 165
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2954f321d64ef8240800000000000000
+      internalID: 4796303285281572242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_71
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 158
+        width: 66
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e54dcda99aa78cc0800000000000000
+      internalID: -3708808191093684759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_72
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 167
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ef4b6d0ca3d3a160800000000000000
+      internalID: 7035699778795818977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_73
+      rect:
+        serializedVersion: 2
+        x: 760
+        y: 192
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 598fe8b13bf7d7d90800000000000000
+      internalID: -7098377030427805547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_74
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 187
+        width: 23
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ea84a4f5fe8bc3f0800000000000000
+      internalID: -879452115198244119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stormparsnip_fullgrowth_75
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 165
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6c2589b9416ecd80800000000000000
+      internalID: -8228532499886298002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      stormparsnip_fullgrowth_0: 4055322554946782064
+      stormparsnip_fullgrowth_1: 7066940390846807212
+      stormparsnip_fullgrowth_10: 6152775415322499460
+      stormparsnip_fullgrowth_11: 2914351321410038311
+      stormparsnip_fullgrowth_12: 4048072459575727467
+      stormparsnip_fullgrowth_13: 6038014702245453576
+      stormparsnip_fullgrowth_14: -4628284266954279565
+      stormparsnip_fullgrowth_15: 1699042185371238540
+      stormparsnip_fullgrowth_16: 5714938836946962639
+      stormparsnip_fullgrowth_17: -7459709355697080832
+      stormparsnip_fullgrowth_18: 1583654082886001410
+      stormparsnip_fullgrowth_19: -6750447624629315584
+      stormparsnip_fullgrowth_2: 10736833538873189
+      stormparsnip_fullgrowth_20: 8397444599981854174
+      stormparsnip_fullgrowth_21: -1572991394090056472
+      stormparsnip_fullgrowth_22: 491065184602734848
+      stormparsnip_fullgrowth_23: -1557768156289893753
+      stormparsnip_fullgrowth_24: 975672806724801935
+      stormparsnip_fullgrowth_25: 9059241800977990790
+      stormparsnip_fullgrowth_26: -407392961300322909
+      stormparsnip_fullgrowth_27: -5813551675650072358
+      stormparsnip_fullgrowth_28: -1464550357595091920
+      stormparsnip_fullgrowth_29: 839849706628157308
+      stormparsnip_fullgrowth_3: 943593466364007759
+      stormparsnip_fullgrowth_30: -4859196393530685600
+      stormparsnip_fullgrowth_31: 2026844633249181548
+      stormparsnip_fullgrowth_32: 2018200279946953496
+      stormparsnip_fullgrowth_33: -8002426136906016097
+      stormparsnip_fullgrowth_34: -7286211927010735331
+      stormparsnip_fullgrowth_35: 3204119664148773066
+      stormparsnip_fullgrowth_36: 3578146325813178686
+      stormparsnip_fullgrowth_37: 6483993756526638078
+      stormparsnip_fullgrowth_38: -6507684303558575878
+      stormparsnip_fullgrowth_39: 560166785501867751
+      stormparsnip_fullgrowth_4: 3290837862855923541
+      stormparsnip_fullgrowth_40: -1103361885213079490
+      stormparsnip_fullgrowth_41: 2124984145621356977
+      stormparsnip_fullgrowth_42: -3966046338031307720
+      stormparsnip_fullgrowth_43: -8089421432547012511
+      stormparsnip_fullgrowth_44: 4869563861462818989
+      stormparsnip_fullgrowth_45: 59647464356649161
+      stormparsnip_fullgrowth_46: 5070426520157745688
+      stormparsnip_fullgrowth_47: 3209664718311547296
+      stormparsnip_fullgrowth_48: 8441454221561221519
+      stormparsnip_fullgrowth_49: 1148705462224957068
+      stormparsnip_fullgrowth_5: 3654790001248044881
+      stormparsnip_fullgrowth_50: -8020847670041873417
+      stormparsnip_fullgrowth_51: 6192639770806814946
+      stormparsnip_fullgrowth_52: -4214583894841186785
+      stormparsnip_fullgrowth_53: -7493543486318221479
+      stormparsnip_fullgrowth_54: 5377010985073831638
+      stormparsnip_fullgrowth_55: -6815881678017073596
+      stormparsnip_fullgrowth_56: 3226704558845951897
+      stormparsnip_fullgrowth_57: 2303558160227196856
+      stormparsnip_fullgrowth_58: -186973253933038609
+      stormparsnip_fullgrowth_59: -8966323922796110789
+      stormparsnip_fullgrowth_6: -8894528229955677587
+      stormparsnip_fullgrowth_60: -8633976888987333704
+      stormparsnip_fullgrowth_61: -2842494485127458390
+      stormparsnip_fullgrowth_62: 1250136921547939892
+      stormparsnip_fullgrowth_63: 2783034622735857418
+      stormparsnip_fullgrowth_64: 4524190851995763684
+      stormparsnip_fullgrowth_65: 5617605116311741486
+      stormparsnip_fullgrowth_66: 7400567571231168885
+      stormparsnip_fullgrowth_67: -1153055022693364668
+      stormparsnip_fullgrowth_68: 4919528179802398709
+      stormparsnip_fullgrowth_69: -615421137420136673
+      stormparsnip_fullgrowth_7: 4811248783710488013
+      stormparsnip_fullgrowth_70: 4796303285281572242
+      stormparsnip_fullgrowth_71: -3708808191093684759
+      stormparsnip_fullgrowth_72: 7035699778795818977
+      stormparsnip_fullgrowth_73: -7098377030427805547
+      stormparsnip_fullgrowth_74: -879452115198244119
+      stormparsnip_fullgrowth_75: -8228532499886298002
+      stormparsnip_fullgrowth_8: -3571727557711955774
+      stormparsnip_fullgrowth_9: 475755713956582913
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: 715f2ff235fca2e47b098a3ec246dc5c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: 672670728023747903
+    second: ghostgarlic_fullgrowth_0
+  - first:
+      213: -2971838483884568053
+    second: ghostgarlic_fullgrowth_1
+  - first:
+      213: 545702857894616442
+    second: ghostgarlic_fullgrowth_2
+  - first:
+      213: -2155276993755710221
+    second: ghostgarlic_fullgrowth_3
+  - first:
+      213: -5377182080648438440
+    second: ghostgarlic_fullgrowth_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +138,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: ghostgarlic_fullgrowth_3
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: 3fc7e9a4efae612e0800000000000000
+      internalID: -2155276993755710221
       vertices: []
       indices: 
       edges: []
@@ -151,7 +163,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: aae7e6a0277f5d54196650c9b533164a
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +173,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      ghostgarlic_fullgrowth_0: 672670728023747903
+      ghostgarlic_fullgrowth_1: -2971838483884568053
+      ghostgarlic_fullgrowth_2: 545702857894616442
+      ghostgarlic_fullgrowth_3: -2155276993755710221
+      ghostgarlic_fullgrowth_4: -5377182080648438440
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

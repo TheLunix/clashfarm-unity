@@ -1,0 +1,1105 @@
+fileFormatVersion: 2
+guid: 4a508b26693f5c24dbba3e805ad0fa71
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2136351358640755282
+    second: thunderbean_fullgrowth_0
+  - first:
+      213: -1276169212051671268
+    second: thunderbean_fullgrowth_1
+  - first:
+      213: -2367443040606125152
+    second: thunderbean_fullgrowth_2
+  - first:
+      213: -4862551875195553715
+    second: thunderbean_fullgrowth_3
+  - first:
+      213: 9214708909807863429
+    second: thunderbean_fullgrowth_4
+  - first:
+      213: -9185021920960692406
+    second: thunderbean_fullgrowth_5
+  - first:
+      213: -6858888177504079821
+    second: thunderbean_fullgrowth_6
+  - first:
+      213: 8556690920381230080
+    second: thunderbean_fullgrowth_7
+  - first:
+      213: 5407899901492990660
+    second: thunderbean_fullgrowth_8
+  - first:
+      213: -6997622739254376841
+    second: thunderbean_fullgrowth_9
+  - first:
+      213: 4700973261760969703
+    second: thunderbean_fullgrowth_10
+  - first:
+      213: -2647957909818285767
+    second: thunderbean_fullgrowth_11
+  - first:
+      213: -2508937360229335923
+    second: thunderbean_fullgrowth_12
+  - first:
+      213: 3066137581104729917
+    second: thunderbean_fullgrowth_13
+  - first:
+      213: -5359376909563671185
+    second: thunderbean_fullgrowth_14
+  - first:
+      213: 2414544476380213308
+    second: thunderbean_fullgrowth_15
+  - first:
+      213: -1841693810144823409
+    second: thunderbean_fullgrowth_16
+  - first:
+      213: 4599043265382872771
+    second: thunderbean_fullgrowth_17
+  - first:
+      213: -2667369383031072740
+    second: thunderbean_fullgrowth_18
+  - first:
+      213: -5756548105446353133
+    second: thunderbean_fullgrowth_19
+  - first:
+      213: 3633844050302605791
+    second: thunderbean_fullgrowth_20
+  - first:
+      213: 805112045659361255
+    second: thunderbean_fullgrowth_21
+  - first:
+      213: -7579841966459236046
+    second: thunderbean_fullgrowth_22
+  - first:
+      213: 1784157316593104782
+    second: thunderbean_fullgrowth_23
+  - first:
+      213: -3506803777420336407
+    second: thunderbean_fullgrowth_24
+  - first:
+      213: 7752262935758806700
+    second: thunderbean_fullgrowth_25
+  - first:
+      213: 3088991924401805657
+    second: thunderbean_fullgrowth_26
+  - first:
+      213: -2159324517741218551
+    second: thunderbean_fullgrowth_27
+  - first:
+      213: -2908481884623767772
+    second: thunderbean_fullgrowth_28
+  - first:
+      213: -5906089657515911274
+    second: thunderbean_fullgrowth_29
+  - first:
+      213: -6099269174662585880
+    second: thunderbean_fullgrowth_30
+  - first:
+      213: -5933062204023578540
+    second: thunderbean_fullgrowth_31
+  - first:
+      213: 4229593639844694298
+    second: thunderbean_fullgrowth_32
+  - first:
+      213: 2969018712348742403
+    second: thunderbean_fullgrowth_33
+  - first:
+      213: 1761226703922697805
+    second: thunderbean_fullgrowth_34
+  - first:
+      213: -2959649612284938394
+    second: thunderbean_fullgrowth_35
+  - first:
+      213: 3524559962865488482
+    second: thunderbean_fullgrowth_36
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 1533
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ead6bc812c72a52e0800000000000000
+      internalID: -2136351358640755282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_1
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 1351
+        width: 17
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c17be52fcd22a4ee0800000000000000
+      internalID: -1276169212051671268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_2
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 1352
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a383ba0917252fd0800000000000000
+      internalID: -2367443040606125152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_3
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 1351
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d483f0915deb48cb0800000000000000
+      internalID: -4862551875195553715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_4
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 1351
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58689bd8ee831ef70800000000000000
+      internalID: 9214708909807863429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_5
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 1351
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4f36fa2a3f388080800000000000000
+      internalID: -9185021920960692406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_6
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1353
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3303eb1ea8550d0a0800000000000000
+      internalID: -6858888177504079821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_7
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 1353
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00c222a8e097fb670800000000000000
+      internalID: 8556690920381230080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_8
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 1351
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c21c51ee48bc0b40800000000000000
+      internalID: 5407899901492990660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_9
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1351
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7760c82913373ee90800000000000000
+      internalID: -6997622739254376841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_10
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 1353
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7eb3fd556463d3140800000000000000
+      internalID: 4700973261760969703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_11
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 1353
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 931681d7f40904bd0800000000000000
+      internalID: -2647957909818285767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_12
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 1353
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8cf2d783c67e2dd0800000000000000
+      internalID: -2508937360229335923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_13
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 1351
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3f093a82eb1d8a20800000000000000
+      internalID: 3066137581104729917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_14
+      rect:
+        serializedVersion: 2
+        x: 918
+        y: 1353
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6dc600981baf95b0800000000000000
+      internalID: -5359376909563671185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_15
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 1353
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c303601986f228120800000000000000
+      internalID: 2414544476380213308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_16
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 415
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f873845cc3df076e0800000000000000
+      internalID: -1841693810144823409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_17
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 224
+        width: 773
+        height: 1092
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c67ccbab7513df30800000000000000
+      internalID: 4599043265382872771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_18
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 415
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c181eafada99bfad0800000000000000
+      internalID: -2667369383031072740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_19
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 415
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3171c626ff1ac10b0800000000000000
+      internalID: -5756548105446353133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_20
+      rect:
+        serializedVersion: 2
+        x: 969
+        y: 415
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd9147b29e10e6230800000000000000
+      internalID: 3633844050302605791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_21
+      rect:
+        serializedVersion: 2
+        x: 986
+        y: 405
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ef0aedc3255c2b00800000000000000
+      internalID: 805112045659361255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_22
+      rect:
+        serializedVersion: 2
+        x: 1002
+        y: 415
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 231599724edfec690800000000000000
+      internalID: -7579841966459236046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_23
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 107
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8732f660a992c810800000000000000
+      internalID: 1784157316593104782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_24
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 82
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e2ecd55b84555fc0800000000000000
+      internalID: -3506803777420336407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_25
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 80
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cae945b1112959b60800000000000000
+      internalID: 7752262935758806700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_26
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 80
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95915000acd4eda20800000000000000
+      internalID: 3088991924401805657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_27
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 82
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9053e3daac98802e0800000000000000
+      internalID: -2159324517741218551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_28
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 80
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 427775fb22ff2a7d0800000000000000
+      internalID: -2908481884623767772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_29
+      rect:
+        serializedVersion: 2
+        x: 787
+        y: 80
+        width: 17
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 697d7209fba590ea0800000000000000
+      internalID: -5906089657515911274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_30
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 82
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e12fbe300b0b5ba0800000000000000
+      internalID: -6099269174662585880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_31
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 80
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 450e0e23c5789ada0800000000000000
+      internalID: -5933062204023578540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_32
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 82
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a19c13f810982ba30800000000000000
+      internalID: 4229593639844694298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_33
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 80
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 303d801d9c2143920800000000000000
+      internalID: 2969018712348742403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_34
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 79
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d469e381b52217810800000000000000
+      internalID: 1761226703922697805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_35
+      rect:
+        serializedVersion: 2
+        x: 874
+        y: 31
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6673228cb563de6d0800000000000000
+      internalID: -2959649612284938394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thunderbean_fullgrowth_36
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 31
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2625920cc90c9e030800000000000000
+      internalID: 3524559962865488482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3e37f0db125023f41ab7cf595d3d48c3
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      thunderbean_fullgrowth_0: -2136351358640755282
+      thunderbean_fullgrowth_1: -1276169212051671268
+      thunderbean_fullgrowth_10: 4700973261760969703
+      thunderbean_fullgrowth_11: -2647957909818285767
+      thunderbean_fullgrowth_12: -2508937360229335923
+      thunderbean_fullgrowth_13: 3066137581104729917
+      thunderbean_fullgrowth_14: -5359376909563671185
+      thunderbean_fullgrowth_15: 2414544476380213308
+      thunderbean_fullgrowth_16: -1841693810144823409
+      thunderbean_fullgrowth_17: 4599043265382872771
+      thunderbean_fullgrowth_18: -2667369383031072740
+      thunderbean_fullgrowth_19: -5756548105446353133
+      thunderbean_fullgrowth_2: -2367443040606125152
+      thunderbean_fullgrowth_20: 3633844050302605791
+      thunderbean_fullgrowth_21: 805112045659361255
+      thunderbean_fullgrowth_22: -7579841966459236046
+      thunderbean_fullgrowth_23: 1784157316593104782
+      thunderbean_fullgrowth_24: -3506803777420336407
+      thunderbean_fullgrowth_25: 7752262935758806700
+      thunderbean_fullgrowth_26: 3088991924401805657
+      thunderbean_fullgrowth_27: -2159324517741218551
+      thunderbean_fullgrowth_28: -2908481884623767772
+      thunderbean_fullgrowth_29: -5906089657515911274
+      thunderbean_fullgrowth_3: -4862551875195553715
+      thunderbean_fullgrowth_30: -6099269174662585880
+      thunderbean_fullgrowth_31: -5933062204023578540
+      thunderbean_fullgrowth_32: 4229593639844694298
+      thunderbean_fullgrowth_33: 2969018712348742403
+      thunderbean_fullgrowth_34: 1761226703922697805
+      thunderbean_fullgrowth_35: -2959649612284938394
+      thunderbean_fullgrowth_36: 3524559962865488482
+      thunderbean_fullgrowth_4: 9214708909807863429
+      thunderbean_fullgrowth_5: -9185021920960692406
+      thunderbean_fullgrowth_6: -6858888177504079821
+      thunderbean_fullgrowth_7: 8556690920381230080
+      thunderbean_fullgrowth_8: 5407899901492990660
+      thunderbean_fullgrowth_9: -6997622739254376841
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

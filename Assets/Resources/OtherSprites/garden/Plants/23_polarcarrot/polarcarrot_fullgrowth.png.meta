@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: fa3b03ef3d6d8b1428fa68be73137573
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: 6589514346114596794
+    second: polarcarrot_fullgrowth_0
+  - first:
+      213: 7471807801379358063
+    second: polarcarrot_fullgrowth_1
+  - first:
+      213: 6430610145171118304
+    second: polarcarrot_fullgrowth_2
+  - first:
+      213: -6127004737672880059
+    second: polarcarrot_fullgrowth_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +135,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: polarcarrot_fullgrowth_1
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 1024
         height: 1024
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: f658537ab9131b760800000000000000
+      internalID: 7471807801379358063
       vertices: []
       indices: 
       edges: []
@@ -151,7 +160,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: f30eea74d648d61449ff44bded170fe1
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +170,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      polarcarrot_fullgrowth_0: 6589514346114596794
+      polarcarrot_fullgrowth_1: 7471807801379358063
+      polarcarrot_fullgrowth_2: 6430610145171118304
+      polarcarrot_fullgrowth_3: -6127004737672880059
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

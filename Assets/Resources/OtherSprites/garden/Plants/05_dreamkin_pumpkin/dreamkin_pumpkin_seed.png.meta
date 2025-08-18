@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: ff448ea8c12cab24b9f510c7373a58e1
+guid: 6d81c3bb6886b2f46b8aeba278478caf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1920908638678583103
-    second: emerald_pea_0
+      213: -5091396332258731263
+    second: dreamkin_pumpkin_seed_0
+  - first:
+      213: 1954767703991451879
+    second: dreamkin_pumpkin_seed_1
+  - first:
+      213: 1619017404075239643
+    second: dreamkin_pumpkin_seed_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +132,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: emerald_pea_0
+      name: dreamkin_pumpkin_seed_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 463
+        y: 500
+        width: 90
+        height: 115
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f378a6eba3078aa10800000000000000
-      internalID: 1920908638678583103
+      spriteID: 10bddfcd20ab759b0800000000000000
+      internalID: -5091396332258731263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dreamkin_pumpkin_seed_1
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 418
+        width: 78
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e001d6bedab02b10800000000000000
+      internalID: 1954767703991451879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dreamkin_pumpkin_seed_2
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 402
+        width: 63
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd8641740c7e77610800000000000000
+      internalID: 1619017404075239643
       vertices: []
       indices: 
       edges: []
@@ -151,7 +201,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7ab0c8a1bebd25a469c14cfddea19325
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      emerald_pea_0: 1920908638678583103
+      dreamkin_pumpkin_seed_0: -5091396332258731263
+      dreamkin_pumpkin_seed_1: 1954767703991451879
+      dreamkin_pumpkin_seed_2: 1619017404075239643
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
