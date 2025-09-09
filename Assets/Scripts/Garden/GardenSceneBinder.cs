@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,28 +9,53 @@ public sealed class GardenSceneBinder : MonoBehaviour
     [SerializeField] private Transform plotsRoot;
 
     [Header("Optional UX")]
-    [SerializeField] private CanvasGroup plotsGroupBlocker; // опціонально: щоб блокувати кліки
-    [SerializeField] private GameObject  loadingOverlay;    // опціонально: затемнення/спінер
+    [SerializeField] private CanvasGroup plotsGroupBlocker;
+    [SerializeField] private GameObject loadingOverlay;
 
     void OnEnable()
     {
+        // 1) Спершу показуємо плейсхолдери (перші 3 — відкриті)
+        ApplyPlaceholder(unlocked: 3);
+
+        // 2) ВІДРАЗУ вимикаємо перехоплення кліків бекдропом
+        if (loadingOverlay != null)
+        {
+            var cg = loadingOverlay.GetComponent<CanvasGroup>();
+            var img = loadingOverlay.GetComponent<UnityEngine.UI.Image>();
+            if (cg != null)
+            {
+                cg.blocksRaycasts = false;
+                cg.interactable = false;
+            }
+            if (img != null) img.raycastTarget = false;
+        }
+
+        // 3) Озброюємо «клік-ґейт» на 2 кадри — перший тап гарантовано не пропаде
+        GardenClickGate.Arm(this, frames: 2);
+
+        // 4) Переносимо бінд після повної активації підсцени
+        StartCoroutine(Co_BindAfterActivated());
+    }
+
+    private IEnumerator Co_BindAfterActivated()
+    {
+        // даємо UI один кадр активуватись
+        yield return null;
+
         var cache = GardenStateCache.I;
-        if (cache == null) return;
+        if (cache == null) yield break;
+
+        // (тут НІЧОГО не треба робити з overlay — ми вже вимкнули raycasts вище)
 
         if (cache.IsReady)
         {
             BindFromCache(cache);
-            return;
+            StartCoroutine(HideOverlayNextFrame()); // сховаємо сам GO кадром пізніше
         }
-
-        // було: BlockInteractions(true); ShowLoading(true);
-        // ЗАЛИШАЄМО тільки плейсхолдери — щоб клік працював зразу:
-        ApplyPlaceholder(unlocked: 3);
-
-        // якщо показуєш оверлей — зроби його НЕ клікабельним:
-        // (CanvasGroup на overlay) interactable = false; blocksRaycasts = false;
-
-        cache.OnReady += HandleCacheReady;
+        else
+        {
+            cache.OnReady += HandleCacheReady;
+        }
     }
 
     void OnDisable()
@@ -44,15 +70,12 @@ public sealed class GardenSceneBinder : MonoBehaviour
         if (cache == null) return;
         cache.OnReady -= HandleCacheReady;
         BindFromCache(cache);
-
-        // якщо є loadingOverlay — лиши blocksRaycasts = false;
-        // і сховай overlay з невеличкою паузою, щоб не "з’їсти" клік:
         StartCoroutine(HideOverlayNextFrame());
     }
 
     private System.Collections.IEnumerator HideOverlayNextFrame()
     {
-        yield return null; // 1 кадр
+        yield return null;
         if (loadingOverlay) loadingOverlay.SetActive(false);
     }
 
@@ -81,9 +104,9 @@ public sealed class GardenSceneBinder : MonoBehaviour
 
             var model = new PlotModel
             {
-                slotIndex  = serverSlot,
-                isLocked   = serverSlot >= unlocked, // оце головне
-                stage      = 0,
+                slotIndex = serverSlot,
+                isLocked = serverSlot >= unlocked,
+                stage = 0,
                 plantTypeId = null
             };
             plot.ApplyModel(model, null);
@@ -101,18 +124,20 @@ public sealed class GardenSceneBinder : MonoBehaviour
         return FindObjectsOfType<GardenPlot>(true);
 #endif
     }
-
-    void BlockInteractions(bool on)
+    public void RefreshNow()
     {
-        if (plotsGroupBlocker != null)
+        var cache = GardenStateCache.I;
+        if (cache == null) return;
+
+        if (!cache.IsReady)
         {
-            plotsGroupBlocker.interactable   = !on;
-            plotsGroupBlocker.blocksRaycasts = on;
+            ApplyPlaceholder(unlocked: 3);
+            cache.OnReady -= HandleCacheReady;
+            cache.OnReady += HandleCacheReady;
+            return;
         }
+
+        BindFromCache(cache);
     }
 
-    void ShowLoading(bool on)
-    {
-        if (loadingOverlay != null) loadingOverlay.SetActive(on);
-    }
 }

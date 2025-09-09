@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI; // для LayoutRebuilder
+using UnityEngine.UI; // для Button та LayoutRebuilder
 
 public sealed class PlantSelectionPanel : MonoBehaviour
 {
@@ -14,7 +14,8 @@ public sealed class PlantSelectionPanel : MonoBehaviour
     [SerializeField] private GameObject root;                    // контейнер панелі
     [SerializeField] private Transform content;                  // ScrollView/Viewport/Content
     [SerializeField] private PlantOptionItemView itemPrefab;     // префаб картки
-    [SerializeField] private GameObject infobar;     // контейнер infobar, щоб ховати при відкритті
+    [SerializeField] private GameObject infobar;                 // інфобар (ховаємо при відкритті)
+    [SerializeField] private Button closeButton;                 // 👈 кнопка закриття панелі
 
     [Header("Behaviour")]
     [SerializeField] private bool buildOnEnableIfDataReady = false;
@@ -30,10 +31,16 @@ public sealed class PlantSelectionPanel : MonoBehaviour
 
     void OnEnable()
     {
-        // підпишемося на зміну сесії гравця
+        // кнопка закриття
+        if (closeButton != null)
+        {
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(Close);
+        }
+
+        // підписка на зміну сесії
         if (PlayerSession.I != null)
         {
-            // синхронізуємо рівень одразу
             _playerLevel = ResolvePlayerLevelFallback(_playerLevel);
             PlayerSession.I.OnChanged += HandlePlayerSessionChanged;
         }
@@ -45,17 +52,20 @@ public sealed class PlantSelectionPanel : MonoBehaviour
 
     void OnDisable()
     {
+        if (closeButton != null)
+            closeButton.onClick.RemoveAllListeners();
+
         if (PlayerSession.I != null)
             PlayerSession.I.OnChanged -= HandlePlayerSessionChanged;
     }
 
-    // Викликається твоїм контролером перед показом
+    // Викликається контролером перед показом
     public void SetData(List<PlantInfo> all, int playerLevel, Action<PlantInfo> onPlant)
     {
         _all = all;
         _onPlant = onPlant;
 
-        // якщо є PlayerSession — беремо рівень звідти, інакше використовуємо переданий
+        // якщо є PlayerSession — беремо звідти рівень, інакше переданий
         _playerLevel = ResolvePlayerLevelFallback(playerLevel);
     }
 
@@ -109,7 +119,7 @@ public sealed class PlantSelectionPanel : MonoBehaviour
 
         ClearContent();
 
-        // 0) фільтруємо неактивні (у твоєму PlantInfo є IsActive)
+        // 0) фільтруємо неактивні
         var source = _all.Where(p => p.IsActive).ToList();
 
         // 1) саме (playerLevel + 1); якщо немає — найближча більша
@@ -165,9 +175,10 @@ public sealed class PlantSelectionPanel : MonoBehaviour
             if (view != null) _pool.Push(view);
         }
     }
+
+    // попередня побудова (щоб UI миттєво відкривався)
     public void Prewarm(List<PlantInfo> all, int playerLevel, Action<PlantInfo> onPlant)
     {
-        // передаємо дані та будуємо список, але панель не показуємо
         SetData(all, playerLevel, onPlant);
         BuildList();
 

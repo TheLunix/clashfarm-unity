@@ -10,12 +10,12 @@ using UnityEngine.UI;
 
 public class ImageCache : MonoBehaviour
 {
-    // === Налаштування ===
     [Header("Memory cache")]
-    [SerializeField] int memoryMaxItems = 256;                 // скільки спрайтів тримати в RAM
+    [SerializeField] int memoryMaxItems = 256;
+
     [Header("Disk cache (persistent)")]
     [SerializeField] bool useDiskCache = true;
-    [SerializeField] int diskTtlDays = 30;                     // час життя файлу на диску
+    [SerializeField] int diskTtlDays = 30;
 
     static ImageCache _inst;
     public static ImageCache Instance {
@@ -29,10 +29,9 @@ public class ImageCache : MonoBehaviour
         }
     }
 
-    // Пам'ять: LRU через список використання
     readonly Dictionary<string, Sprite> _mem = new();
-    readonly LinkedList<string> _lru = new();                  // останні звертання (head — найсвіжіші)
-    readonly Dictionary<string, List<Action<Sprite>>> _inflight = new(); // хто чекає на одне й те саме завантаження
+    readonly LinkedList<string> _lru = new();
+    readonly Dictionary<string, List<Action<Sprite>>> _inflight = new();
 
     string CacheDir => Path.Combine(Application.persistentDataPath, "imgcache");
 
@@ -40,23 +39,21 @@ public class ImageCache : MonoBehaviour
     {
         if (_inst != null && _inst != this) { Destroy(gameObject); return; }
         _inst = this;
+        DontDestroyOnLoad(gameObject); // ✅ якщо покладено у сцену вручну — теж живемо вічно
         if (useDiskCache && !Directory.Exists(CacheDir)) Directory.CreateDirectory(CacheDir);
     }
 
-    // === Публічний API ===
     public void GetSprite(string url, Action<Sprite> onReady, Action<string> onError = null)
     {
         url = (url ?? "").Trim();
         if (string.IsNullOrEmpty(url)) { onError?.Invoke("Empty URL"); return; }
 
-        // 1) пам'ять
         if (_mem.TryGetValue(url, out var sp) && sp != null) {
             Touch(url);
             onReady?.Invoke(sp);
             return;
         }
 
-        // 2) диск
         if (useDiskCache) {
             var path = PathFor(url);
             if (File.Exists(path) && !Expired(path)) {
@@ -70,7 +67,6 @@ public class ImageCache : MonoBehaviour
                         onReady?.Invoke(sprite);
                         return;
                     } else {
-                        // зіпсований файл — видаляємо
                         SafeDelete(path);
                     }
                 } catch (Exception e) {
@@ -79,7 +75,6 @@ public class ImageCache : MonoBehaviour
             }
         }
 
-        // 3) завантаження з мережі (де-дуплікація)
         if (_inflight.TryGetValue(url, out var waiters)) {
             waiters.Add(onReady);
             return;
@@ -106,15 +101,13 @@ public class ImageCache : MonoBehaviour
         }
     }
 
-    // === Внутрішнє ===
     IEnumerator Download(string url, Action<string> onError)
     {
-        using var req = UnityWebRequestTexture.GetTexture(url, true); // nonReadable=true зменшує RAM
+        using var req = UnityWebRequestTexture.GetTexture(url, true);
         req.timeout = 15;
         yield return req.SendWebRequest();
 
-        List<Action<Sprite>> listeners = null;
-        if (_inflight.TryGetValue(url, out listeners)) _inflight.Remove(url);
+        if (_inflight.TryGetValue(url, out var listeners)) _inflight.Remove(url);
 
         if (req.result != UnityWebRequest.Result.Success) {
             onError?.Invoke($"Image load error: {req.error}");
@@ -122,21 +115,19 @@ public class ImageCache : MonoBehaviour
             yield break;
         }
 
-        // Спрайт
-        var tex = DownloadHandlerTexture.GetContent(req); // Texture2D
+        var tex = DownloadHandlerTexture.GetContent(req);
         var sprite = Sprite.Create(tex, new Rect(0,0,tex.width,tex.height),
                                    new Vector2(0.5f,0.5f), 100f);
 
         PutMemory(url, sprite);
 
-        // Зберегти байти на диск (оригінальні, без перекодування)
         if (useDiskCache) {
             try {
-                var bytes = req.downloadHandler.data; // сирі байти відповіді
+                var bytes = req.downloadHandler.data;
                 if (bytes != null && bytes.Length > 0) {
-                    File.WriteAllBytes(PathFor(url), bytes);
-                    // торкнемо час доступу для TTL
-                    File.SetLastWriteTimeUtc(PathFor(url), DateTime.UtcNow);
+                    var path = PathFor(url);
+                    File.WriteAllBytes(path, bytes);
+                    File.SetLastWriteTimeUtc(path, DateTime.UtcNow);
                 }
             } catch (Exception e) {
                 Debug.LogWarning("Disk cache write failed: " + e.Message);
@@ -150,7 +141,7 @@ public class ImageCache : MonoBehaviour
     {
         _mem[url] = sp;
         _lru.AddFirst(url);
-        // видалити надлишок (LRU)
+
         while (_mem.Count > memoryMaxItems && _lru.Last != null) {
             var lastUrl = _lru.Last.Value;
             _lru.RemoveLast();
@@ -166,7 +157,6 @@ public class ImageCache : MonoBehaviour
 
     void Touch(string url)
     {
-        // перенести url в голову списку
         var node = _lru.Find(url);
         if (node != null) { _lru.Remove(node); _lru.AddFirst(node); }
     }
@@ -180,7 +170,6 @@ public class ImageCache : MonoBehaviour
     string PathFor(string url)
     {
         var hash = Md5(url);
-        // спробуємо вгадати розширення з URL (png/webp/jpg)
         var ext = ".bin";
         var lower = url.ToLowerInvariant();
         if (lower.Contains(".png")) ext = ".png";
@@ -201,6 +190,6 @@ public class ImageCache : MonoBehaviour
 
     static void SafeDelete(string path)
     {
-        try { File.Delete(path); } catch { /* ignore */ }
+        try { File.Delete(path); } catch { }
     }
 }
