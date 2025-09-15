@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -6,20 +7,21 @@ using UnityEngine.Networking;
 
 public static class ApiClient
 {
-    // === БАЗОВІ ШЛЯХИ (підкоригуй, якщо потрібен інший домен/порт) ===
+    // === БАЗОВІ ШЛЯХИ (за потреби поміняй домен/порт) ===
     private const string ApiRoot    = "https://api.clashfarm.com";
     private const string PlayerBase = ApiRoot + "/api/player";
     private const string PlantsBase = ApiRoot + "/api/plants";
-    private static string GardenBase => ApiRoot + "/api/garden"; // якщо у тебе інший маршрут — заміни тут
+    private static string GardenBase => ApiRoot + "/api/garden";
 
     // === DTO ===
     [Serializable] private class HbDto { public int playerhp; public int maxhp; }
-
-    [Serializable] private struct CombatsHbDto
+    [Serializable] public class CombatsDto
     {
-        public int combats;    // поточна к-сть боїв
-        public int max;        // максимум (6)
-        public int remaining;  // сек до +1 бою
+        public int combats;
+        public int combatsMax;
+        public int remainingToNextSec;
+        public int remainingToFullSec;
+        public string error; // optional
     }
 
     [Serializable] public class PlantListWrap { public List<PlantInfo> plants; }
@@ -33,7 +35,6 @@ public static class ApiClient
         public int growthTimeMinutes;
         public int sellPrice;
         public int isActive; // 1/0
-        // за бажанням: ключі іконок: seedIconKey / sproutIconKey / readyIconKey
     }
 
     [Serializable] public class GardenState
@@ -204,9 +205,9 @@ public static class ApiClient
         }
     }
 
-    public static async Task<(int combats, int max, int remaining)?> CombatsHeartbeatAsync(string nickname, string serialcode)
+    public static async Task<CombatsDto> CombatsHeartbeatAsync(string nickname, string serialcode)
     {
-        nickname   = (nickname   ?? "").Trim();
+        nickname = (nickname ?? "").Trim();
         serialcode = (serialcode ?? "").Trim();
         if (nickname.Length == 0 || serialcode.Length == 0) return null;
 
@@ -214,15 +215,33 @@ public static class ApiClient
             Form(("PlayerName", nickname), ("PlayerSerialCode", serialcode)));
         req.downloadHandler = new DownloadHandlerBuffer();
 
-        await req.SendWebRequest();
-        if (req.result != UnityWebRequest.Result.Success) return null;
+        var ok = await Send(req);
+        if (!ok) return null;
 
-        var json = req.downloadHandler?.text ?? "";
-        try
-        {
-            var dto = JsonUtility.FromJson<CombatsHbDto>(json);
-            return (dto.combats, dto.max, dto.remaining);
-        }
+        var txt = req.downloadHandler?.text ?? "";
+        if (string.IsNullOrEmpty(txt) || txt[0] != '{') return null;
+
+        try { return JsonUtility.FromJson<CombatsDto>(txt); }
+        catch { return null; }
+    }
+
+    public static async Task<CombatsDto> CombatsUseAsync(string nickname, string serialcode)
+    {
+        nickname = (nickname ?? "").Trim();
+        serialcode = (serialcode ?? "").Trim();
+        if (nickname.Length == 0 || serialcode.Length == 0) return null;
+
+        using var req = UnityWebRequest.Post($"{PlayerBase}/combats/use",
+            Form(("PlayerName", nickname), ("PlayerSerialCode", serialcode)));
+        req.downloadHandler = new DownloadHandlerBuffer();
+
+        var ok = await Send(req);
+        if (!ok) return null;
+
+        var txt = req.downloadHandler?.text ?? "";
+        if (string.IsNullOrEmpty(txt) || txt[0] != '{') return null;
+
+        try { return JsonUtility.FromJson<CombatsDto>(txt); }
         catch { return null; }
     }
 
@@ -253,7 +272,6 @@ public static class ApiClient
             return null;
         }
     }
-
     // === GARDEN ===
     public static async Task<GardenState> GetGardenStateAsync(string nickname, string serialcode)
     {
@@ -272,20 +290,19 @@ public static class ApiClient
     public static Task<bool> PlantAsync(string nickname, string serialcode, int slot, int plantId) =>
         PostOk($"{GardenBase}/plant",
             ("PlayerName", nickname), ("PlayerSerialCode", serialcode),
-            ("slot", slot.ToString()), ("plantId", plantId.ToString()));
+            ("slotIndex", slot.ToString()), ("plantId", plantId.ToString()));
 
     public static Task<bool> WaterAsync(string nickname, string serialcode, int slot) =>
         PostOk($"{GardenBase}/water",
             ("PlayerName", nickname), ("PlayerSerialCode", serialcode),
-            ("slot", slot.ToString()));
+            ("slotIndex", slot.ToString()));
 
     public static Task<bool> HarvestAsync(string nickname, string serialcode, int slot) =>
         PostOk($"{GardenBase}/harvest",
             ("PlayerName", nickname), ("PlayerSerialCode", serialcode),
-            ("slot", slot.ToString()));
+            ("slotIndex", slot.ToString()));
 
-    public static Task<bool> UnlockAsync(string nickname, string serialcode, int slot) =>
+    public static Task<bool> UnlockAsync(string nickname, string serialcode) =>
         PostOk($"{GardenBase}/unlock",
-            ("PlayerName", nickname), ("PlayerSerialCode", serialcode),
-            ("slot", slot.ToString()));
+            ("PlayerName", nickname), ("PlayerSerialCode", serialcode));
 }
