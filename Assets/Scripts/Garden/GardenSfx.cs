@@ -26,7 +26,7 @@ namespace ClashFarm.Garden
             I = this;
             if (source == null) source = gameObject.AddComponent<AudioSource>();
             source.playOnAwake = false;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
 
         void Play(AudioClip clip)

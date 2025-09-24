@@ -13,6 +13,7 @@ public class MainSceneController : MonoBehaviour
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject gardenPanel;
     [SerializeField] private GameObject arenaPanel;
+    [SerializeField] private GameObject villagepanel;
 
     [Header("HUD (Texts)")]
     [SerializeField] private TextMeshProUGUI nickText;
@@ -102,12 +103,14 @@ public class MainSceneController : MonoBehaviour
             if (mainMenuPanel) mainMenuPanel.SetActive(true);
             if (gardenPanel) gardenPanel.SetActive(false);
             if (arenaPanel) arenaPanel.SetActive(false);
+            if (villagepanel) villagepanel.SetActive(false);
             return;
         }
 
         if (mainMenuPanel) mainMenuPanel.SetActive(true);
         if (gardenPanel) gardenPanel.SetActive(false);
         if (arenaPanel) arenaPanel.SetActive(false);
+        if (villagepanel) villagepanel.SetActive(false);
 
         RefreshAll();                     // первинний HUD
         RecomputeHpRegenRate();
@@ -402,9 +405,15 @@ public class MainSceneController : MonoBehaviour
         if (mainMenuPanel) mainMenuPanel.SetActive(false);
         if (arenaPanel) arenaPanel.SetActive(true);
     }
+    public void OpenVillage()
+    {
+        if (mainMenuPanel) mainMenuPanel.SetActive(false);
+        if (villagepanel) villagepanel.SetActive(true);
+    }
     public void BackToMenu()
     {
         if (arenaPanel) arenaPanel.SetActive(false);
+        if (villagepanel) villagepanel.SetActive(false);
         if (gardenPanel) gardenPanel.SetActive(false);
         if (mainMenuPanel) mainMenuPanel.SetActive(true);
     }
