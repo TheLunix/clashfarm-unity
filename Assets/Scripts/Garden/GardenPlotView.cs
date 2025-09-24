@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 namespace ClashFarm.Garden
 {
@@ -93,7 +96,7 @@ namespace ClashFarm.Garden
                 long remain = s.TimeEndGrowthMs - nowMs;
                 if (remain < 0) remain = 0;
                 _lastRemainSec = Mathf.CeilToInt(remain / 1000f);
-                timeText.text = FormatRemain(remain);
+                FormatRemain(_lastRemainSec);
             }
             // --- Візуальний полив: тінт фону на стадіях 1–2 ---
             if (waterTintEnabled && bg)
@@ -114,7 +117,7 @@ namespace ClashFarm.Garden
                     if (bg.color != _bgDefaultColor) bg.color = _bgDefaultColor;
                 }
             }
-            #if REMOTE_ICONS || true // завжди дозволяємо, бо кеш вже є
+#if REMOTE_ICONS || true // завжди дозволяємо, бо кеш вже є
             if (s.Stage > 0)
             {
                 if (!PlantCatalogCache.IsReady)
@@ -122,7 +125,7 @@ namespace ClashFarm.Garden
                 else
                     StartCoroutine(LoadRemoteStageSprite(s.PlantedID, s.Stage));
             }
-            #endif
+#endif
 
         }
         public void UpdateTimer(long nowMs)
@@ -142,8 +145,41 @@ namespace ClashFarm.Garden
             if (sec != _lastRemainSec)
             {
                 _lastRemainSec = sec;
-                timeText.text = FormatRemain(remainMs);
+                FormatRemain(_lastRemainSec);
             }
+        }
+        [Header("Click / Action Feedback")]
+        public bool clickShake = true;
+        public float shakeDuration = 0.2f;
+        public float shakeAmplitude = 8f;
+        Coroutine _shakeCo;
+
+        public void ShakeOnce()
+        {
+            if (!clickShake || bg == null) return;
+            if (_shakeCo != null) StopCoroutine(_shakeCo);
+            _shakeCo = StartCoroutine(ShakeCo());
+        }
+
+        System.Collections.IEnumerator ShakeCo()
+        {
+            var rt = bg.rectTransform;
+            Vector2 start = rt.anchoredPosition;
+            float t = 0f;
+            // випадковий напрямок
+            Vector2 dir = UnityEngine.Random.insideUnitCircle.normalized;
+            if (dir == Vector2.zero) dir = Vector2.right;
+
+            while (t < shakeDuration)
+            {
+                t += Time.deltaTime;
+                float k = 1f - (t / shakeDuration); // затухання
+                float s = Mathf.Sin(t * 40f) * k * shakeAmplitude;
+                rt.anchoredPosition = start + dir * s;
+                yield return null;
+            }
+            rt.anchoredPosition = start;
+            _shakeCo = null;
         }
         [Header("Click Feedback")]
         public bool clickFlash = true;
@@ -188,11 +224,39 @@ namespace ClashFarm.Garden
                 if (bg.color != _bgDefaultColor) bg.color = _bgDefaultColor;
             }
         }
-        string FormatRemain(long ms)
+        void FormatRemain(int sec)
         {
-            var total = Mathf.CeilToInt(ms / 1000f);
-            int h = total / 3600; int m = (total % 3600) / 60; int s = total % 60;
-            return h > 0 ? $"{h:D2}:{m:D2}:{s:D2}" : $"{m:D2}:{s:D2}";
+            if (timeText == null) return;
+
+            if (sec <= 0)
+            {
+                // фолбек, якщо ключа "миттєво" нема — можна зробити окремий key, якщо захочеш
+                StartCoroutine(LocalizeFormat(timeText, "UI", "time.instant"));
+                return;
+            }
+
+            var t = TimeSpan.FromSeconds(sec);
+
+            if (t.TotalHours >= 24)
+            {
+                int days = (int)Math.Floor(t.TotalHours / 24);
+                int hours = (int)Math.Ceiling(t.TotalHours - (days * 24));
+                StartCoroutine(LocalizeFormat(timeText, "UI", "time.dh", days, hours));
+                return;
+            }
+            if (t.TotalHours >= 1)
+            {
+                int hours = (int)Math.Floor(t.TotalHours);
+                StartCoroutine(LocalizeFormat(timeText, "UI", "time.hm", hours, t.Minutes));
+                return;
+            }
+            if (t.TotalMinutes >= 1)
+            {
+                StartCoroutine(LocalizeFormat(timeText, "UI", "time.ms", t.Minutes, t.Seconds));
+                return;
+            }
+
+            StartCoroutine(LocalizeFormat(timeText, "UI", "time.s", t.Seconds));
         }
 
         // ====== (опціонально) Завантаження іконок з CDN пізніше ======
@@ -228,6 +292,18 @@ namespace ClashFarm.Garden
         {
             while (!PlantCatalogCache.IsReady) yield return null;
             yield return LoadRemoteStageSprite(plantedId, stage);
+        }
+        
+        private System.Collections.IEnumerator LocalizeFormat(TMP_Text target, string table, string key, params object[] args)
+        {
+            if (target == null || string.IsNullOrEmpty(key)) yield break;
+            var ls = new LocalizedString(table, key);
+            if (args != null && args.Length > 0) ls.Arguments = args;
+
+            var handle = ls.GetLocalizedStringAsync();
+            yield return handle;
+            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded && target != null)
+                target.text = handle.Result;
         }
     }
 }

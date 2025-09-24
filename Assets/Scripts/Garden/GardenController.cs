@@ -23,6 +23,7 @@ namespace ClashFarm.Garden
         [Header("Panels")]
         public PlotUnlockPanel unlockPanel;      // перетягни у інспекторі
         public PlantSelectionPanel plantSelect;  // перетягни у інспекторі
+        public GardenStatusBar statusBar;
 
         GardenSession S => GardenSession.I;
         bool _busy;
@@ -30,6 +31,7 @@ namespace ClashFarm.Garden
 
         async void Start()
         {
+            if (!statusBar) statusBar = FindFirstObjectByType<GardenStatusBar>(FindObjectsInactive.Include);
             if (clickGate) clickGate.SetActive(!PlantCatalogCache.IsReady);
 
             // Якщо сесія ще не створена — зробимо її тут
@@ -193,9 +195,19 @@ namespace ClashFarm.Garden
             }
             if (st.Stage == 1 || st.Stage == 2)
             {
-                // На цій точці НІ бур’янів, НІ потреби в поливі (бо ці дії вище вже виконуються).
-                // Просто підкажемо гравцю, що все ок і треба чекати.
-                ShowToast("Рослина полита, бур'янів немає — просто чекаємо врожай!");
+                // На цій точці НІ бур’янів, НІ потреби в поливі — просто чекаємо.
+                string msg = "Рослина полита, бур'янів немає — просто чекаємо врожай!";
+
+                // Додамо коротку підказку скільки залишилось (до повного дозрівання)
+                long now = S.NowServerLikeMs();
+                if (st.TimeEndGrowthMs > now)
+                {
+                    long remain = st.TimeEndGrowthMs - now;
+                    msg += " (~" + FormatShort(remain) + ")";
+                }
+
+                if (statusBar) statusBar.Show(msg);
+                else ShowToast(msg); // фолбек, якщо статус-бар не присвоєний
                 GardenBarks.I?.SayIdle();
                 return;
             }
@@ -209,10 +221,18 @@ namespace ClashFarm.Garden
             {
                 try
                 {
-                    var dto = await GardenApi.PlantAsync(S.PlayerName, S.PlayerSerialCode, slot, plantId);
-                    S.MergeFromDto(dto);
+                    var res = await GardenApi.PlantAsync(S.PlayerName, S.PlayerSerialCode, slot, plantId);
+                    if (res == null || !res.ok)
+                    {
+                        ShowToast(MapError(res != null ? res.error : "network"));
+                        GardenSfx.I?.PlayError();
+                        if (slot >= 0 && slot < plotViews.Length) plotViews[slot]?.ShakeOnce();
+                        return;
+                    }
+                    S.MergeFromDto(res.dto);
                     ApplyAll();
                     GardenBarks.I?.SayPlant();
+                    GardenSfx.I?.PlayPlant();
                 }
                 catch (Exception e) { Debug.LogError(e); }
             }
@@ -230,11 +250,14 @@ namespace ClashFarm.Garden
                     if (!res.ok)
                     {
                         ShowToast(MapError(res.error)); // TODO: твоя система тостів
+                        GardenSfx.I?.PlayError();
+                        if (slot >= 0 && slot < plotViews.Length) plotViews[slot]?.ShakeOnce();
                         return;
                     }
                     S.MergeFromDto(res.dto);
                     ApplyAll();
                     GardenBarks.I?.SayWater();
+                    GardenSfx.I?.PlayWater();
                 }
                 catch (Exception e) { Debug.LogError(e); }
             }
@@ -252,11 +275,14 @@ namespace ClashFarm.Garden
                     if (!res.ok)
                     {
                         ShowToast(MapError(res.error));
+                        GardenSfx.I?.PlayError();
+                        if (slot >= 0 && slot < plotViews.Length) plotViews[slot]?.ShakeOnce();
                         return;
                     }
                     S.MergeFromDto(res.dto);
                     ApplyAll();
                     GardenBarks.I?.SayWeed();
+                    GardenSfx.I?.PlayWeed();
                 }
                 catch (Exception e) { Debug.LogError(e); }
             }
@@ -287,6 +313,7 @@ namespace ClashFarm.Garden
                             PlayerSession.I.Patch(pi => pi.playergreen = Mathf.Max(0, pi.playergreen - optimistic));
 
                         ShowToast(MapError(res != null ? res.error : "network"));
+                        GardenSfx.I?.PlayError();
                         return;
                     }
                     var dto = res.dto;
@@ -307,6 +334,7 @@ namespace ClashFarm.Garden
                     }
 
                     GardenBarks.I?.SayHarvest();
+                    GardenSfx.I?.PlayHarvest();
                 }
                 catch (Exception e)
                 {
@@ -337,10 +365,10 @@ namespace ClashFarm.Garden
                         // мапа кодів помилок у зрозумілий текст
                         string msg = res.error switch
                         {
-                            "insufficient_gold"   => "Не вистачає золота.",
-                            "max_slots_reached"   => "Досягнуто максимуму грядок.",
-                            "not_next_slot"       => "Спочатку відкрий попередню грядку.",
-                            _                     => "Не вдалося відкрити грядку. Спробуй ще раз."
+                            "insufficient_gold" => "Не вистачає золота.",
+                            "max_slots_reached" => "Досягнуто максимуму грядок.",
+                            "not_next_slot" => "Спочатку відкрий попередню грядку.",
+                            _ => "Не вдалося відкрити грядку. Спробуй ще раз."
                         };
                         if (unlockPanel != null) unlockPanel.ShowError(msg);
                         return;
@@ -377,11 +405,14 @@ namespace ClashFarm.Garden
                     if (unlockPanel != null) unlockPanel.Close();
                     ShowToast("Грядку відкрито!");
                     GardenBarks.I?.SayIdle();
+                    GardenSfx.I?.PlayUnlock();
                 }
                 catch (System.Exception e)
                 {
                     if (unlockPanel != null) unlockPanel.ShowError("Не вдалося відкрити грядку. Спробуй ще раз.");
                     Debug.LogError(e);
+                    GardenSfx.I?.PlayError();
+                    if (slot >= 0 && slot < plotViews.Length) plotViews[slot]?.ShakeOnce();
                 }
             }
             finally { _busy = false; }
@@ -403,7 +434,7 @@ namespace ClashFarm.Garden
             if (_plants != null) return;
             _plants = await GardenApi.GetPlantsAsync();
             _plants.RemoveAll(p => p.isActive == 0);
-            PlantCatalogCache.SetAll(_plants);           // щоб грядки могли тягнути іконки
+            PlantCatalogCache.SetAll(_plants);           // щоб грядки могли тягнути іконки  
             Debug.Log($"[Plants] Loaded: count={_plants.Count}");
         }
 
@@ -466,31 +497,36 @@ namespace ClashFarm.Garden
         string MapError(string code) => code switch
         {
             // Загальні
-            "network"               => "Сервер недоступний. Спробуй ще раз.",
-            "unexpected_payload"    => "Невідома відповідь сервера.",
-            "empty_response"        => "Порожня відповідь сервера.",
+            "network" => "Сервер недоступний. Спробуй ще раз.",
+            "timeout" => "Час очікування вичерпано. Спробуй ще раз.",
+            "unexpected_payload" => "Невідома відповідь сервера.",
+            "empty_response" => "Порожня відповідь сервера.",
+            "slot_not_empty"        => "Грядка вже зайнята.",
+            "no_player"             => "Профіль гравця не знайдено.",
+            "plant_inactive"        => "Ця рослина недоступна.",
+            "level_too_low"         => "Замалий рівень для цієї рослини.",
 
             // Water
-            "weed_first"            => "Спочатку приберіть бур'ян.",
-            "already_watered"       => "Вже полито.",
+            "weed_first" => "Спочатку приберіть бур'ян.",
+            "already_watered" => "Вже полито.",
             "already_watered_stage" => "У цій стадії вже полито.",
-            "nothing_to_water"      => "Нема що поливати.",
+            "nothing_to_water" => "Нема що поливати.",
 
             // Weed
-            "no_weeds"              => "Бур’янів немає.",
+            "no_weeds" => "Бур’янів немає.",
 
             // Harvest
-            "not_ready"             => "Ще не дозріло.",
-            "empty_slot"            => "Грядка порожня.",
-            "cooldown"              => "Спробуй трохи згодом.",
-            "slot_busy"             => "Слот зайнятий, спробуй пізніше.",
+            "not_ready" => "Ще не дозріло.",
+            "empty_slot" => "Грядка порожня.",
+            "cooldown" => "Спробуй трохи згодом.",
+            "slot_busy" => "Слот зайнятий, спробуй пізніше.",
 
             // Unlock (на всяк)
-            "insufficient_gold"     => "Не вистачає золота.",
-            "max_slots_reached"     => "Досягнуто максимуму грядок.",
-            "not_next_slot"         => "Спочатку відкрий попередню грядку.",
+            "insufficient_gold" => "Не вистачає золота.",
+            "max_slots_reached" => "Досягнуто максимуму грядок.",
+            "not_next_slot" => "Спочатку відкрий попередню грядку.",
 
-            _                       => "Упс! Щось пішло не так."
+            _ => "Упс! Щось пішло не так."
         };
 
         async Task PlantViaPanel(int slot, int plantId)
@@ -511,13 +547,25 @@ namespace ClashFarm.Garden
             if (Toasts.I != null) Toasts.I.Show(msg);
             else Debug.Log($"[Toast] {msg}");
         }
-        void OnEnable()  { PlantCatalogCache.OnReady += OnPlantCatalogReady; }
+        void OnEnable() { PlantCatalogCache.OnReady += OnPlantCatalogReady; }
         void OnDisable() { PlantCatalogCache.OnReady -= OnPlantCatalogReady; }
 
         void OnPlantCatalogReady()
         {
             ApplyAll();
             if (clickGate) clickGate.SetActive(false); // якщо тримав гейт — сховай
+        }
+        static string FormatShort(long remainMs)
+        {
+            if (remainMs < 0) remainMs = 0;
+            long sec = (remainMs + 999) / 1000;
+            if (sec < 60) return sec + "с";
+            long min = sec / 60;
+            if (min < 60) return min + "хв";
+            long hrs = min / 60;
+            min = min % 60;
+            if (hrs >= 24) { long d = hrs / 24; hrs = hrs % 24; return d + "д " + hrs + "г"; }
+            return hrs + "г " + (min > 0 ? (min + "хв") : "");
         }
     }
     

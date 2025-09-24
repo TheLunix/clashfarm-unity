@@ -33,5 +33,9 @@ namespace ClashFarm.Garden
             _byId.Clear();
             IsReady = false;
         }
+        public static IEnumerable<GardenApi.PlantCatalogItem> GetAll()
+        {
+            return _byId.Values;
+        }
     }
 }

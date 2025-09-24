@@ -111,7 +111,7 @@ namespace ClashFarm.Garden
 #if !UNITY_2021_2_OR_NEWER
                     t.Apply(false, true); // старі юніті: руками робимо nonReadable
 #endif
-                    sp = Sprite.Create(t, new Rect(0,0,t.width,t.height), new Vector2(0.5f,0.5f), 100f);
+                    sp = Sprite.Create(t, new Rect(0, 0, t.width, t.height), new Vector2(0.5f, 0.5f), 100f);
                     PutInMemory(key, sp);
                     return sp;
                 }
@@ -143,7 +143,7 @@ namespace ClashFarm.Garden
                 if (!t.LoadImage(data)) return null;
                 t.Apply(false, true);
 #endif
-                sp = Sprite.Create(t, new Rect(0,0,t.width,t.height), new Vector2(0.5f,0.5f), 100f);
+                sp = Sprite.Create(t, new Rect(0, 0, t.width, t.height), new Vector2(0.5f, 0.5f), 100f);
                 PutInMemory(key, sp);
                 return sp;
             }
@@ -185,7 +185,7 @@ namespace ClashFarm.Garden
                             }
                             catch { /* ок */ }
                         }
-                        else { try { if (File.Exists(tmp)) File.Delete(tmp); } catch {} }
+                        else { try { if (File.Exists(tmp)) File.Delete(tmp); } catch { } }
                     }
                     catch { /* ок */ }
                     finally { sem.Release(); }
@@ -193,6 +193,60 @@ namespace ClashFarm.Garden
             }
 
             await Task.WhenAny(Task.WhenAll(tasks), Task.Delay(softTimeoutMs));
+        }
+        // Прогріває у ПАМ'ЯТЬ не більш як 'limit' спрайтів з переданих ключів.
+        // Завантажує з диску або мережі (як у GetSpriteAsync), але поважає MaxInMemory.
+        public static async System.Threading.Tasks.Task WarmToMemory(IEnumerable<string> keys, int limit, int maxParallel = 2, int softTimeoutMs = 3000)
+        {
+            if (keys == null) return;
+            var list = new List<string>();
+            foreach (var k in keys) if (!string.IsNullOrEmpty(k)) list.Add(k);
+            if (list.Count == 0) return;
+
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            int loaded = 0;
+            int inFlight = 0;
+            int i = 0;
+
+            var tasks = new List<System.Threading.Tasks.Task<Sprite>>();
+
+            while (i < list.Count && loaded < limit)
+            {
+                // м'який таймаут
+                if (sw.ElapsedMilliseconds > softTimeoutMs) break;
+
+                while (inFlight < maxParallel && i < list.Count && loaded + inFlight < limit)
+                {
+                    var key = list[i++];
+                    // якщо вже в пам'яті — просто "доторкнемось" до LRU і не створюємо новий таск
+                    if (TryGetInMemory(key, out _)) { loaded++; continue; }
+
+                    var t = GetSpriteAsync(key);
+                    tasks.Add(t);
+                    inFlight++;
+                }
+
+                if (tasks.Count == 0) break;
+
+                var finished = await System.Threading.Tasks.Task.WhenAny(tasks);
+                tasks.Remove(finished);
+                inFlight--;
+
+                try
+                {
+                    var sp = await finished;
+                    if (sp != null) loaded++;
+                }
+                catch { /* ignore errors */ }
+            }
+
+            // дочекаємось залишки, але не чекаємо довше таймауту
+            var restSw = System.Diagnostics.Stopwatch.StartNew();
+            while (tasks.Count > 0 && restSw.ElapsedMilliseconds < softTimeoutMs)
+            {
+                var finished = await System.Threading.Tasks.Task.WhenAny(tasks);
+                tasks.Remove(finished);
+            }
         }
 
         // Діагностика
@@ -232,5 +286,36 @@ namespace ClashFarm.Garden
             _lru.Clear();
             _lruNodes.Clear();
         }
+        // Повертає кількість файлів і сумарний розмір у байтах у папці кешу
+        public static void GetDiskStats(out int files, out long bytes)
+        {
+            files = 0; bytes = 0;
+            try
+            {
+                if (!System.IO.Directory.Exists(Dir)) return;
+                var di = new System.IO.DirectoryInfo(Dir);
+                foreach (var f in di.GetFiles("*", System.IO.SearchOption.TopDirectoryOnly))
+                {
+                    files++;
+                    bytes += f.Length;
+                }
+            }
+            catch { /* ignore */ }
+        }
+        public static void ClearDisk()
+        {
+            try
+            {
+                if (System.IO.Directory.Exists(Dir))
+                    System.IO.Directory.Delete(Dir, true);
+            }
+            catch { /* ignore */ }
+            try
+            {
+                System.IO.Directory.CreateDirectory(Dir);
+            }
+            catch { /* ignore */ }
+        }
+
     }
 }

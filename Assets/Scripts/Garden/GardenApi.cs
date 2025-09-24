@@ -11,6 +11,10 @@ namespace ClashFarm.Garden
     {
         // TODO: підстав свій базовий URL бекенду
         public static string BaseUrl = "https://api.clashfarm.com/api/garden";
+        // Network resilience
+        const int DefaultTimeoutSec   = 6;   // UnityWebRequest.timeout у секундах
+        const int RetryCount          = 2;   // додаткові спроби (итого до 3 посилань)
+        const int RetryInitialDelayMs = 350; // бекоф старт
 
         // Якщо твій /state — POST, вистави true. Якщо GET — false.
         const bool USE_POST_STATE = true;
@@ -33,14 +37,14 @@ namespace ClashFarm.Garden
             return resp;
         }
 
-        public static Task<PlotDto> PlantAsync(string playerName, string playerSerial, int slot, int plantId)
+        public static Task<ApiResultOrDto<PlotDto>> PlantAsync(string playerName, string playerSerial, int slot, int plantId)
         {
             var f = new WWWForm();
             f.AddField("PlayerName", playerName);
             f.AddField("PlayerSerialCode", playerSerial);
             f.AddField("slotIndex", slot);
             f.AddField("plantId", plantId);
-            return Post<PlotDto>("plant", f);
+            return PostResultOrDto<PlotDto>("plant", f);
         }
 
         public static Task<ApiResultOrDto<PlotDto>> WaterAsync(string playerName, string playerSerial, int slot)
@@ -139,18 +143,36 @@ namespace ClashFarm.Garden
 
         static async Task<T> Post<T>(string path, WWWForm form)
         {
-            using var req = UnityWebRequest.Post($"{BaseUrl}/{path}", form);
-            req.downloadHandler = new DownloadHandlerBuffer();
-            var op = req.SendWebRequest();
-            while (!op.isDone) await Task.Yield();
+            for (int attempt = 0; attempt <= RetryCount; attempt++)
+            {
+                using var req = MakePost(path, form);
+                var op = req.SendWebRequest();
+                while (!op.isDone) await Task.Yield();
 
-            if (req.result != UnityWebRequest.Result.Success)
-                throw new Exception(req.error);
+                if (req.result == UnityWebRequest.Result.Success)
+                {
+                    var text = req.downloadHandler.text;
+                    if (!string.IsNullOrWhiteSpace(text))
+                    {
+                        try { return JsonUtility.FromJson<T>(text); }
+                        catch { /* fallthrough to error */ }
+                    }
+                    // порожня/крива відповідь
+                    return default;
+                }
 
-            var json = req.downloadHandler.text;
-            var obj = JsonUtility.FromJson<T>(json);
-            if (obj == null) throw new Exception($"Failed to parse {typeof(T).Name}");
-            return obj;
+                // помилка мережі або таймаут → ще спроба?
+                bool mayRetry =
+                    req.result == UnityWebRequest.Result.ConnectionError ||
+                    req.result == UnityWebRequest.Result.ProtocolError ||
+                    req.result == UnityWebRequest.Result.DataProcessingError;
+                if (!mayRetry || attempt == RetryCount) break;
+
+                // простий експоненційний бекоф
+                int delay = RetryInitialDelayMs << attempt; // 350, 700, 1400...
+                await Task.Delay(delay);
+            }
+            return default;
         }
 
         /// <summary>
@@ -158,24 +180,83 @@ namespace ClashFarm.Garden
         /// </summary>
         static async Task<ApiResultOrDto<T>> PostResultOrDto<T>(string path, WWWForm form)
         {
-            using var req = UnityWebRequest.Post($"{BaseUrl}/{path}", form);
-            req.downloadHandler = new DownloadHandlerBuffer();
-            var op = req.SendWebRequest();
-            while (!op.isDone) await Task.Yield();
-
-            if (req.result != UnityWebRequest.Result.Success)
-                return new ApiResultOrDto<T> { error = req.error, ok = false };
-
-            var json = req.downloadHandler.text;
-
-            // Простенький хак: якщо відповідь починається з '{"error":'
-            if (!string.IsNullOrEmpty(json) && json.Contains("\"error\""))
+            for (int attempt = 0; attempt <= RetryCount; attempt++)
             {
-                var e = JsonUtility.FromJson<ApiError>(json);
-                return new ApiResultOrDto<T> { error = e.error, ok = false };
+                using var req = MakePost(path, form);
+                var op = req.SendWebRequest();
+                while (!op.isDone) await Task.Yield();
+
+                if (req.result == UnityWebRequest.Result.Success)
+                {
+                    var text = req.downloadHandler.text;
+                    if (string.IsNullOrWhiteSpace(text))
+                        return new ApiResultOrDto<T> { ok = false, error = "empty_response" };
+
+                    var trimmed = text.Trim();
+
+                    // 1) Якщо сервер віддав { "error": "..." }
+                    if (trimmed.StartsWith("{") && trimmed.Contains("\"error\""))
+                    {
+                        try
+                        {
+                            var e = JsonUtility.FromJson<ApiError>(trimmed);
+                            if (!string.IsNullOrEmpty(e.error))
+                                return new ApiResultOrDto<T> { ok = false, error = e.error };
+                        }
+                        catch { /* fallthrough */ }
+                    }
+
+                    // 2) Якщо сервер віддав { "ok":..., "dto":... } -> читаємо напряму
+                    if (trimmed.Contains("\"ok\"") || trimmed.Contains("\"dto\""))
+                    {
+                        try
+                        {
+                            var wrap = JsonUtility.FromJson<ApiResultOrDto<T>>(trimmed);
+                            if (wrap != null && (wrap.ok || wrap.dto != null || !string.IsNullOrEmpty(wrap.error)))
+                                return wrap;
+                        }
+                        catch { /* fallthrough */ }
+                    }
+
+                    // 3) Якщо сервер віддав ЧИСТИЙ DTO-об’єкт (типу {"slot":...})
+                    if (trimmed.StartsWith("{"))
+                    {
+                        // Спробуємо спершу напряму
+                        try
+                        {
+                            var dto = JsonUtility.FromJson<T>(trimmed);
+                            if (dto != null)
+                                return new ApiResultOrDto<T> { ok = true, dto = dto };
+                        }
+                        catch { /* fallthrough */ }
+
+                        // Підстрахуємося: обгортаємо як { ok:true, dto: <JSON> } і парсимо як обгортку
+                        try
+                        {
+                            var wrapped = "{\"ok\":true,\"dto\":" + trimmed + "}";
+                            var wrap = JsonUtility.FromJson<ApiResultOrDto<T>>(wrapped);
+                            if (wrap != null && (wrap.ok || wrap.dto != null))
+                                return wrap;
+                        }
+                        catch { /* fallthrough */ }
+                    }
+
+                    // 4) Невідомий формат
+                    return new ApiResultOrDto<T> { ok = false, error = "unexpected_payload" };
+                }
+
+                // помилка мережі або таймаут → ще спроба?
+                bool mayRetry =
+                    req.result == UnityWebRequest.Result.ConnectionError ||
+                    req.result == UnityWebRequest.Result.ProtocolError ||
+                    req.result == UnityWebRequest.Result.DataProcessingError;
+                if (!mayRetry || attempt == RetryCount) break;
+
+                int delay = RetryInitialDelayMs << attempt;
+                await Task.Delay(delay);
             }
-            var dto = JsonUtility.FromJson<T>(json);
-            return new ApiResultOrDto<T> { ok = true, dto = dto };
+            // фінал: мережа не дала
+            return new ApiResultOrDto<T> { ok = false, error = "network" };
         }
 
         [Serializable] public class ApiError { public string error; }
@@ -315,6 +396,12 @@ namespace ClashFarm.Garden
 
         [Serializable] class PlantListWrapper { public List<PlantCatalogItem> items; }
 
-
+        static UnityWebRequest MakePost(string path, WWWForm form)
+        {
+            var req = UnityWebRequest.Post($"{BaseUrl}/{path}", form);
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.timeout = DefaultTimeoutSec; // у секундах
+            return req;
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace ClashFarm.Garden
         int _playerLevel;
         Action<PlantInfo> _onPlant;
         readonly Stack<PlantOptionItemView> _pool = new();
-
+        bool _prewarmed = false;  // панель і іконки прогріті на старті
         int _buildVersion = 0;                 // версія останнього BuildList
         static int _buildFrame, _buildCount;   // дроселінг інстансингу
         const int _buildMaxPerFrame = 5;
@@ -268,13 +268,14 @@ namespace ClashFarm.Garden
             if (cg != null)
             {
                 cg.alpha = 0f;
-                cg.interactable = false;
-                cg.blocksRaycasts = false;
+                cg.interactable = true;
+                cg.blocksRaycasts = true;
             }
             SetInteractable(false);
 
             // 1) ШВИДКИЙ підігрів у пам’ять Топ-N іконок (щоб картки одразу мали спрайти)
-            yield return PrewarmTopIconsToMemoryCo(warmTopCount, warmTimeoutMs);
+            if (!_prewarmed)
+                StartCoroutine(PrewarmTopIconsToMemoryCo(warmTopCount, warmTimeoutMs)); // фоном, не блокуємо показ
 
             // 2) Тепер будуємо список (картки одразу візьмуть іконки з пам’яті → без плейсхолдерів на екрані)
             BuildList();
@@ -336,6 +337,128 @@ namespace ClashFarm.Garden
                 var task = RemoteSpriteCache.GetSpriteAsync(key);
                 while (!task.IsCompleted) yield return null; // даємо виконатись завантаженню/створенню Sprite
             }
+        }
+        void AddItemImmediate(PlantInfo data, bool unlocked)
+        {
+            if (content == null || itemPrefab == null) return;
+
+            PlantOptionItemView view;
+            if (_pool.Count > 0)
+            {
+                view = _pool.Pop();
+                view.transform.SetParent(content, false);
+                view.gameObject.SetActive(true);
+            }
+            else
+            {
+                view = Instantiate(itemPrefab, content);
+            }
+            view.Bind(data, unlocked, _onPlant);
+        }
+        void BuildListImmediate()
+        {
+            if (content == null || itemPrefab == null)
+            {
+                Debug.LogError("[PlantSelectionPanel] content/itemPrefab не призначено", this);
+                return;
+            }
+            if (_all == null)
+            {
+                Debug.LogWarning("[PlantSelectionPanel] Дані ще не передані (SetData не викликано)", this);
+                ClearContent();
+                return;
+            }
+
+            ClearContent();
+
+            var source = _all.Where(p => p.IsActive).ToList();
+            int level = _playerLevel;
+
+            var exactNext = source.FirstOrDefault(p => p.UnlockLevel == level + 1);
+            var fallbackNext = source.Where(p => p.UnlockLevel > level).OrderBy(p => p.UnlockLevel).FirstOrDefault();
+            var nextLocked = exactNext ?? fallbackNext;
+
+            if (nextLocked != null) AddItemImmediate(nextLocked, unlocked: false);
+
+            foreach (var p in source.Where(p => p.UnlockLevel <= level).OrderByDescending(p => p.UnlockLevel))
+                AddItemImmediate(p, unlocked: true);
+        }
+        public void PrebuildSilently()
+        {
+            // 1) Будуємо контент СИНХРОННО (працює навіть коли GO неактивний)
+            BuildListImmediate();
+
+            // 2) Форсимо лейаут, щоб уже були розміри/позиції
+            if (content is RectTransform rt)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+
+            // 3) Виставляємо Left = 0, поки панель ще «за кадром»
+            var rtRoot = (root != null ? root.GetComponent<RectTransform>() : GetComponent<RectTransform>());
+            if (rtRoot != null)
+            {
+                var p = rtRoot.anchoredPosition;
+                p.x = 0f;
+                rtRoot.anchoredPosition = p;
+            }
+
+            // 4) Ховаємо панель: альфа 0, неінтерактивна, root OFF, сам GO OFF
+            if (cg != null) { cg.alpha = 0f; cg.interactable = false; cg.blocksRaycasts = false; }
+            if (root != null) root.SetActive(false);
+            gameObject.SetActive(false);
+        }
+        public async System.Threading.Tasks.Task PrewarmAtStartupAsync()
+        {
+            // 0) повинні бути передані дані
+            if (_all == null || _all.Count == 0) return;
+
+            // 1) ПРЕФЕТЧ усіх видимих іконок (grown) на диск, без корутин
+            var allKeys = new System.Collections.Generic.HashSet<string>();
+            foreach (var p in _all)
+                if (p.IsActive && !string.IsNullOrEmpty(p.IconGrown))
+                    allKeys.Add(p.IconGrown);
+            if (allKeys.Count > 0)
+                await RemoteSpriteCache.PrefetchToDiskOnly(allKeys, maxParallel: 4, softTimeoutMs: 2000);
+
+            // 2) Прогріваємо в ПАМ'ЯТЬ топ-іконки (у тому ж порядку, що й у списку)
+            int level = _playerLevel;
+            var source = _all.Where(p => p.IsActive).ToList();
+            var exactNext = source.FirstOrDefault(p => p.UnlockLevel == level + 1);
+            var fallbackNext = source.Where(p => p.UnlockLevel > level).OrderBy(p => p.UnlockLevel).FirstOrDefault();
+            var nextLocked = exactNext ?? fallbackNext;
+
+            var display = new System.Collections.Generic.List<PlantInfo>(warmTopCount + 1);
+            if (nextLocked != null) display.Add(nextLocked);
+            foreach (var p in source.Where(p => p.UnlockLevel <= level).OrderByDescending(p => p.UnlockLevel))
+            {
+                if (display.Count >= warmTopCount) break;
+                display.Add(p);
+            }
+
+            foreach (var p in display)
+            {
+                if (string.IsNullOrEmpty(p.IconGrown)) continue;
+                var t = RemoteSpriteCache.GetSpriteAsync(p.IconGrown);
+                while (!t.IsCompleted) await System.Threading.Tasks.Task.Yield(); // без блокування кадру
+            }
+
+            // 3) Будуємо список СИНХРОННО (працює і коли GO неактивний)
+            BuildListImmediate();
+
+            // 4) Перерахунок лейауту і повернення позиції Left=0
+            if (content is RectTransform rt)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+            var rtRoot = (root != null ? root.GetComponent<RectTransform>() : GetComponent<RectTransform>());
+            if (rtRoot != null)
+            {
+                var p = rtRoot.anchoredPosition; p.x = 0f; rtRoot.anchoredPosition = p;
+            }
+
+            // 5) Ховаємо панель повністю (як Close), щоб перший показ був миттєвим
+            if (cg != null) { cg.alpha = 0f; cg.interactable = false; cg.blocksRaycasts = false; }
+            if (root != null) root.SetActive(false);
+            gameObject.SetActive(false);
+
+            _prewarmed = true;
         }
     }
 }

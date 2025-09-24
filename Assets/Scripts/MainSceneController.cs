@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine.UI;
 using System; // ← для Action
 using System.Threading.Tasks;
+using ClashFarm.Garden;
+using System.Linq;
 
 public class MainSceneController : MonoBehaviour
 {
@@ -109,7 +111,7 @@ public class MainSceneController : MonoBehaviour
 
         RefreshAll();                     // первинний HUD
         RecomputeHpRegenRate();
-
+        PrebuildPlantPanelEarly();
 
         if (_tick1Hz == null) _tick1Hz = StartCoroutine(UiTick1Hz());
         if (_hpHeartbeatLoop == null) _hpHeartbeatLoop = StartCoroutine(HpHeartbeatLoop());
@@ -460,5 +462,69 @@ public class MainSceneController : MonoBehaviour
 
         OnCombatsUpdated?.Invoke(_combatsCurrent, _combatsMax, _remainToNext, _remainToFull);
         UpdateCombatsUiEverySecond();
+    }
+    async void PrebuildPlantPanelEarly()
+    {
+        // знайдемо панель навіть якщо вона під неактивним батьком
+        var panel = UnityEngine.Object.FindFirstObjectByType<ClashFarm.Garden.PlantSelectionPanel>(FindObjectsInactive.Include);
+        if (panel == null) return;
+
+        // дістанемо каталог (з кешу, якщо готовий; інакше напряму з API)
+        var plants = PlantCatalogCache.IsReady
+            ? PlantCatalogCache.GetAll().ToList()
+            : await GardenApi.GetPlantsAsync();
+
+        if (plants == null || plants.Count == 0) return;
+
+        // фільтр активних
+        plants.RemoveAll(p => p.isActive == 0);
+
+        // рівень гравця
+        int lvl = Mathf.Max(1, PlayerSession.I?.Data?.playerlvl ?? 1);
+
+        // Порядок: "наступна заблокована" → доступні за спаданням
+        var exactNext = plants.FirstOrDefault(p => p.unlockLevel == lvl + 1);
+        var fallbackNext = plants.Where(p => p.unlockLevel > lvl).OrderBy(p => p.unlockLevel).FirstOrDefault();
+        var nextLocked = exactNext ?? fallbackNext;
+
+        var available = plants.Where(p => p.unlockLevel <= lvl)
+                              .OrderByDescending(p => p.unlockLevel);
+
+        // Збираємо список для панелі
+        var list = new System.Collections.Generic.List<ClashFarm.Garden.PlantInfo>();
+        if (nextLocked != null)
+            list.Add(new ClashFarm.Garden.PlantInfo
+            {
+                Id = nextLocked.id,
+                DisplayName = nextLocked.displayName,
+                Description = nextLocked.description,
+                UnlockLevel = nextLocked.unlockLevel,
+                GrowthTimeMinutes = nextLocked.growthTimeMinutes,
+                SellPrice = nextLocked.sellPrice,
+                IconSeed = nextLocked.iconSeed,
+                IconPlant = nextLocked.iconPlant,
+                IconGrown = nextLocked.iconGrown,
+                IconFruit = nextLocked.iconFruit,
+                IsActive = nextLocked.isActive == 1
+            });
+        foreach (var p in available)
+            list.Add(new ClashFarm.Garden.PlantInfo
+            {
+                Id = p.id,
+                DisplayName = p.displayName,
+                Description = p.description,
+                UnlockLevel = p.unlockLevel,
+                GrowthTimeMinutes = p.growthTimeMinutes,
+                SellPrice = p.sellPrice,
+                IconSeed = p.iconSeed,
+                IconPlant = p.iconPlant,
+                IconGrown = p.iconGrown,
+                IconFruit = p.iconFruit,
+                IsActive = p.isActive == 1
+            });
+
+        // Передаємо дані й будуємо офскрін
+        panel.SetData(list, lvl, onPlant: null); // колбек поставимо вже при реальному показі
+        await panel.PrewarmAtStartupAsync();   // повний прогрів: диск+RAM+побудова+приховати
     }
 }

@@ -11,6 +11,11 @@ namespace ClashFarm.Garden
         [Header("Server Time (UTC)")]
         public long ServerTimeAtLoginMs;
         public float RealtimeAtLoginS;
+        #if UNITY_EDITOR
+        [Header("Debug (Editor)")]
+        [Tooltip("Додатковий зсув часу в секундах для QA (лише в Editor).")]
+        public int DebugTimeOffsetSec = 0;
+        #endif
 
         [Header("Plots (max 12)")]
         public PlotState[] Plots = new PlotState[12];
@@ -36,7 +41,15 @@ namespace ClashFarm.Garden
 
         public long NowServerLikeMs()
         {
-            return ServerTimeAtLoginMs + (long)((Time.realtimeSinceStartup - RealtimeAtLoginS) * 1000f);
+            // базове "серверне" зараз = час логіну + пройдений realtime
+            long ms = ServerTimeAtLoginMs + (long)((Time.realtimeSinceStartup - RealtimeAtLoginS) * 1000f);
+
+            // у Editor дозволяємо QA зсув
+            #if UNITY_EDITOR
+            ms += (long)DebugTimeOffsetSec * 1000L;
+            #endif
+
+            return ms;
         }
 
         /// <summary> Ініт з головного лоадера. Тягне /state і заповнює Plots. </summary>
