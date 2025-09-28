@@ -100,7 +100,7 @@ public static class ApiClient
     {
         nickname   = (nickname   ?? "").Trim();
         serialcode = (serialcode ?? "").Trim();
-
+        
         if (nickname.Length == 0 || serialcode.Length == 0)
         {
             Debug.LogError("GetAccountAsync: nickname/serialcode empty.");

@@ -13,7 +13,8 @@ public class MainSceneController : MonoBehaviour
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject gardenPanel;
     [SerializeField] private GameObject arenaPanel;
-    [SerializeField] private GameObject villagepanel;
+    [SerializeField] private GameObject villagePanel;
+    [SerializeField] private GameObject playerPanel;
 
     [Header("HUD (Texts)")]
     [SerializeField] private TextMeshProUGUI nickText;
@@ -103,14 +104,16 @@ public class MainSceneController : MonoBehaviour
             if (mainMenuPanel) mainMenuPanel.SetActive(true);
             if (gardenPanel) gardenPanel.SetActive(false);
             if (arenaPanel) arenaPanel.SetActive(false);
-            if (villagepanel) villagepanel.SetActive(false);
+            if (villagePanel) villagePanel.SetActive(false);
+            if (playerPanel) playerPanel.SetActive(false);
             return;
         }
 
         if (mainMenuPanel) mainMenuPanel.SetActive(true);
         if (gardenPanel) gardenPanel.SetActive(false);
         if (arenaPanel) arenaPanel.SetActive(false);
-        if (villagepanel) villagepanel.SetActive(false);
+        if (villagePanel) villagePanel.SetActive(false);
+        if (playerPanel) playerPanel.SetActive(false);
 
         RefreshAll();                     // первинний HUD
         RecomputeHpRegenRate();
@@ -397,25 +400,36 @@ public class MainSceneController : MonoBehaviour
     // ===== Навігація панелей =====
     public void OpenGarden()
     {
-        if (mainMenuPanel) mainMenuPanel.SetActive(false);
+        CloseAllPanel();
         if (gardenPanel) gardenPanel.SetActive(true);
     }
     public void OpenArena()
     {
-        if (mainMenuPanel) mainMenuPanel.SetActive(false);
+        CloseAllPanel();
         if (arenaPanel) arenaPanel.SetActive(true);
     }
     public void OpenVillage()
     {
-        if (mainMenuPanel) mainMenuPanel.SetActive(false);
-        if (villagepanel) villagepanel.SetActive(true);
+        CloseAllPanel();
+        if (villagePanel) villagePanel.SetActive(true);
+    }
+    public void OpenPlayerMenu()
+    {
+        CloseAllPanel();
+        if (playerPanel) playerPanel.SetActive(true);
     }
     public void BackToMenu()
     {
-        if (arenaPanel) arenaPanel.SetActive(false);
-        if (villagepanel) villagepanel.SetActive(false);
-        if (gardenPanel) gardenPanel.SetActive(false);
+        CloseAllPanel();
         if (mainMenuPanel) mainMenuPanel.SetActive(true);
+    }
+    private void CloseAllPanel()
+    {
+        if (arenaPanel) arenaPanel.SetActive(false);
+        if (villagePanel) villagePanel.SetActive(false);
+        if (playerPanel) playerPanel.SetActive(false);
+        if (gardenPanel) gardenPanel.SetActive(false);
+        if (mainMenuPanel) mainMenuPanel.SetActive(false);
     }
 
     // ===== Допоміжні =====
