@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -171,7 +172,7 @@ public static class ApiClient
 
     public static async Task<(int hp, int max)?> HpHeartbeatAsync(string nickname, string serialcode)
     {
-        nickname   = (nickname   ?? "").Trim();
+        nickname   = (nickname ?? "").Trim();
         serialcode = (serialcode ?? "").Trim();
         if (nickname.Length == 0 || serialcode.Length == 0) return null;
 
@@ -272,6 +273,7 @@ public static class ApiClient
             return null;
         }
     }
+
     // === GARDEN ===
     public static async Task<GardenState> GetGardenStateAsync(string nickname, string serialcode)
     {
@@ -305,4 +307,65 @@ public static class ApiClient
     public static Task<bool> UnlockAsync(string nickname, string serialcode) =>
         PostOk($"{GardenBase}/unlock",
             ("PlayerName", nickname), ("PlayerSerialCode", serialcode));
+
+    // === PLAYER UPGRADE (JSON) ===
+
+    [Serializable] private class UpgradeReq
+    {
+        public string nickname;
+        public string serialcode;
+        public string stat;       // "power" | "skill" | "survivability" | "protection" | "dexterity"
+        public int fromLevel;
+    }
+
+    /// <summary>
+    /// POST /api/player/upgrade (JSON).
+    /// Повертає оновлений PlayerInfo у тому ж форматі, що /account.
+    /// </summary>
+    public static async Task<PlayerInfo> PostUpgradeAsync(string nickname, string serialcode, string statWireKey, int fromLevel)
+    {
+        nickname   = (nickname   ?? "").Trim();
+        serialcode = (serialcode ?? "").Trim();
+        statWireKey = (statWireKey ?? "").Trim().ToLowerInvariant();
+        if (nickname.Length == 0 || serialcode.Length == 0 || statWireKey.Length == 0) return null;
+
+        var payload = new UpgradeReq
+        {
+            nickname   = nickname,
+            serialcode = serialcode,
+            stat       = statWireKey,
+            fromLevel  = fromLevel
+        };
+
+        var url  = $"{PlayerBase}/upgrade";
+        var json = JsonUtility.ToJson(payload);
+
+        using var req = new UnityWebRequest(url, "POST");
+        var body = Encoding.UTF8.GetBytes(json);
+        req.uploadHandler = new UploadHandlerRaw(body);
+        req.downloadHandler = new DownloadHandlerBuffer();
+        req.SetRequestHeader("Content-Type", "application/json");
+
+        var ok = await Send(req);
+        if (!ok || req.responseCode < 200 || req.responseCode >= 300)
+        {
+            Debug.LogError($"PostUpgradeAsync HTTP {req.responseCode}: {req.error}\n{req.downloadHandler?.text}");
+            return null;
+        }
+
+        var txt = req.downloadHandler?.text ?? "";
+        var trimmed = txt.Trim();
+        if (trimmed.Length == 0 || trimmed[0] != '{')
+        {
+            Debug.LogWarning($"PostUpgradeAsync non-JSON body: '{trimmed}'");
+            return null;
+        }
+
+        try { return JsonUtility.FromJson<PlayerInfo>(txt); }
+        catch (Exception e)
+        {
+            Debug.LogError($"PostUpgradeAsync JSON parse error: {e.Message}\n{txt}");
+            return null;
+        }
+    }
 }
