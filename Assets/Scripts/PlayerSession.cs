@@ -51,7 +51,14 @@ public class PlayerInfo
     public string timetoendhike;
     public string lasthike;
     //===============
+    public int MonkLastClaimUtc;
+    public int MonkTotalClaims;
     public int monkreward;
+    //===============
+    public int PlayerFame;
+    public int PlayerWateredPlants;
+    public int PlayerHarvestPlant;
+    public int PlayerHarvest;
 }
 
 public class PlayerSession : MonoBehaviour
