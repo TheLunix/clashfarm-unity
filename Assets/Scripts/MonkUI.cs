@@ -20,8 +20,13 @@ public class MonkUI : MonoBehaviour
     [SerializeField] private Color bgEmpty = new Color(1, 1, 1, 0.35f);
     [SerializeField] private Color bgFull = Color.white;
 
+    [Header("Status Bar")]
+    [SerializeField] private GameObject statusBar;      // сам контейнер (GO)
+    [SerializeField] private TMP_Text statusBarText;   // дочірній TMP_Text у панелі
+    [SerializeField] private float statusAutoHideDelay = 5.0f;
+
     [Header("API")]
-    [SerializeField] private string apiBase = "https://<YOUR-HOST>/api/player/monk";
+    [SerializeField] private string apiBase = "https://api.clashfarm.com/api/player/monk";
 
     [Header("Debug")]
     [SerializeField] private bool verboseLogs = true;
@@ -29,6 +34,11 @@ public class MonkUI : MonoBehaviour
     // Localization keys (String Table: Monk)
     private readonly LocalizedString L_Claim = new LocalizedString("Monk", "monk_button_claim");
     private readonly LocalizedString L_Claimed = new LocalizedString("Monk", "monk_button_claimed");
+    private readonly LocalizedString L_RewTitle = new LocalizedString("Monk", "monk_popup_reward_title");
+    private readonly LocalizedString L_RewGreen = new LocalizedString("Monk", "monk_popup_reward_green");
+    private readonly LocalizedString L_RewGold = new LocalizedString("Monk", "monk_popup_reward_gold");
+    private readonly LocalizedString L_RewDiamonds = new LocalizedString("Monk", "monk_popup_reward_diamonds");
+
     private readonly LocalizedString[] Quotes =
     {
         new LocalizedString("Monk", "monk_quote_01"),
@@ -39,6 +49,7 @@ public class MonkUI : MonoBehaviour
     };
 
     private Coroutine timerCo;
+    private Coroutine statusHideCo;
 
     [Serializable] private struct MonkState { public bool canClaim; public int day; public string nextClaimAtUtc; }
     [Serializable]
@@ -61,17 +72,28 @@ public class MonkUI : MonoBehaviour
         {
             var starsRoot = transform.Find("PanelStars");
             if (!starsRoot) return;
+
             stars = new StarRef[4];
             for (int i = 0; i < 4; i++)
             {
-                var star = starsRoot.Find($"Star{i + 1}");
-                if (!star) continue;
-                var bg = star.GetComponentInChildren<Image>();
-                Image fill = null;
-                foreach (Transform t in star)
-                    if (t.TryGetComponent<Image>(out var img)) { fill = img; break; }
+                var starTr = starsRoot.Find($"Star{i + 1}");
+                if (!starTr) continue;
 
-                // гарантовано налаштовуємо fill
+                var bgImg = starTr.GetComponent<Image>();
+                Image fill = null;
+
+                // шукаємо перший дочірній Image – це і є шар заливки
+                for (int c = 0; c < starTr.childCount; c++)
+                {
+                    var child = starTr.GetChild(c);
+                    if (child.TryGetComponent<Image>(out var img))
+                    {
+                        fill = img;
+                        break;
+                    }
+                }
+
+                // налаштування заливки під твій кейс: Filled/Vertical/Bottom
                 if (fill)
                 {
                     fill.type = Image.Type.Filled;
@@ -80,15 +102,17 @@ public class MonkUI : MonoBehaviour
                     fill.fillAmount = 0f;
                     fill.raycastTarget = false;
                 }
-                if (bg) bg.raycastTarget = false;
 
-                stars[i] = new StarRef { bg = star.GetComponent<Image>(), fill = fill };
+                if (bgImg) bgImg.raycastTarget = false;
+
+                stars[i] = new StarRef { bg = bgImg, fill = fill };
             }
         }
     }
 
     private void OnEnable()
     {
+        HideStatusBar();
         rewardButton.onClick.AddListener(OnClaim);
         StartCoroutine(InitAndRefresh());
     }
@@ -105,8 +129,8 @@ public class MonkUI : MonoBehaviour
         if (!init.IsDone) yield return init;
 
         // 2) PlayerPrefs presence
-        var name = PlayerPrefs.GetString("Name", "");
-        var code = PlayerPrefs.GetString("SerialCode", "");
+        var name = PlayerPrefs.GetString("Name", PlayerPrefs.GetString("PlayerName", ""));
+        var code = PlayerPrefs.GetString("SerialCode", PlayerPrefs.GetString("PlayerSerialCode", ""));
         if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(code))
         {
             LogE("PlayerName/PlayerSerialCode відсутні в PlayerPrefs. Панель Монаха не може звернутися до API.");
@@ -162,6 +186,7 @@ public class MonkUI : MonoBehaviour
             timerCo = StartCoroutine(TimerToNextMidnight(s.nextClaimAtUtc));
             SetRandomQuote(conversationText);
         }
+        
         ApplyStars(s.day);
     }
 
@@ -188,6 +213,7 @@ public class MonkUI : MonoBehaviour
 
     private void OnClaim()
     {
+        SetButtonState(false);
         var name = PlayerPrefs.GetString("Name", "");
         var code = PlayerPrefs.GetString("SerialCode", "");
         if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(code)) { LogE("No player credentials"); return; }
@@ -214,6 +240,30 @@ public class MonkUI : MonoBehaviour
             if (verboseLogs) Debug.Log("CLAIM: " + body);
             // Можна розпарсити і показати попап із винагородою
             var reply = JsonUtility.FromJson<ClaimReply>(body);
+            // 1) Показуємо локалізовану винагороду у StatusBar
+            yield return StartCoroutine(BuildAndShowRewardStatus(
+                reply.reward.green, reply.reward.gold, reply.reward.diamonds));
+
+            // 2) Зірки оновлюємо одразу
+            ApplyStars(reply.day);
+
+            // 3) Кнопка → cooldown: фон прихований, кліки off, таймер видно на лейблі
+            SetButtonState(false);
+
+            // 4) Запускаємо таймер до наступної опівночі з відповіді сервера
+            if (timerCo != null) { StopCoroutine(timerCo); timerCo = null; }
+            timerCo = StartCoroutine(TimerToNextMidnight(reply.nextClaimAtUtc));
+
+            // 5) Оновлюємо ресурси як у тренуваннях (миттєво)
+            var name = PlayerPrefs.GetString("Name", "");
+            var code = PlayerPrefs.GetString("SerialCode", "");
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(code))
+            {
+                var accTask = ApiClient.GetAccountAsync(name, code);
+                while (!accTask.IsCompleted) yield return null;
+                var info = accTask.Result;
+                if (info != null) PlayerSession.I?.Apply(info);
+            }
 
             // Оновлюємо стан й зірки
             StartCoroutine(InitAndRefresh());
@@ -289,5 +339,57 @@ public class MonkUI : MonoBehaviour
 
         // Текст таймера завжди видно, але не блокує кліки під собою
         if (rewardButtonLabel) rewardButtonLabel.raycastTarget = false;
+    }
+    private void HideStatusBar()
+    {
+        if (statusHideCo != null) { StopCoroutine(statusHideCo); statusHideCo = null; }
+        if (statusBar) statusBar.SetActive(false);
+    }
+
+    private void ShowStatus(string message)
+    {
+        if (!statusBar || !statusBarText) return;
+        if (statusHideCo != null) { StopCoroutine(statusHideCo); statusHideCo = null; }
+
+        statusBarText.text = message;
+        statusBar.SetActive(true);
+
+        if (statusAutoHideDelay > 0f)
+            statusHideCo = StartCoroutine(HideStatusAfterDelay(statusAutoHideDelay));
+    }
+
+    private IEnumerator HideStatusAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        HideStatusBar();
+    }
+    private IEnumerator BuildAndShowRewardStatus(int green, int gold, int diamonds)
+    {
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        var titleOp = L_RewTitle.GetLocalizedStringAsync();
+        yield return titleOp;
+        sb.AppendLine(titleOp.Result);
+
+        if (green > 0)
+        {
+            L_RewGreen.Arguments = new object[] { green };
+            var op = L_RewGreen.GetLocalizedStringAsync(); yield return op;
+            sb.AppendLine(op.Result);
+        }
+        if (gold > 0)
+        {
+            L_RewGold.Arguments = new object[] { gold };
+            var op = L_RewGold.GetLocalizedStringAsync(); yield return op;
+            sb.AppendLine(op.Result);
+        }
+        if (diamonds > 0)
+        {
+            L_RewDiamonds.Arguments = new object[] { diamonds };
+            var op = L_RewDiamonds.GetLocalizedStringAsync(); yield return op;
+            sb.AppendLine(op.Result);
+        }
+
+        ShowStatus(sb.ToString().TrimEnd());
     }
 }
