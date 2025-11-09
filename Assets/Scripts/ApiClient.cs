@@ -6,16 +6,32 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public static class ApiClient
+public class ApiClient : MonoBehaviour
 {
-    // === БАЗОВІ ШЛЯХИ (за потреби поміняй домен/порт) ===
+    public static ApiClient Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     private const string ApiRoot    = "https://api.clashfarm.com";
     private const string PlayerBase = ApiRoot + "/api/player";
     private const string PlantsBase = ApiRoot + "/api/plants";
     private static string GardenBase => ApiRoot + "/api/garden";
 
-    // === DTO ===
+    // === DTO (додано) ===
+    [Serializable] private class GoogleLoginReq { public string idToken; public GoogleLoginReq(string t){ idToken=t; } }
+
+    // === DTO (існуючі) ===
     [Serializable] private class HbDto { public int playerhp; public int maxhp; }
+
     [Serializable] public class CombatsDto
     {
         public int combats;
@@ -54,6 +70,32 @@ public static class ApiClient
         public bool hasWeeds;        // чи є бур’ян
     }
 
+    // === НОВЕ: прив’язка Google до поточного гравця ===
+    public IEnumerator LinkGoogleAccount(string idToken)
+    {
+        var url  = $"{ApiRoot}/api/auth/link-google";
+        var json = JsonUtility.ToJson(new GoogleLoginReq(idToken));
+
+        using var req = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
+        req.uploadHandler   = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        req.downloadHandler = new DownloadHandlerBuffer();
+        req.SetRequestHeader("Content-Type", "application/json");
+        AttachJwt(req); // додаємо Authorization: Bearer
+
+        yield return req.SendWebRequest();
+
+        if (req.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Google linked successfully: " + req.downloadHandler.text);
+            // TODO: popup "Успішно прив’язано"
+        }
+        else
+        {
+            Debug.LogError("Link failed: " + req.responseCode + " " + req.downloadHandler.text);
+            // TODO: popup помилки
+        }
+    }
+
     // === HELPERS ===
     private static WWWForm Form(params (string key, string value)[] kv)
     {
@@ -61,23 +103,48 @@ public static class ApiClient
         foreach (var (k, v) in kv)
         {
             var safeKey = string.IsNullOrEmpty(k) ? "field" : k;
-            var safeVal = v ?? string.Empty; // ніколи не пхай null у AddField
+            var safeVal = v ?? string.Empty;
             f.AddField(safeKey, safeVal);
         }
         return f;
     }
 
+    /// <summary> Додає JWT із PlayerPrefs (ключ "auth_token") </summary>
+    private static void AttachJwt(UnityWebRequest req)
+    {
+        var jwt = PlayerPrefs.GetString("auth_token", "");
+        if (!string.IsNullOrEmpty(jwt))
+            req.SetRequestHeader("Authorization", "Bearer " + jwt);
+    }
+
+    /// <summary>
+    /// Відправляє запит. Повертає true для 2xx. У разі помилки логить код, помилку і BODY.
+    /// </summary>
     private static async Task<bool> Send(UnityWebRequest req)
     {
         req.timeout = 15;
+        if (req.downloadHandler == null)
+            req.downloadHandler = new DownloadHandlerBuffer();
+
         var op = req.SendWebRequest();
         while (!op.isDone) await Task.Yield();
-        return req.result == UnityWebRequest.Result.Success;
+
+#if UNITY_2020_3_OR_NEWER
+        bool ok = req.result == UnityWebRequest.Result.Success && req.responseCode >= 200 && req.responseCode < 300;
+#else
+        bool ok = !req.isNetworkError && !req.isHttpError && req.responseCode >= 200 && req.responseCode < 300;
+#endif
+        if (!ok)
+        {
+            string body = req.downloadHandler?.text ?? "";
+            Debug.LogError($"{req.method} {req.url} -> HTTP {req.responseCode}: {req.error}\nBODY: {body}");
+        }
+        return ok;
     }
 
     private static async Task<string> PostFormGetText(string url, params (string key, string val)[] kv)
     {
-        var form = Form(kv); // НЕ using
+        var form = Form(kv);
         using var req = UnityWebRequest.Post(url, form);
         req.downloadHandler = new DownloadHandlerBuffer();
         var ok = await Send(req);
@@ -88,20 +155,22 @@ public static class ApiClient
     {
         var form = Form(kv);
         using var req = UnityWebRequest.Post(url, form);
+        req.downloadHandler = new DownloadHandlerBuffer();
         var ok = await Send(req);
         if (!ok) return false;
+
         var body = req.downloadHandler?.text?.Trim();
-        // підлаштовуємося під бекенд: "0" або "OK" або JSON
         return body == "0" || string.Equals(body, "OK", StringComparison.OrdinalIgnoreCase) || (body?.StartsWith("{") ?? false);
     }
 
     // === PLAYER ===
 
+    // Тип PlayerInfo – твій існуючий клас.
     public static async Task<PlayerInfo> GetAccountAsync(string nickname, string serialcode)
     {
         nickname   = (nickname   ?? "").Trim();
         serialcode = (serialcode ?? "").Trim();
-        
+
         if (nickname.Length == 0 || serialcode.Length == 0)
         {
             Debug.LogError("GetAccountAsync: nickname/serialcode empty.");
@@ -116,7 +185,7 @@ public static class ApiClient
 
         if (!ok)
         {
-            Debug.LogError($"GetAccountAsync HTTP {req.responseCode}: {req.error}");
+            Debug.LogError($"GetAccountAsync HTTP {req.responseCode}: {req.error}\nBODY: {body}");
             return null;
         }
 
@@ -135,41 +204,6 @@ public static class ApiClient
         }
     }
 
-    public static async Task<string> GetCellAsync(string nickname, string serialcode, string cell)
-    {
-        nickname   = (nickname   ?? "").Trim();
-        serialcode = (serialcode ?? "").Trim();
-        cell       = (cell       ?? "").Trim();
-        if (nickname.Length == 0 || serialcode.Length == 0 || cell.Length == 0) return null;
-
-        using var req = UnityWebRequest.Post($"{PlayerBase}/getcell",
-            Form(("PlayerName", nickname), ("PlayerSerialCode", serialcode), ("cell", cell)));
-
-        var ok = await Send(req);
-        if (!ok) return null;
-
-        var body = req.downloadHandler?.text?.Trim();
-        return (body == "1" || body == "3") ? null : body;
-    }
-
-    public static async Task<bool> SetCellAsync(string nickname, string serialcode, string cell, string value)
-    {
-        nickname   = (nickname   ?? "").Trim();
-        serialcode = (serialcode ?? "").Trim();
-        cell       = (cell       ?? "").Trim();
-        value      = (value      ?? "").Trim();
-        if (nickname.Length == 0 || serialcode.Length == 0 || cell.Length == 0) return false;
-
-        using var req = UnityWebRequest.Post($"{PlayerBase}/setcell",
-            Form(("PlayerName", nickname), ("PlayerSerialCode", serialcode), ("cell", cell), ("value", value)));
-
-        var ok = await Send(req);
-        if (!ok) return false;
-
-        var body = req.downloadHandler?.text?.Trim();
-        return body == "0";
-    }
-
     public static async Task<(int hp, int max)?> HpHeartbeatAsync(string nickname, string serialcode)
     {
         nickname   = (nickname ?? "").Trim();
@@ -178,14 +212,11 @@ public static class ApiClient
 
         using var req = UnityWebRequest.Post($"{PlayerBase}/hp/heartbeat",
             Form(("PlayerName", nickname), ("PlayerSerialCode", serialcode)));
+        req.downloadHandler = new DownloadHandlerBuffer();
 
         var ok   = await Send(req);
         var json = req.downloadHandler?.text ?? string.Empty;
-        if (!ok)
-        {
-            Debug.LogError($"Heartbeat HTTP {req.responseCode}: {req.error}");
-            return null;
-        }
+        if (!ok) return null;
 
         var trimmed = json.Trim();
         if (trimmed.Length == 0 || trimmed[0] != '{')
@@ -259,7 +290,7 @@ public static class ApiClient
 
         if (req.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError($"GET /api/plants/list failed: {req.responseCode} {req.error}");
+            Debug.LogError($"GET /api/plants/list failed: {req.responseCode} {req.error}\nBODY: {req.downloadHandler?.text}");
             return null;
         }
         try
@@ -318,10 +349,6 @@ public static class ApiClient
         public int fromLevel;
     }
 
-    /// <summary>
-    /// POST /api/player/upgrade (JSON).
-    /// Повертає оновлений PlayerInfo у тому ж форматі, що /account.
-    /// </summary>
     public static async Task<PlayerInfo> PostUpgradeAsync(string nickname, string serialcode, string statWireKey, int fromLevel)
     {
         nickname   = (nickname   ?? "").Trim();

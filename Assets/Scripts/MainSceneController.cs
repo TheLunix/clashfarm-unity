@@ -9,6 +9,11 @@ using System.Linq;
 
 public class MainSceneController : MonoBehaviour
 {
+    [Header("Основні об’єкти")]
+    [SerializeField] private Image fone;                  // твій головний фон
+    [SerializeField] private Sprite elvesBackground;      // спрайт для ельфів
+    [SerializeField] private Sprite orcsBackground;       // спрайт для орків
+
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject gardenPanel;
@@ -116,6 +121,7 @@ public class MainSceneController : MonoBehaviour
         if (playerPanel) playerPanel.SetActive(false);
 
         RefreshAll();                     // первинний HUD
+        UpdateBackgroundByFaction();
         RecomputeHpRegenRate();
         PrebuildPlantPanelEarly();
 
@@ -294,6 +300,7 @@ public class MainSceneController : MonoBehaviour
             if (combatsTimerText) combatsTimerText.text = (_combatsCurrent >= _combatsMax) ? "—" : "00:00";
         }
         RecomputeHpRegenRate();
+        UpdateBackgroundByFaction();
     }
 
     // ===== Merge account =====
@@ -549,5 +556,19 @@ public class MainSceneController : MonoBehaviour
         // Передаємо дані й будуємо офскрін
         panel.SetData(list, lvl, onPlant: null); // колбек поставимо вже при реальному показі
         await panel.PrewarmAtStartupAsync();   // повний прогрів: диск+RAM+побудова+приховати
+    }
+    private void UpdateBackgroundByFaction()
+    {
+        var data = PlayerSession.I?.Data;
+        if (data == null || fone == null) return;
+
+        if (data.playerfraction == 1 && elvesBackground != null)
+        {
+            fone.sprite = elvesBackground;
+        }
+        else if (data.playerfraction == 2 && orcsBackground != null)
+        {
+            fone.sprite = orcsBackground;
+        }
     }
 }
