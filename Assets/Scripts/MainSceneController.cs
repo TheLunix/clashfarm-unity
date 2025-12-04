@@ -6,6 +6,7 @@ using System; // ← для Action
 using System.Threading.Tasks;
 using ClashFarm.Garden;
 using System.Linq;
+using UnityEngine.Networking;
 
 public class MainSceneController : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class MainSceneController : MonoBehaviour
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject gardenPanel;
     [SerializeField] private GameObject arenaPanel;
-    [SerializeField] private GameObject villagePanel;
+    [SerializeField] public GameObject villagePanel;
     [SerializeField] private GameObject playerPanel;
 
     [Header("HUD (Texts)")]
@@ -39,10 +40,23 @@ public class MainSceneController : MonoBehaviour
     [Header("HUD (Combats)")]
     [SerializeField] private TextMeshProUGUI combatsText;       // "3 / 6"
     [SerializeField] private TextMeshProUGUI combatsTimerText;  // "MM:SS" або "—"
+    [Header("HUD (Pet)")]
+    [SerializeField] private TextMeshProUGUI petHpText;
+    [SerializeField] private Slider petHpSlider;
+    [SerializeField] private Image petIcon;
 
+    [SerializeField] private Sprite petNoPetIcon;    // коли тварини немає
+    [SerializeField] private Sprite petAliveIcon;    // коли є і жива (і не закрита)
+    [SerializeField] private Sprite petClosedIcon;   // коли є, але закрита
+    [SerializeField] private Sprite petDeadIcon;     // коли є, але мертва
+
+    [Header("Navigation")]
+    [SerializeField] public GameObject backButton; // універсальна кнопка назад
 
     [Header("Balancing")]
     public int baseVitality = 0;
+    [Header("API")]
+    [SerializeField] private string inventoryUrl = "https://api.clashfarm.com/api/player/inventory";
 
     //[Header("Network")]
     //[SerializeField] private string apiBase = "https://api.clashfarm.com";
@@ -84,6 +98,9 @@ public class MainSceneController : MonoBehaviour
     {
         if (PlayerSession.I != null)
             PlayerSession.I.OnChanged += RefreshAll;
+
+        if (backButton != null)
+            backButton.SetActive(false);
     }
 
     void OnDisable()
@@ -99,6 +116,9 @@ public class MainSceneController : MonoBehaviour
 
         _combatsHeartbeatLoop = null;
         _tick1Hz = _lightSync = _hpHeartbeatLoop = _accountHeartbeatLoop = null;
+
+        if (backButton != null)
+            backButton.SetActive(true);
     }
 
     void Start()
@@ -129,6 +149,8 @@ public class MainSceneController : MonoBehaviour
         if (_hpHeartbeatLoop == null) _hpHeartbeatLoop = StartCoroutine(HpHeartbeatLoop());
         if (_accountHeartbeatLoop == null) _accountHeartbeatLoop = StartCoroutine(AccountHeartbeatLoop());
         if (_combatsHeartbeatLoop == null) _combatsHeartbeatLoop = StartCoroutine(CombatsHeartbeatLoop());
+
+        StartCoroutine(InitialEquipmentLoadCoroutine());
     }
 
     // ===== 1Hz локальний тік (hp+combats) =====
@@ -159,6 +181,7 @@ public class MainSceneController : MonoBehaviour
 
             UpdateCombatsUiEverySecond();
             UpdateHpUiEverySecond();
+            UpdatePetUiEverySecond();
 
             yield return wait;
         }
@@ -301,6 +324,7 @@ public class MainSceneController : MonoBehaviour
         }
         RecomputeHpRegenRate();
         UpdateBackgroundByFaction();
+        UpdatePetUiEverySecond();
     }
 
     // ===== Merge account =====
@@ -403,34 +427,123 @@ public class MainSceneController : MonoBehaviour
             hpText.text = $"{d.playerhp}/{maxHp}";
         }
     }
+        // ===== Pet HP + іконка =====
+    void UpdatePetUiEverySecond()
+    {
+        var d = PlayerSession.I?.Data;
+
+        // Якщо сесії немає – показуємо стан "нема тварини"
+        if (d == null)
+        {
+            if (petHpText) petHpText.text = "";
+            if (petHpSlider)
+            {
+                petHpSlider.minValue = 0;
+                petHpSlider.maxValue = 1;
+                petHpSlider.value = 0;
+            }
+            if (petIcon && petNoPetIcon) petIcon.sprite = petNoPetIcon;
+            return;
+        }
+
+        var pet = d.petInfo;
+
+        // ===== 1) Визначаємо іконку за станом =====
+        if (petIcon != null)
+        {
+            Sprite target = null;
+
+            if (pet == null)
+            {
+                // Немає тварини взагалі
+                target = petNoPetIcon;
+            }
+            else if (!pet.isalive)
+            {
+                // Є, але мертва
+                target = petDeadIcon ? petDeadIcon : petAliveIcon;
+            }
+            else if (pet.isclosed)
+            {
+                // Є, жива, але закрита
+                target = petClosedIcon ? petClosedIcon : petAliveIcon;
+            }
+            else
+            {
+                // Є, жива і відкрита
+                target = petAliveIcon ? petAliveIcon : petNoPetIcon;
+            }
+
+            if (target != null)
+                petIcon.sprite = target;
+        }
+
+        // ===== 2) HP тварини =====
+        if (pet == null)
+        {
+            // Для "немає тварини" можна або чистити, або показувати 0/0
+            if (petHpText) petHpText.text = "";
+            if (petHpSlider)
+            {
+                petHpSlider.minValue = 0;
+                petHpSlider.maxValue = 1;
+                petHpSlider.value = 0;
+            }
+            return;
+        }
+
+        int hp = Mathf.Max(0, pet.pethp);
+        int maxHp = Mathf.Max(1, pet.petmaxhp);
+
+        if (petHpText)
+            petHpText.text = $"{hp}/{maxHp}";
+
+        if (petHpSlider)
+        {
+            petHpSlider.minValue = 0;
+            petHpSlider.maxValue = maxHp;
+            petHpSlider.wholeNumbers = true;
+            petHpSlider.value = Mathf.Clamp(hp, 0, maxHp);
+        }
+    }
 
     // ===== Навігація панелей =====
     public void OpenGarden()
     {
         CloseAllPanel();
         if (gardenPanel) gardenPanel.SetActive(true);
+        if (backButton != null)
+            backButton.SetActive(true);
     }
     public void OpenArena()
     {
         CloseAllPanel();
         if (arenaPanel) arenaPanel.SetActive(true);
+        if (backButton != null)
+            backButton.SetActive(true);
     }
     public void OpenVillage()
     {
         CloseAllPanel();
         if (villagePanel) villagePanel.SetActive(true);
+        if (backButton != null)
+            backButton.SetActive(true);
     }
     public void OpenPlayerMenu()
     {
         CloseAllPanel();
         if (playerPanel) playerPanel.SetActive(true);
+        if (backButton != null)
+            backButton.SetActive(true);
     }
     public void BackToMenu()
     {
         CloseAllPanel();
         if (mainMenuPanel) mainMenuPanel.SetActive(true);
+        if (backButton != null)
+            backButton.SetActive(false);
     }
-    private void CloseAllPanel()
+    public void CloseAllPanel()
     {
         if (arenaPanel) arenaPanel.SetActive(false);
         if (villagePanel) villagePanel.SetActive(false);
@@ -569,6 +682,47 @@ public class MainSceneController : MonoBehaviour
         else if (data.playerfraction == 2 && orcsBackground != null)
         {
             fone.sprite = orcsBackground;
+        }
+    }
+
+    private IEnumerator InitialEquipmentLoadCoroutine()
+    {
+        // Чекаємо, поки PlayerSession підніметься
+        while (PlayerSession.I == null || PlayerSession.I.Data == null)
+            yield return null;
+
+        var player = PlayerSession.I.Data;
+
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerName",       player.nickname);
+        form.AddField("PlayerSerialCode", player.serialcode);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(inventoryUrl, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("[HUD] Initial equipment load error: " + www.error);
+                Debug.LogError("[HUD] Body: " + www.downloadHandler.text);
+                yield break;
+            }
+
+            var json = www.downloadHandler.text;
+            Debug.Log("[HUD] Initial inventory JSON: " + json);
+
+            var resp = JsonUtility.FromJson<InventoryResponseClient>(json);
+            if (resp == null || resp.error != "OK")
+            {
+                Debug.LogError("[HUD] Inventory response error: " + (resp?.error ?? "null"));
+                yield break;
+            }
+
+            // 🔹 Ось тут якраз і наповнюємо слоти навколо аватарки
+            while (PlayerEquipmentSlotsUI.Instance == null)
+                yield return null;
+
+            PlayerEquipmentSlotsUI.Instance.ApplyFromInventory(resp.items);
         }
     }
 }

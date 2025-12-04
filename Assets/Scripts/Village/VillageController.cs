@@ -52,11 +52,12 @@ namespace ClashFarm.Village
         [Tooltip("Обʼєкт із скриптом LoadingController — виклики StartLoading/StopLoading через SendMessage")]
         [SerializeField] private GameObject loadingController;
 
+        // Поточна відкрита локація всередині Village
         private LocationEntry _current;
 
-        void OnEnable()
+        private void OnEnable()
         {
-            // за бажанням, автопідв'язка кнопок
+            // Автопідв'язка кнопок до OpenLocation
             foreach (var loc in locations)
             {
                 if (loc?.button == null) continue;
@@ -65,13 +66,13 @@ namespace ClashFarm.Village
                 loc.button.onClick.AddListener(() => OpenLocation(captured));
             }
 
-            // на старті всі внутрішні панелі вимкнені — ти так і хотів
+            // На старті всі внутрішні панелі вимкнені
             CloseAllInternal();
         }
 
         // ================== ПУБЛІЧНІ МЕТОДИ ДЛЯ КНОПОК (без параметрів) ==================
 
-        // Вхід у Village-хаб (кнопка "Село" з мейна)
+        // Вхід у Village-хаб (кнопка "Село" з мейну)
         public void OpenVillageHub()
         {
             BeginLoading();
@@ -83,6 +84,9 @@ namespace ClashFarm.Village
                 _current = null;
             }
             finally { EndLoading(); }
+
+            if (Navigation.Instance != null)
+                Navigation.Instance.OnVillageHubOpened();
         }
 
         // Вихід назад у мейн
@@ -97,6 +101,9 @@ namespace ClashFarm.Village
                 if (mainHub) mainHub.SetActive(true);
             }
             finally { EndLoading(); }
+
+            if (Navigation.Instance != null)
+                Navigation.Instance.OnMainMenuOpened();
         }
 
         // ——— ЛОКАЦІЇ (готові до призначення в OnClick) ———
@@ -109,9 +116,6 @@ namespace ClashFarm.Village
         public void OpenShop()       => OpenLocation(LocationType.Shop);
         public void OpenMarket()     => OpenLocation(LocationType.Market);
         public void OpenLivestock()  => OpenLocation(LocationType.Livestock);
-        public void OpenOutskirts()  => OpenLocation(LocationType.Outskirts);
-        public void OpenTravel()     => OpenLocation(LocationType.Travel);
-        public void OpenMine()       => OpenLocation(LocationType.Mine);
 
         // Закрити поточну локацію, залишитись у Village-хабі
         public void CloseCurrent()   => CloseCurrentInternal();
@@ -146,6 +150,28 @@ namespace ClashFarm.Village
                 _current = entry;
             }
             finally { EndLoading(); }
+
+            // Повідомляємо Navigation, що ми тепер у конкретній локації
+            if (Navigation.Instance != null)
+                Navigation.Instance.OnVillageLocationOpened(type);
+        }
+
+        public void OpenOutskirts()
+        {
+            if (BlockIfInTravel()) return;
+            OpenLocation(LocationType.Outskirts);
+        }
+
+        public void OpenMine()
+        {
+            if (BlockIfInTravel()) return;
+            OpenLocation(LocationType.Mine);
+        }
+
+        // Подорож себе саму відкривати може
+        public void OpenTravel()
+        {
+            OpenLocation(LocationType.Travel);
         }
 
         // ================== УТИЛІТИ ==================
@@ -175,6 +201,32 @@ namespace ClashFarm.Village
         {
             if (loadingController)
                 loadingController.SendMessage("StopLoading", SendMessageOptions.DontRequireReceiver);
+        }
+
+        private bool IsTravelActiveClient()
+        {
+            if (PlayerSession.I == null || PlayerSession.I.Data == null) return false;
+
+            var info = PlayerSession.I.Data;
+            if (string.IsNullOrEmpty(info.timetoendhike) || info.timetoendhike == "0") return false;
+
+            if (!DateTime.TryParse(info.timetoendhike, null,
+                    System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal,
+                    out var endUtc))
+                return false;
+
+            return DateTime.UtcNow < endUtc;
+        }
+
+        private bool BlockIfInTravel()
+        {
+            if (IsTravelActiveClient())
+            {
+                Debug.LogWarning("[Village] Гравець у подорожі — ця локація недоступна.");
+                // тут пізніше можна повісити popup "Спочатку завершіть подорож"
+                return true;
+            }
+            return false;
         }
     }
 }

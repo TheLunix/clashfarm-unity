@@ -28,6 +28,7 @@ public class PlayerInfo
     public int playerexpierence;
     //===============
     public int pet;
+    public PetInfo petInfo;
     //===============
     public int hourreward;
     //===============
@@ -60,7 +61,29 @@ public class PlayerInfo
     public int PlayerHarvestPlant;
     public int PlayerHarvest;
 }
+[Serializable]
+public class PetInfo
+{
+    public int id;
+    public string name;
+    public string avatar;
 
+    public int petpower;
+    public int petprotection;
+    public int petdexterity;
+    public int petskill;
+    public int petsurvivability;
+    public int pethp;
+    public int petmaxhp;
+
+    public int petcollar;
+
+    public bool isalive;
+    public bool isclosed;
+
+    public int petkills;   // 🔹
+    public int petdeaths;  // 🔹
+}
 public class PlayerSession : MonoBehaviour
 {
     public static PlayerSession I { get; private set; }

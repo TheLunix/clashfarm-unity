@@ -64,6 +64,15 @@ public class PlayerSceneController : MonoBehaviour
         if (btnProfile)      btnProfile.onClick.AddListener(() => Open(panelProfile));
     }
 
+    private void OnEnable()
+    {
+        // Коли панель профілю відкрили – повідомляємо Navigation, що ми в стані Player
+        if (Navigation.Instance != null)
+        {
+            Navigation.Instance.OnPlayerMenuOpened();
+        }
+    }
+
     void Start()
     {
         // Прогрів панелей: щоб перший клік одразу показував UI
@@ -82,13 +91,21 @@ public class PlayerSceneController : MonoBehaviour
 
             if (current != null)
             {
-                // закриваємо відкриту панель
+                // закриваємо відкриту підпанель (локальна логіка профілю)
                 CloseCurrent();
             }
             else
             {
-                // якщо панелі нема — клікнемо по fallback-кнопці (якщо задана)
-                if (backFallbackButton) backFallbackButton.onClick.Invoke();
+                // якщо підпанелі нема — віддаємо управління глобальній навігації
+                if (Navigation.Instance != null)
+                {
+                    Navigation.Instance.GoBack();
+                }
+                else if (backFallbackButton)
+                {
+                    // запасний варіант: старий поведінковий шлях
+                    backFallbackButton.onClick.Invoke();
+                }
                 // інакше нічого не робимо — залишайся на сцені
             }
         }

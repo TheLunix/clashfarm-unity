@@ -65,6 +65,37 @@ public class LoadingController : MonoBehaviour
         SetStatus("Ініціалізуємо профіль…", 0.4f);
         PlayerSession.I.Apply(data);
 
+        // 3.1) Тягнемо тварину з бекенду
+        var petState = await ApiClient.PetStateAsync(nickname, serial);
+        if (petState != null && petState.haspet && petState.pet != null)
+        {
+            PlayerSession.I.Patch(info =>
+            {
+                info.petInfo = new PetInfo
+                {
+                    id = petState.pet.id,
+                    name = petState.pet.name,
+                    avatar = petState.pet.avatar,
+                    petpower = petState.pet.petpower,
+                    petprotection = petState.pet.petprotection,
+                    petdexterity = petState.pet.petdexterity,
+                    petskill = petState.pet.petskill,
+                    petsurvivability = petState.pet.petsurvivability,
+                    petcollar = petState.pet.petcollar,
+                    isalive = petState.pet.isalive,
+                    isclosed = petState.pet.isclosed,
+                    pethp = petState.pet.pethp,
+                    petmaxhp = petState.pet.petmaxhp,
+                    petkills = petState.pet.petkills,
+                    petdeaths = petState.pet.petdeaths
+                };
+            });
+        }
+        else
+        {
+            PlayerSession.I.Patch(info => info.petInfo = null);
+        }
+
         // 4) (Місце для майбутніх кроків)
         SetStatus("Дістаємо лопати й граблі…", 0.45f);
         var gs = EnsureSingleton<GardenSession>("GardenSession");
@@ -87,12 +118,6 @@ public class LoadingController : MonoBehaviour
         // 5) На головну
         SetStatus("Все готово! Переходимо…", 1f);
         SceneManager.LoadScene(mainScene);
-    }
-
-    void SetStatus(string msg, float progress01)
-    {
-        if (statusLabel != null) statusLabel.text = msg;
-        if (progressBar != null) progressBar.value = Mathf.Clamp01(progress01);
     }
 
     // Створює сінглтон компонент, якщо ще не існує

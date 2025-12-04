@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "FarmClash.sln"
+    "dotnet.defaultSolution": "FarmClash.sln",
+    "telemetry.editStats.details.enabled": true
 }
