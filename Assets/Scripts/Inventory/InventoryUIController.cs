@@ -14,6 +14,7 @@ public class InventoryUIController : MonoBehaviour
     [SerializeField] private string equipUrl     = "https://api.clashfarm.com/api/player/inventory/equip";
     [SerializeField] private string unequipUrl  = "https://api.clashfarm.com/api/player/inventory/unequip";
     [SerializeField] private string sellUrl     = "https://api.clashfarm.com/api/player/inventory/sell";
+    [SerializeField] private string useUrl      = "https://api.clashfarm.com/api/player/inventory/use";
     [SerializeField] private string itemsStringTable = "Items"; // ім'я String Table для предметів
     [SerializeField] private string inventoryUiTable = "InventoryUI";
 
@@ -232,9 +233,23 @@ public class InventoryUIController : MonoBehaviour
 
     private void OnUseClicked(InventoryItemViewModel vm)
     {
-        Debug.Log("Use clicked: " + vm.Data.ItemId);
-        // TODO: API /use
+        if (vm == null || vm.Data == null)
+            return;
+
+        var d = vm.Data;
+
+        // Підстрахуємось – юзати можна тільки те, що реально позначено CanUse
+        if (!d.CanUse)
+        {
+            Debug.Log("[INVENTORY] OnUseClicked: item is not usable: " + d.ItemId);
+            return;
+        }
+
+        Debug.Log("[INVENTORY] Use clicked: " + d.ItemId + " (id=" + d.Id + ")");
+
+        StartCoroutine(UseCoroutine(vm));
     }
+
 
     private void OnSellClicked(InventoryItemViewModel vm)
     {
@@ -307,6 +322,14 @@ public class InventoryUIController : MonoBehaviour
         public int    green;
         public int    soldCount;
         public int    reward;
+    }
+    [Serializable]
+    private class UseResponse
+    {
+        public string error;
+        public int newStack; // скільки залишилось у стаку після використання
+        public int hp;       // поточне HP гравця після використання
+        public int maxhp;    // максимальне HP (на випадок бафів/левелапів)
     }
     private IEnumerator EquipCoroutine(InventoryItemViewModel vm)
     {
@@ -490,6 +513,74 @@ public class InventoryUIController : MonoBehaviour
             StartCoroutine(LoadAndRenderCoroutine());
         }
     }
+
+    private IEnumerator UseCoroutine(InventoryItemViewModel vm)
+    {
+        var d = vm.Data;
+
+        var player = PlayerSession.I?.Data;
+        if (player == null)
+        {
+            Debug.LogError("[INVENTORY] Use: PlayerSession.I.Data is null");
+            yield break;
+        }
+
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerName", player.nickname);
+        form.AddField("PlayerSerialCode", player.serialcode);
+        form.AddField("PlayerItemId", d.Id.ToString()); // Id = PlayerItems.Id
+        form.AddField("Count", 1); // поки що юзаємо по 1 зіллю
+
+        using (UnityWebRequest www = UnityWebRequest.Post(useUrl, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("[INVENTORY] Use error: " + www.error);
+                Debug.LogError("[INVENTORY] Use body: " + www.downloadHandler.text);
+                yield break;
+            }
+
+            var json = www.downloadHandler.text;
+            Debug.Log("[INVENTORY] Use response: " + json);
+
+            UseResponse resp = null;
+            try
+            {
+                resp = JsonUtility.FromJson<UseResponse>(json);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("[INVENTORY] Use: bad JSON: " + ex);
+                yield break;
+            }
+
+            if (resp == null || resp.error != "OK")
+            {
+                Debug.LogError("[INVENTORY] Use failed: " + (resp?.error ?? "null"));
+                yield break;
+            }
+
+            // ✅ Успіх: ховаємо панель деталей
+            if (detailsPanel != null)
+                detailsPanel.Hide();
+
+            // ✅ Миттєво оновлюємо HP у сесії
+            if (PlayerSession.I != null)
+            {
+                PlayerSession.I.Patch(p =>
+                {
+                    p.playerhp    = resp.hp;
+                    p.maxhp = resp.maxhp;
+                });
+            }
+
+            // ✅ Перезавантажуємо інвентар (щоб оновився stack / зник предмет)
+            StartCoroutine(LoadAndRenderCoroutine());
+        }
+    }
+
     
     public void OnCloseButtonClicked()
     {
