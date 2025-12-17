@@ -7,63 +7,128 @@ using UnityEngine.UI;
 public class ShopItemView : MonoBehaviour
 {
     [Header("Left")]
-    [SerializeField] private Image rarityFrameImage;    // RarityPlaceholder → Image
-    [SerializeField] private Image iconImage;           // RarityPlaceholder/Image
-    [SerializeField] private TMP_Text priceText;        // PricePlaceholder/PriceText
+    [SerializeField] private Image rarityFrameImage;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private TMP_Text priceText;
 
     [Header("Right")]
-    [SerializeField] private TMP_Text nameText;         // RightContainer/NameItemText
-    [SerializeField] private TMP_Text descriptionText;  // RightContainer/DescriptionText
-    [SerializeField] private Button  buyButton;         // ButtonBuy
-    [SerializeField] private TMP_Text buyText;          // ButtonBuy/BuyText
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text descriptionText;
+
+    [Header("Actions")]
+    [SerializeField] private Button buyButton;      // ButtonBuy
+    [SerializeField] private TMP_Text buyText;      // ButtonBuy/BuyText
+    [SerializeField] private Button sellButton;     // ButtonSell
+    [SerializeField] private TMP_Text sellText;     // ButtonSell/SellText
+    [SerializeField] private TMP_Text lockText;     // LockText
 
     private ShopItemClientDto _data;
     private Action<ShopItemClientDto> _onBuyClicked;
+    private Action<ShopItemClientDto> _onSellClicked;
 
-    public void Bind(ShopItemClientDto dto, Action<ShopItemClientDto> onBuyClicked)
+    [Serializable]
+    private class ShopItemStatsData
+    {
+        public int PlayerPower;
+        public int PlayerSkill;
+        public int PlayerDexterity;
+        public int PlayerProtection;
+        public int PlayerSurvivability;
+    }
+
+    public void Bind(
+        ShopItemClientDto dto,
+        Action<ShopItemClientDto> onBuyClicked,
+        Action<ShopItemClientDto> onSellClicked,
+        bool canSell)
     {
         _data = dto;
         _onBuyClicked = onBuyClicked;
+        _onSellClicked = onSellClicked;
 
-        // Назва — поки хардкор українською, потім поставимо локалі по NameLocKey
-        nameText.text = dto.ItemId; // тимчасово
+        // тимчасово без локалізації
+        if (nameText != null) nameText.text = dto.ItemId;
 
-        // Опис з JSON-статів
-        descriptionText.text = BuildDescription(dto);
+        if (descriptionText != null)
+            descriptionText.text = BuildDescription(dto);
 
-        // 🔥 Ціна: BasePrice в зелені
-        if (dto.BasePrice > 0)
-            priceText.text = $"{dto.BasePrice} <sprite=0>";
-        else
-            priceText.text = "Безкоштовно";
+        if (priceText != null)
+        {
+            if (dto.BasePrice > 0) priceText.text = $"{dto.BasePrice} <sprite=0>";
+            else priceText.text = "Безкоштовно";
+        }
 
-        // 🔥 Рамка по Rarity (а не по Level)
-        if (RarityFrameProvider.Instance != null)
+        if (RarityFrameProvider.Instance != null && rarityFrameImage != null)
             rarityFrameImage.sprite = RarityFrameProvider.Instance.GetFrame(dto.Rarity);
 
-        // Іконка
-        if (ItemIconProvider.Instance != null)
+        if (ItemIconProvider.Instance != null && iconImage != null)
             StartCoroutine(LoadIconCoroutine(dto.IconKey));
 
-        // Кнопка
-        buyButton.onClick.RemoveAllListeners();
-        buyButton.onClick.AddListener(() =>
+        if (buyButton != null)
         {
-            _onBuyClicked?.Invoke(_data);
-        });
+            buyButton.onClick.RemoveAllListeners();
+            buyButton.onClick.AddListener(() => _onBuyClicked?.Invoke(_data));
+        }
 
-        bool isUnlocked = !dto.IsLocked;
-
-        if (!isUnlocked)
+        if (sellButton != null)
         {
-            buyButton.interactable = false;
-            buyText.text = $"Відкриється на {dto.MinPlayerLevel} рівні";
+            sellButton.onClick.RemoveAllListeners();
+            sellButton.onClick.AddListener(() => _onSellClicked?.Invoke(_data));
+        }
+
+        // ---------- UI state ----------
+        if (dto.IsLocked)
+        {
+            SetActiveSafe(buyButton, false);
+            SetActiveSafe(sellButton, false);
+            SetActiveSafe(lockText, true);
+            if (lockText != null)
+                lockText.text = $"Відкриється на {dto.MinPlayerLevel} рівні";
+            return;
+        }
+
+        SetActiveSafe(lockText, false);
+
+        // якщо продавати не можна (кільця/нашийники) — кнопка продажу ховається завжди
+        if (!canSell)
+        {
+            SetActiveSafe(sellButton, false);
+        }
+
+        if (dto.IsStackable)
+        {
+            // стакові: купити завжди, продати — якщо можна і є що
+            SetActiveSafe(buyButton, true);
+            if (buyText != null) buyText.text = "Купити";
+
+            if (sellButton != null)
+            {
+                sellButton.gameObject.SetActive(canSell);
+                sellButton.interactable = canSell && dto.OwnedCount > 0;
+            }
+            if (sellText != null) sellText.text = "Продати";
         }
         else
         {
-            buyButton.interactable = true;
-            buyText.text = dto.IsOwned ? "Продати" : "Купити";
+            // не-стакові: або купити, або продати (якщо дозволено)
+            if (dto.IsOwned)
+            {
+                SetActiveSafe(buyButton, false);
+                SetActiveSafe(sellButton, canSell);
+                if (sellText != null) sellText.text = "Продати";
+            }
+            else
+            {
+                SetActiveSafe(sellButton, false);
+                SetActiveSafe(buyButton, true);
+                if (buyText != null) buyText.text = "Купити";
+            }
         }
+    }
+
+    private static void SetActiveSafe(Component c, bool active)
+    {
+        if (c != null) c.gameObject.SetActive(active);
     }
 
     private IEnumerator LoadIconCoroutine(string iconKey)
@@ -77,46 +142,30 @@ public class ShopItemView : MonoBehaviour
             done = true;
         });
 
-        if (done && result != null)
+        if (done && result != null && iconImage != null)
             iconImage.sprite = result;
     }
 
-    // 🔥 Ось ТУТ — логіка побудови опису з JSON-статів
     private string BuildDescription(ShopItemClientDto item)
     {
         var sb = new System.Text.StringBuilder();
-
-        // 1) Рівень
         sb.AppendLine($"<b>Рівень: {item.MinPlayerLevel}</b>");
 
-        // 2) Парсимо JSON зі статами
         ShopItemStatsData stats = null;
 
         if (!string.IsNullOrEmpty(item.BaseStatsJson))
         {
-            try
-            {
-                stats = JsonUtility.FromJson<ShopItemStatsData>(item.BaseStatsJson);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"[ShopItemView] Не вдалося розпарсити BaseStatsJson для {item.ItemId}: {ex}");
-            }
+            try { stats = JsonUtility.FromJson<ShopItemStatsData>(item.BaseStatsJson); }
+            catch (Exception ex) { Debug.LogWarning($"[ShopItemView] BaseStatsJson parse fail {item.ItemId}: {ex}"); }
         }
 
-        if (stats == null)
-            stats = new ShopItemStatsData();
+        stats ??= new ShopItemStatsData();
 
-        if (stats.PlayerPower > 0)
-            sb.AppendLine($"Сила: +{stats.PlayerPower}");
-        if (stats.PlayerProtection > 0)
-            sb.AppendLine($"Захист: +{stats.PlayerProtection}");
-        if (stats.PlayerDexterity > 0)
-            sb.AppendLine($"Спритність: +{stats.PlayerDexterity}");
-        if (stats.PlayerSkill > 0)
-            sb.AppendLine($"Майстерність: +{stats.PlayerSkill}");
-        if (stats.PlayerSurvivability > 0)
-            sb.AppendLine($"Живучість: +{stats.PlayerSurvivability}");
+        if (stats.PlayerPower > 0) sb.AppendLine($"Сила: +{stats.PlayerPower}");
+        if (stats.PlayerProtection > 0) sb.AppendLine($"Захист: +{stats.PlayerProtection}");
+        if (stats.PlayerDexterity > 0) sb.AppendLine($"Спритність: +{stats.PlayerDexterity}");
+        if (stats.PlayerSkill > 0) sb.AppendLine($"Майстерність: +{stats.PlayerSkill}");
+        if (stats.PlayerSurvivability > 0) sb.AppendLine($"Живучість: +{stats.PlayerSurvivability}");
 
         return sb.ToString().TrimEnd();
     }

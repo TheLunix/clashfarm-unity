@@ -6,54 +6,60 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-/// <summary>
-/// Головний контролер магазину.
-/// </summary>
 public class ShopUIController : MonoBehaviour
 {
     [Header("Root")]
     [SerializeField] private GameObject panelRoot;          // PaneShop
-    [SerializeField] private TMP_Text headerText;           // BuyPanel/Image/Text (назва підкатегорії)
+    [SerializeField] private TMP_Text headerText;           // BuyPanel/Image/Text
 
     [Header("Panels")]
-    [SerializeField] private GameObject buyPanel;           // BuyPanel – панель зі списком товарів
-    [SerializeField] private GameObject infoBar;            // InfoBar – верхня панель з інфою/іконками
-    [SerializeField] private Button buyPanelCloseButton;    // кнопка "Закрити" всередині BuyPanel
+    [SerializeField] private GameObject buyPanel;           // BuyPanel
+    [SerializeField] private GameObject infoBar;            // InfoBar
+    [SerializeField] private Button buyPanelCloseButton;
 
     [Header("Scroll")]
-    [SerializeField] private Transform itemsContentRoot;    // BuyPanel/Scroll View/Viewport/Content
-    [SerializeField] private ShopItemView itemPrefab;       // префаб Item_shop
+    [SerializeField] private Transform itemsContentRoot;
+    [SerializeField] private ShopItemView itemPrefab;
 
-    [Header("Групи кнопок (верхні 4)")]
-    [SerializeField] private GameObject containerButtonsRoot;      // ContainerButtons
-    [SerializeField] private Button btnEquipments;                 // b_equipments
-    [SerializeField] private Button btnSpellScroll;                // b_spell_scroll
-    [SerializeField] private Button btnGiftCurse;                  // b_gift_curse
-    [SerializeField] private Button btnRingCollar;                 // b_ring_collar
+    [Header("Top category buttons")]
+    [SerializeField] private Button btnEquipments;
+    [SerializeField] private Button btnSpellScroll;
+    [SerializeField] private Button btnGiftCurse;
+    [SerializeField] private Button btnRingCollar;
 
-    [Header("Панелі підкнопок (субкатегорії)")]
-    [SerializeField] private GameObject containerButtonsEquipment; // ContainerButtonsEquipment
-    [SerializeField] private GameObject containerButtonsSpell;     // ContainerButtonsSpell
-    [SerializeField] private GameObject containerButtonsGift;      // ContainerButtonsGift
-    [SerializeField] private GameObject containerButtonsCollar;    // ContainerButtonsCollar
+    [Header("Subcategory panels")]
+    [SerializeField] private GameObject containerButtonsEquipment;
+    [SerializeField] private GameObject containerButtonsSpell;
+    [SerializeField] private GameObject containerButtonsGift;
+    [SerializeField] private GameObject containerButtonsCollar;
 
     [Serializable]
     public class SubcategoryConfig
     {
-        public string debugName;       // Наприклад: "Weapon"
-        public Button button;          // Кнопка: b_weapons, b_armor, ...
-        public byte category;          // 0..7 – Category з БД
-        public byte equipSlot = 255;   // EquipSlot для екіпу, 255 якщо не використовується
-        public string headerUkr;       // "Зброя", "Шоломи", ...
-        public GameObject parentPanel; // До якої панелі підкнопок належить
+        public string debugName;
+        public Button button;
+        public byte category;
+        public byte equipSlot = 255;
+        public string headerUkr;
+        public GameObject parentPanel;
     }
 
-    [Header("Підкатегорії (конкретні типи предметів)")]
+    [Header("Subcategories")]
     [SerializeField] private SubcategoryConfig[] subcategories;
 
     [Header("Networking")]
     [SerializeField] private string shopListUrl = "https://api.clashfarm.com/api/player/shop/list";
     [SerializeField] private string shopBuyUrl  = "https://api.clashfarm.com/api/player/shop/buy";
+    [SerializeField] private string shopSellUrl = "https://api.clashfarm.com/api/player/shop/sell";
+    [SerializeField] private string inventoryUrl = "https://api.clashfarm.com/api/player/inventory";
+
+    [Header("Confirm panels")]
+    [SerializeField] private ShopBuyQuantityPanel buyQuantityPanel;
+
+    [Header("StatusBar")]
+    [SerializeField] private GameObject statusBar;
+    [SerializeField] private TMP_Text statusBarText;
+    [SerializeField] private float statusBarAutoHideSeconds = 5f;
 
     [Header("Loading UI")]
     [SerializeField] private GameObject loadingSpinner;
@@ -62,50 +68,39 @@ public class ShopUIController : MonoBehaviour
     private SubcategoryConfig _currentSubcategory;
     private readonly List<ShopItemView> _spawnedItems = new();
     private bool _isLoading;
-
-    #region Unity
+    private Coroutine _statusBarRoutine;
 
     private void Awake()
     {
         if (panelRoot == null)
             panelRoot = gameObject;
 
-        // Верхні 4 кнопки – тільки перемикають групи підкатегорій
-        if (btnEquipments != null)
-            btnEquipments.onClick.AddListener(() => ShowGroup(containerButtonsEquipment));
-        if (btnSpellScroll != null)
-            btnSpellScroll.onClick.AddListener(() => ShowGroup(containerButtonsSpell));
-        if (btnGiftCurse != null)
-            btnGiftCurse.onClick.AddListener(() => ShowGroup(containerButtonsGift));
-        if (btnRingCollar != null)
-            btnRingCollar.onClick.AddListener(() => ShowGroup(containerButtonsCollar));
+        if (btnEquipments != null)  btnEquipments.onClick.AddListener(() => ShowGroup(containerButtonsEquipment));
+        if (btnSpellScroll != null) btnSpellScroll.onClick.AddListener(() => ShowGroup(containerButtonsSpell));
+        if (btnGiftCurse != null)   btnGiftCurse.onClick.AddListener(() => ShowGroup(containerButtonsGift));
+        if (btnRingCollar != null)  btnRingCollar.onClick.AddListener(() => ShowGroup(containerButtonsCollar));
 
-        // Підкатегорії – вішаємо колбек на кожну кнопку
         if (subcategories != null)
         {
             foreach (var sub in subcategories)
             {
                 if (sub.button == null) continue;
-                var localSub = sub;
-                sub.button.onClick.AddListener(() => OnSubcategoryClicked(localSub));
+                var local = sub;
+                sub.button.onClick.AddListener(() => OnSubcategoryClicked(local));
             }
         }
 
-        // Кнопка закриття BuyPanel
         if (buyPanelCloseButton != null)
             buyPanelCloseButton.onClick.AddListener(CloseBuyPanelOnly);
+
+        if (buyQuantityPanel != null)
+            buyQuantityPanel.Init();
+
+        HideStatusBarImmediate();
     }
 
-    private void OnEnable()
-    {
-        ResetUI();
-    }
+    private void OnEnable() => ResetUI();
 
-    #endregion
-
-    #region Public API
-
-    /// <summary>Відкрити магазин.</summary>
     public void Open()
     {
         if (panelRoot != null)
@@ -114,96 +109,62 @@ public class ShopUIController : MonoBehaviour
         ResetUI();
     }
 
-    /// <summary>Закрити магазин повністю.</summary>
     public void Close()
     {
         if (panelRoot != null)
             panelRoot.SetActive(false);
     }
 
-    #endregion
-
-    #region UI State
-
-    /// <summary>Початковий стан при відкритті магазину.</summary>
     private void ResetUI()
     {
         _isLoading = false;
         ClearItems();
         SetError(null);
 
-        // Ховаємо BuyPanel, показуємо InfoBar
-        if (buyPanel != null)
-            buyPanel.SetActive(false);
+        if (buyPanel != null) buyPanel.SetActive(false);
+        if (infoBar != null)  infoBar.SetActive(true);
 
-        if (infoBar != null)
-            infoBar.SetActive(true);
-
-        // Ховаємо всі панелі підкатегорій – поки не натиснули верхню категорію
         ShowGroup(null);
 
-        // Заголовок очищаємо
         if (headerText != null)
             headerText.text = string.Empty;
+
+        HideStatusBarImmediate();
     }
 
-    /// <summary>Показати потрібну панель підкатегорій (або сховати всі, якщо groupPanel == null).</summary>
     private void ShowGroup(GameObject groupPanel)
     {
-        if (containerButtonsEquipment != null)
-            containerButtonsEquipment.SetActive(groupPanel == containerButtonsEquipment);
-        if (containerButtonsSpell != null)
-            containerButtonsSpell.SetActive(groupPanel == containerButtonsSpell);
-        if (containerButtonsGift != null)
-            containerButtonsGift.SetActive(groupPanel == containerButtonsGift);
-        if (containerButtonsCollar != null)
-            containerButtonsCollar.SetActive(groupPanel == containerButtonsCollar);
+        if (containerButtonsEquipment != null) containerButtonsEquipment.SetActive(groupPanel == containerButtonsEquipment);
+        if (containerButtonsSpell != null)     containerButtonsSpell.SetActive(groupPanel == containerButtonsSpell);
+        if (containerButtonsGift != null)      containerButtonsGift.SetActive(groupPanel == containerButtonsGift);
+        if (containerButtonsCollar != null)    containerButtonsCollar.SetActive(groupPanel == containerButtonsCollar);
     }
 
-    /// <summary>Закрити тільки BuyPanel, не закриваючи весь магазин.</summary>
     private void CloseBuyPanelOnly()
     {
         ClearItems();
-        if (buyPanel != null)
-            buyPanel.SetActive(false);
-        if (infoBar != null)
-            infoBar.SetActive(true);
+        if (buyPanel != null) buyPanel.SetActive(false);
+        if (infoBar != null)  infoBar.SetActive(true);
 
-        // Можна очистити заголовок
         if (headerText != null)
             headerText.text = string.Empty;
     }
 
-    #endregion
-
-    #region Subcategories
-
-    /// <summary>Клік по кнопці підкатегорії (Зброя, Броня, Зілля...).</summary>
     private void OnSubcategoryClicked(SubcategoryConfig sub)
     {
-        if (_isLoading)
-            return;
+        if (_isLoading) return;
 
         _currentSubcategory = sub;
-
         Debug.Log($"[ShopUI] Subcategory clicked: {sub.debugName}, category={sub.category}, equipSlot={sub.equipSlot}");
 
-        // Показуємо BuyPanel, ховаємо InfoBar
-        if (buyPanel != null)
-            buyPanel.SetActive(true);
-        if (infoBar != null)
-            infoBar.SetActive(false);
+        if (buyPanel != null) buyPanel.SetActive(true);
+        if (infoBar != null)  infoBar.SetActive(false);
 
-        // Оновлюємо заголовок
         if (headerText != null)
             headerText.text = sub.headerUkr;
 
         StartCoroutine(LoadItemsForCurrentSubcategory());
     }
-
-    #endregion
-
-    #region Loading items
 
     private IEnumerator LoadItemsForCurrentSubcategory()
     {
@@ -213,10 +174,9 @@ public class ShopUIController : MonoBehaviour
         SetError(null);
 
         WWWForm form = new WWWForm();
-        form.AddField("PlayerName",       PlayerSession.I.Data.nickname);
+        form.AddField("PlayerName", PlayerSession.I.Data.nickname);
         form.AddField("PlayerSerialCode", PlayerSession.I.Data.serialcode);
-
-        form.AddField("Category",  _currentSubcategory.category);
+        form.AddField("Category", _currentSubcategory.category);
         form.AddField("EquipSlot", _currentSubcategory.equipSlot);
 
         using UnityWebRequest req = UnityWebRequest.Post(shopListUrl, form);
@@ -235,14 +195,8 @@ public class ShopUIController : MonoBehaviour
         Debug.Log($"[ShopUI] Response: {json}");
 
         ShopResponseClient resp = null;
-        try
-        {
-            resp = JsonUtility.FromJson<ShopResponseClient>(json);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"[ShopUI] JSON parse error: {ex}");
-        }
+        try { resp = JsonUtility.FromJson<ShopResponseClient>(json); }
+        catch (Exception ex) { Debug.LogError($"[ShopUI] JSON parse error: {ex}"); }
 
         if (resp == null)
         {
@@ -252,7 +206,6 @@ public class ShopUIController : MonoBehaviour
             yield break;
         }
 
-        // "OK" або "" — це успіх
         if (!string.IsNullOrEmpty(resp.error) && resp.error != "OK")
         {
             SetError(resp.error);
@@ -269,12 +222,16 @@ public class ShopUIController : MonoBehaviour
             yield break;
         }
 
-        // Створюємо айтеми
         foreach (var dto in resp.items)
         {
             var view = Instantiate(itemPrefab, itemsContentRoot);
             view.gameObject.SetActive(true);
-            view.Bind(dto, OnItemBuyClicked);
+
+            // кільця та нашийники НЕ продаємо в магазині
+            bool canSell = !(dto.IsRing || dto.IsPetCollar);
+
+            view.Bind(dto, OnItemBuyClicked, OnItemSellClicked, canSell);
+
             _spawnedItems.Add(view);
         }
 
@@ -314,30 +271,156 @@ public class ShopUIController : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Buy / Sell
+    // ---------------- BUY ----------------
 
     private void OnItemBuyClicked(ShopItemClientDto item)
     {
-        // Якщо предмет заблокований по рівню – нічого не робимо
         if (item.IsLocked)
-        {
-            Debug.Log("[ShopUI] Item is locked, cannot buy: " + item.ItemId);
             return;
-        }
 
-        StartCoroutine(BuyItemCoroutine(item));
+        // не-стакові: якщо вже є — не купуємо вдруге
+        if (!item.IsStackable && item.IsOwned)
+            return;
+
+        // якщо інвентар повний — навіть не відкриваємо панель покупки (для предметів що займають слоти)
+        StartCoroutine(PrepareAndShowBuyPanel(item));
     }
 
-    private IEnumerator BuyItemCoroutine(ShopItemClientDto item)
+    private IEnumerator PrepareAndShowBuyPanel(ShopItemClientDto item)
+    {
+        // max по грошам
+        int green = PlayerSession.I?.Data?.playergreen ?? 0;
+        int price = Mathf.Max(0, item.BasePrice);
+
+        int maxByMoney = (price <= 0) ? 999 : Mathf.Clamp(green / price, 0, 999);
+
+        // не-стакові: 1 штука
+        if (!item.IsStackable)
+        {
+            // якщо займає слоти — перевірка на 1 вільний слот
+            if (item.CountsForCapacity)
+            {
+                int freeSlots = 0;
+                yield return StartCoroutine(GetFreeSlots(result => freeSlots = result));
+
+                if (freeSlots <= 0)
+                {
+                    ShowStatusBar("Інвентар повний, покращте сховище або продайте непотрібне!");
+                    yield break;
+                }
+            }
+
+            if (maxByMoney <= 0)
+            {
+                ShowStatusBar("Недостатньо зелені!");
+                yield break;
+            }
+
+            if (buyQuantityPanel == null)
+            {
+                StartCoroutine(BuyItemCoroutine(item, 1));
+                yield break;
+            }
+
+            buyQuantityPanel.Show(
+                item,
+                localizedName: item.ItemId,
+                pricePerOne: price,
+                maxCount: 1,
+                onConfirm: (_) => StartCoroutine(BuyItemCoroutine(item, 1)),
+                onCancel: () => { }
+            );
+            yield break;
+        }
+
+        // стакові: max по слотах (строго як ти просив: 20/20 => 0, 10/20 => 10)
+        int maxBySpace = 999;
+
+        if (item.CountsForCapacity)
+        {
+            int freeSlots = 0;
+            yield return StartCoroutine(GetFreeSlots(result => freeSlots = result));
+
+            maxBySpace = Mathf.Max(0, freeSlots);
+
+            if (maxBySpace <= 0)
+            {
+                ShowStatusBar("Інвентар повний, покращте сховище або продайте непотрібне!");
+                yield break;
+            }
+        }
+
+        int max = Mathf.Clamp(Mathf.Min(maxByMoney, maxBySpace), 0, 999);
+
+        if (max <= 0)
+        {
+            ShowStatusBar("Недостатньо зелені!");
+            yield break;
+        }
+
+        if (buyQuantityPanel == null)
+        {
+            StartCoroutine(BuyItemCoroutine(item, 1));
+            yield break;
+        }
+
+        buyQuantityPanel.Show(
+            item,
+            localizedName: item.ItemId,
+            pricePerOne: price,
+            maxCount: max,
+            onConfirm: (count) =>
+            {
+                count = Mathf.Clamp(count, 1, max);
+                StartCoroutine(BuyItemCoroutine(item, count));
+            },
+            onCancel: () => { }
+        );
+    }
+
+    private IEnumerator GetFreeSlots(Action<int> cb)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerName", PlayerSession.I.Data.nickname);
+        form.AddField("PlayerSerialCode", PlayerSession.I.Data.serialcode);
+
+        using UnityWebRequest req = UnityWebRequest.Post(inventoryUrl, form);
+        yield return req.SendWebRequest();
+
+        if (req.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("[ShopUI] Inventory load failed: " + req.error);
+            cb?.Invoke(999); // якщо не змогли прочитати — не блокуємо покупку
+            yield break;
+        }
+
+        var json = req.downloadHandler.text;
+        InventoryResponseClient inv = null;
+        try { inv = JsonUtility.FromJson<InventoryResponseClient>(json); }
+        catch { }
+
+        if (inv == null || inv.error != "OK")
+        {
+            cb?.Invoke(999);
+            yield break;
+        }
+
+        int freeSlots = Mathf.Max(0, inv.maxslots - inv.usedslots);
+        cb?.Invoke(freeSlots);
+    }
+
+    private IEnumerator BuyItemCoroutine(ShopItemClientDto item, int count)
     {
         SetLoading(true);
+        SetError(null);
+
+        count = Mathf.Max(1, count);
 
         WWWForm form = new WWWForm();
-        form.AddField("PlayerName",       PlayerSession.I.Data.nickname);
+        form.AddField("PlayerName", PlayerSession.I.Data.nickname);
         form.AddField("PlayerSerialCode", PlayerSession.I.Data.serialcode);
-        form.AddField("ItemId",           item.ItemId);
+        form.AddField("ItemId", item.ItemId);
+        form.AddField("Count", count);
 
         using UnityWebRequest req = UnityWebRequest.Post(shopBuyUrl, form);
         yield return req.SendWebRequest();
@@ -346,18 +429,100 @@ public class ShopUIController : MonoBehaviour
         {
             SetError("Не вдалося виконати покупку.");
             Debug.LogError($"[ShopUI] Buy error: {req.error}");
+            Debug.LogError($"[ShopUI] Buy body: {req.downloadHandler.text}");
             SetLoading(false);
             yield break;
         }
 
-        var json = req.downloadHandler.text;
-        Debug.Log($"[ShopUI] Buy response: {json}");
+        Debug.Log($"[ShopUI] Buy response: {req.downloadHandler.text}");
 
-        // TODO: тут розпарсити відповідь, оновити PlayerSession, інвентар і т.д.
-
-        // Поки – просто перезавантажуємо поточну підкатегорію
+        // оновлюємо список
         StartCoroutine(LoadItemsForCurrentSubcategory());
+        SetLoading(false);
     }
 
-    #endregion
+    // ---------------- SELL ----------------
+
+    private void OnItemSellClicked(ShopItemClientDto item)
+    {
+        if (item.IsLocked)
+            return;
+
+        // кільця/нашийники не продаємо в магазині
+        if (item.IsRing || item.IsPetCollar)
+            return;
+
+        if (!item.IsOwned)
+            return;
+
+        // поки що без підтвердження (ти вже казав — потім підв'яжемо ShopSellQuantityPanel)
+        StartCoroutine(SellItemCoroutine(item, 1));
+    }
+
+    private IEnumerator SellItemCoroutine(ShopItemClientDto item, int count)
+    {
+        SetLoading(true);
+        SetError(null);
+
+        count = Mathf.Max(1, count);
+
+        WWWForm form = new WWWForm();
+        form.AddField("PlayerName", PlayerSession.I.Data.nickname);
+        form.AddField("PlayerSerialCode", PlayerSession.I.Data.serialcode);
+        form.AddField("ItemId", item.ItemId);
+        form.AddField("Count", count);
+
+        using UnityWebRequest req = UnityWebRequest.Post(shopSellUrl, form);
+        yield return req.SendWebRequest();
+
+        if (req.result != UnityWebRequest.Result.Success)
+        {
+            SetError("Не вдалося виконати продаж.");
+            Debug.LogError($"[ShopUI] Sell error: {req.error}");
+            Debug.LogError($"[ShopUI] Sell body: {req.downloadHandler.text}");
+            SetLoading(false);
+            yield break;
+        }
+
+        Debug.Log($"[ShopUI] Sell response: {req.downloadHandler.text}");
+        StartCoroutine(LoadItemsForCurrentSubcategory());
+        SetLoading(false);
+    }
+
+    // ---------------- StatusBar ----------------
+
+    private void ShowStatusBar(string message)
+    {
+        if (statusBar == null || statusBarText == null)
+            return;
+
+        statusBar.SetActive(true);
+        statusBarText.text = message;
+
+        if (_statusBarRoutine != null)
+            StopCoroutine(_statusBarRoutine);
+
+        _statusBarRoutine = StartCoroutine(HideStatusBarAfter(statusBarAutoHideSeconds));
+    }
+
+    private IEnumerator HideStatusBarAfter(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        HideStatusBarImmediate();
+    }
+
+    private void HideStatusBarImmediate()
+    {
+        if (_statusBarRoutine != null)
+        {
+            StopCoroutine(_statusBarRoutine);
+            _statusBarRoutine = null;
+        }
+
+        if (statusBar != null)
+            statusBar.SetActive(false);
+
+        if (statusBarText != null)
+            statusBarText.text = "";
+    }
 }

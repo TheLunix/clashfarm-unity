@@ -10,36 +10,28 @@ public class ShopResponseClient
 [Serializable]
 public class ShopItemClientDto
 {
-    // Те, що приходить з сервера (імена полів мають збігатись!)
     public string ItemId;
+
     public byte   Category;
+    public byte?  EquipSlot;
     public byte   Rarity;
-    public byte   EquipSlot;      // на сервері byte?, але JsonUtility сприйме як 0, якщо null
 
     public string IconKey;
 
-    public string NameLocKey;
-    public string DescLocKey;
+    public int    BasePrice;          // ціна в зелені
+    public int    MinPlayerLevel;     // рівень відкриття
 
-    public int    MinPlayerLevel; // з MinPlayerLevel
-    public int    BasePrice;      // з BasePrice
+    public bool   IsLocked;           // показуємо "Відкриється на ..."
+    public bool   IsOwned;            // чи є хоч 1
+    public int    OwnedCount;         // скільки всього (для стакових)
 
-    public bool   IsLocked;       // true = "Відкриється на N рівні"
+    public bool   IsStackable;        // MaxStack > 1
+    public int    MaxStack;           // для UI/інвентаря
 
-    // 🔥 Сюди сервер кладе JSON з колонки base_stats_json
-    public string BaseStatsJson;
+    public bool   CountsForCapacity;  // чи займає слоти інвентаря
 
-    // Клієнтські допоміжні прапорці (поки що сервер їх не надсилає)
-    public bool IsOwned;    // поки завжди false
-}
+    public bool   IsRing;             // важливо: кільця не продаємо в магазині
+    public bool   IsPetCollar;        // важливо: нашийники не продаємо в магазині
 
-// Ось так ми очікуємо JSON зі статами в BaseStatsJson
-[Serializable]
-public class ShopItemStatsData
-{
-    public int PlayerPower;
-    public int PlayerSkill;
-    public int PlayerDexterity;
-    public int PlayerProtection;
-    public int PlayerSurvivability;
+    public string BaseStatsJson;      // стати з JSON
 }
